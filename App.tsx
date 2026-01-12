@@ -58,15 +58,15 @@ const Home = ({ lang, onNavigate, products }: { lang: Language, onNavigate: (pag
   
   return (
     <div className="flex flex-col bg-black">
-      <section className="relative h-screen flex flex-col items-center justify-center overflow-hidden bg-gradient-mesh">
+      <section className="relative h-screen flex flex-col items-center justify-center overflow-hidden bg-black">
         <div className="absolute inset-0 z-0">
           <img 
             src="/images/ok%C5%82adka%20home.png" 
-            className="w-full h-full object-cover object-top brightness-[0.6]"
+            className="w-full h-full object-cover object-center"
             alt="STRAATFANAAT Hero"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
-          <div className="scanline opacity-20"></div>
+          <div className="absolute inset-0 bg-black/40"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/30"></div>
         </div>
 
         <div className="relative z-10 text-center px-4 space-y-4 md:space-y-6">
