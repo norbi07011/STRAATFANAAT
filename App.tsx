@@ -61,12 +61,12 @@ const Home = ({ lang, onNavigate, products }: { lang: Language, onNavigate: (pag
       <section className="relative h-screen flex flex-col items-center justify-center overflow-hidden bg-gradient-mesh">
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?q=80&w=2000&auto=format&fit=crop" 
-            className="w-full h-full object-cover grayscale brightness-[0.4] scale-110 opacity-30"
-            alt="Hero Background"
+            src="/images/ok%C5%82adka%20home.png" 
+            className="w-full h-full object-cover object-top brightness-[0.6]"
+            alt="STRAATFANAAT Hero"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-          <div className="scanline"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
+          <div className="scanline opacity-20"></div>
         </div>
 
         <div className="relative z-10 text-center px-4 space-y-4 md:space-y-6">
