@@ -198,7 +198,7 @@ const About = ({ lang }: { lang: Language }) => {
 const Lookbook = ({ lang, onNavigate }: { lang: Language, onNavigate: (page: Page, id?: string) => void }) => {
   const t = TRANSLATIONS[lang];
   
-  // Koszulki męskie - kolekcja STRAATFANAAT
+  // Koszulki męskie i damskie - kolekcja STRAATFANAAT
   const lookbookItems = [
     {
       id: 1,
@@ -263,10 +263,82 @@ const Lookbook = ({ lang, onNavigate }: { lang: Language, onNavigate: (page: Pag
       description: 'Dla mistrzów ulicy - mentalność zwycięzcy',
       productId: '7'
     },
+    {
+      id: 8,
+      title: 'SAVAGE OMERTA',
+      subtitle: 'DEADLY SILENCE',
+      image: '/images/savage%20omerta.jpeg',
+      category: 'GRAPHIC',
+      description: 'Kiedy cisza staje się śmiertelna - najbardziej agresywna edycja',
+      productId: '8'
+    },
+    {
+      id: 9,
+      title: 'STRAATFANAAT MUZEUM',
+      subtitle: 'WHERE ART MEETS STREET',
+      image: '/images/straatfanaat%20muzeum2.jpeg',
+      category: 'GRAPHIC',
+      description: 'Streetwear staje się sztuką - muzealny hołd',
+      productId: '9'
+    },
+    {
+      id: 10,
+      title: 'STRAATFANAAT STRIT',
+      subtitle: 'PURE STREET LIFE',
+      image: '/images/straatfanaat%20strit1.jpeg',
+      category: 'CLASSIC',
+      description: 'Czysta esencja życia ulicznego',
+      productId: '10'
+    },
+    {
+      id: 11,
+      title: 'HERB STREET',
+      subtitle: 'NATURE MEETS CITY',
+      image: '/images/herb1.jpeg',
+      category: 'GRAPHIC',
+      description: 'Natura spotyka miasto - organiczne wibracje',
+      productId: '11'
+    },
+    {
+      id: 12,
+      title: 'DH MIASTO',
+      subtitle: 'DIE HARD URBAN',
+      image: '/images/DH%20miasto%20podglad.jpeg',
+      category: 'GRAPHIC',
+      description: 'Die Hard miejska guerilla z polskimi korzeniami',
+      productId: '12'
+    },
+    {
+      id: 13,
+      title: 'FCDH PINK DAMSKA',
+      subtitle: 'FOR HER',
+      image: '/images/damska%20fcdh%20r%C3%B3zowy%201.jpeg',
+      category: 'DAMSKIE',
+      description: 'Różowa siła spotyka uliczną mentalność',
+      productId: '13'
+    },
+    {
+      id: 14,
+      title: 'KOLEKCJA DLA NIEJ',
+      subtitle: 'EXCLUSIVE WOMEN',
+      image: '/images/kolekcja%20dla%20niej%20dla%20niego%20damska%20.jpeg',
+      category: 'DAMSKIE',
+      description: 'Streetwear dla silnej kobiety - ekskluzywna linia',
+      productId: '14'
+    },
+    {
+      id: 15,
+      title: 'KOLEKCJA DLA NIEGO',
+      subtitle: 'EXCLUSIVE MEN',
+      image: '/images/kolekcja%20dla%20niego%20dla%20niej%20sesia%20.jpeg',
+      category: 'CLASSIC',
+      description: 'Męski odpowiednik kolekcji duo',
+      productId: '15'
+    },
   ];
 
   const [activeFilter, setActiveFilter] = useState('ALL');
-  const filters = ['ALL', 'CLASSIC', 'GRAPHIC'];
+  const filters = ['ALL', 'CLASSIC', 'GRAPHIC', 'DAMSKIE'];
   
   const filteredItems = activeFilter === 'ALL' 
     ? lookbookItems 
@@ -278,7 +350,7 @@ const Lookbook = ({ lang, onNavigate }: { lang: Language, onNavigate: (page: Pag
       <section className="relative min-h-[70vh] md:min-h-[90vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0 flex items-center justify-center bg-black">
           <img 
-            src="/images/straatfanaat3.jpeg" 
+            src="/images/kolekcja%20dla%20niego%20dla%20niej%20sesia2.jpeg" 
             className="w-full h-full object-contain"
             alt="STRAATFANAAT Lookbook"
           />
@@ -289,19 +361,19 @@ const Lookbook = ({ lang, onNavigate }: { lang: Language, onNavigate: (page: Pag
         
         <div className="relative z-10 text-center px-4 space-y-4 md:space-y-8">
           <div className="inline-block px-4 py-2 border border-[#adff2f] text-[#adff2f] text-[10px] md:text-xs font-black tracking-[0.3em] uppercase animate-pulse">
-            KOSZULKI MĘSKIE • MEN'S TEES
+            DLA NIEGO • DLA NIEJ • FOR HIM • FOR HER
           </div>
-          <h1 className="text-5xl sm:text-7xl md:text-[10rem] font-black italic tracking-tighter leading-none glitch uppercase px-2" data-text="TEES">
-            TEES
+          <h1 className="text-5xl sm:text-7xl md:text-[10rem] font-black italic tracking-tighter leading-none glitch uppercase px-2" data-text="LOOKBOOK">
+            LOOKBOOK
           </h1>
           <p className="text-sm md:text-xl text-zinc-400 font-light tracking-widest uppercase max-w-2xl mx-auto">
-            Uliczny styl w czystej formie • Premium bawełna • Męskie koszulki
+            Kolekcja męska i damska • Premium streetwear • Uliczny styl dla każdego
           </p>
         </div>
       </section>
 
       {/* Marquee */}
-      <Marquee text="MĘSKIE KOSZULKI • MEN'S TEES • STREETWEAR • OVERSIZED • GRAPHIC • PREMIUM COTTON •" className="bg-gradient-street text-black border-none" />
+      <Marquee text="MĘSKIE • DAMSKIE • UNISEX • FOR HIM • FOR HER • STREETWEAR • OVERSIZED • GRAPHIC • PREMIUM COTTON •" className="bg-gradient-street text-black border-none" />
 
       {/* Filter Section */}
       <section className="pt-12 md:pt-24 px-4 md:px-12">
@@ -381,24 +453,24 @@ const Lookbook = ({ lang, onNavigate }: { lang: Language, onNavigate: (page: Pag
             <div className="flex-1 space-y-6 md:space-y-8">
               <div className="w-16 md:w-24 h-1 bg-gradient-street"></div>
               <h2 className="text-3xl md:text-7xl font-black italic uppercase tracking-tighter leading-none">
-                MĘSKIE<br/>
-                <span className="text-gradient-street">KOSZULKI</span>
+                DLA NIEGO<br/>
+                <span className="text-gradient-street">DLA NIEJ</span>
               </h2>
               <p className="text-lg md:text-2xl text-zinc-400 font-light italic leading-relaxed">
-                Nasza kolekcja koszulek to fundament streetwearu. Premium bawełna 300gsm, oversize krój i unikalne grafiki inspirowane kulturą uliczną. Każda koszulka to statement.
+                Nasza kolekcja to streetwear bez granic płci. Premium bawełna 300gsm, oversize i dopasowane kroje, unikalne grafiki inspirowane kulturą uliczną. Koszulki dla niego i dla niej - razem lub osobno.
               </p>
               <div className="space-y-4 text-zinc-500">
                 <div className="flex items-center gap-3">
                   <Check className="w-5 h-5 text-[#adff2f]" />
-                  <span className="font-bold uppercase tracking-wide text-sm">100% Premium Bawełna</span>
+                  <span className="font-bold uppercase tracking-wide text-sm">100% Premium Bawełna 300gsm</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Check className="w-5 h-5 text-[#adff2f]" />
-                  <span className="font-bold uppercase tracking-wide text-sm">Oversize & Regular Fit</span>
+                  <span className="font-bold uppercase tracking-wide text-sm">Kolekcja Męska & Damska</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Check className="w-5 h-5 text-[#adff2f]" />
-                  <span className="font-bold uppercase tracking-wide text-sm">Rozmiary S - XXL</span>
+                  <span className="font-bold uppercase tracking-wide text-sm">Rozmiary XS - XXL</span>
                 </div>
               </div>
               <div className="flex flex-wrap gap-4 pt-4">
@@ -410,12 +482,12 @@ const Lookbook = ({ lang, onNavigate }: { lang: Language, onNavigate: (page: Pag
             <div className="flex-1 w-full">
               <div className="relative group">
                 <img 
-                  src="/images/champion3.jpeg" 
+                  src="/images/kolekcja%20dla%20niego%20dla%20niej%20sesia1.jpeg" 
                   className="w-full transition-all duration-700 shadow-2xl"
                   alt="STRAATFANAAT Collection"
                 />
                 <div className="absolute -bottom-4 -right-4 md:-bottom-8 md:-right-8 bg-gradient-street p-4 md:p-8 text-black font-black italic text-xl md:text-3xl shadow-[0_0_30px_rgba(173,255,47,0.4)]">
-                  TEES
+                  DUO
                 </div>
               </div>
             </div>
@@ -427,9 +499,9 @@ const Lookbook = ({ lang, onNavigate }: { lang: Language, onNavigate: (page: Pag
       <section className="py-12 md:py-24 px-4 md:px-12">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-6xl mx-auto">
           {[
-            { number: '7', label: 'MODELI' },
-            { number: '2', label: 'STYLE' },
-            { number: '5', label: 'ROZMIARÓW' },
+            { number: '15', label: 'MODELI' },
+            { number: '4', label: 'KOLEKCJE' },
+            { number: '7', label: 'ROZMIARÓW' },
             { number: '100%', label: 'BAWEŁNA' },
           ].map((stat, i) => (
             <div key={i} className="text-center p-6 md:p-10 border border-zinc-900 bg-zinc-950 group hover:border-[#00f2ff]/50 transition-all duration-500">
@@ -449,11 +521,11 @@ const Lookbook = ({ lang, onNavigate }: { lang: Language, onNavigate: (page: Pag
         <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black"></div>
         <div className="relative z-10 space-y-6 md:space-y-8 max-w-4xl mx-auto">
           <h2 className="text-3xl md:text-7xl font-black italic uppercase tracking-tighter">
-            ZNAJDŹ SWOJĄ<br/>
-            <span className="text-gradient-street">ULICZNĄ KOSZULKĘ</span>
+            ZNAJDŹ SWÓJ<br/>
+            <span className="text-gradient-street">ULICZNY STYL</span>
           </h2>
           <p className="text-base md:text-xl text-zinc-400 font-light italic max-w-2xl mx-auto">
-            Premium jakość, unikalne wzory, uliczny styl. Nasza kolekcja koszulek to must-have dla każdego fana streetwearu.
+            Premium jakość, unikalne wzory, uliczny styl. Kolekcja dla niego i dla niej - streetwear bez kompromisów.
           </p>
           <div className="flex justify-center gap-4 pt-4">
             <Button onClick={() => onNavigate('shop')} variant="gradient" className="px-10 py-4 md:px-16 md:py-6 text-base md:text-xl">
@@ -482,7 +554,7 @@ const Lookbook = ({ lang, onNavigate }: { lang: Language, onNavigate: (page: Pag
 const Shop = ({ lang, onNavigate, onQuickView, products }: { lang: Language, onNavigate: (page: Page, id?: string) => void, onQuickView: (p: Product) => void, products: Product[] }) => {
   const t = TRANSLATIONS[lang];
   const [activeCategory, setActiveCategory] = useState('All');
-  const categories = ['All', 'Hoodies', 'Tees', 'Pants', 'Accessories'];
+  const categories = ['All', 'Tees', 'Damskie', 'Hoodies', 'Pants', 'Accessories'];
   const filteredProducts = activeCategory === 'All' ? products : products.filter(p => p.category === activeCategory);
 
   return (
@@ -524,9 +596,16 @@ const ProductDetail = ({ productId, lang, addToCart, products }: { productId: st
   const [advice, setAdvice] = useState<string>('');
   const [loadingAdvice, setLoadingAdvice] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [isZoomOpen, setIsZoomOpen] = useState(false);
+  const [zoomImageIndex, setZoomImageIndex] = useState(0);
+  const [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 });
   
   // Użyj tablicy images jeśli dostępna, w przeciwnym razie użyj pojedynczego image
   const productImages = product.images && product.images.length > 0 ? product.images : [product.image];
+  
+  // Zdjęcia podglądu (z lupą) - szczegóły produktu
+  const previewImages = (product as any).previewImages || [];
+  const hasPreviewImages = previewImages.length > 0;
 
   const fetchAdvice = async () => {
     setLoadingAdvice(true);
@@ -535,8 +614,87 @@ const ProductDetail = ({ productId, lang, addToCart, products }: { productId: st
     setLoadingAdvice(false);
   };
 
+  const openZoom = (index: number) => {
+    setZoomImageIndex(index);
+    setIsZoomOpen(true);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    setZoomPosition({ x, y });
+  };
+
   return (
     <div className="pt-24 pb-12 md:pt-32 md:pb-24 px-4 md:px-12 bg-black min-h-screen">
+      {/* Zoom Modal */}
+      {isZoomOpen && hasPreviewImages && (
+        <div className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-md flex items-center justify-center p-4">
+          <button 
+            onClick={() => setIsZoomOpen(false)} 
+            className="absolute top-6 right-6 z-10 p-3 bg-zinc-900 border border-zinc-700 hover:border-[#00f2ff] text-white hover:text-[#00f2ff] transition-all"
+          >
+            <X className="w-6 h-6" />
+          </button>
+          
+          <div className="max-w-6xl w-full h-full flex flex-col items-center justify-center gap-6">
+            {/* Główne zdjęcie zoom z efektem lupy */}
+            <div 
+              className="relative w-full max-h-[70vh] overflow-hidden cursor-zoom-in group"
+              onMouseMove={handleMouseMove}
+            >
+              <img 
+                src={previewImages[zoomImageIndex]} 
+                className="w-full h-full object-contain transition-transform duration-100"
+                style={{
+                  transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%`,
+                  transform: 'scale(1)',
+                }}
+                alt={`${product.name} - Detail ${zoomImageIndex + 1}`}
+              />
+              
+              {/* Lupa overlay */}
+              <div 
+                className="absolute w-40 h-40 md:w-64 md:h-64 border-2 border-[#00f2ff] rounded-full overflow-hidden pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity shadow-[0_0_30px_rgba(0,242,255,0.5)]"
+                style={{
+                  left: `calc(${zoomPosition.x}% - 5rem)`,
+                  top: `calc(${zoomPosition.y}% - 5rem)`,
+                  backgroundImage: `url(${previewImages[zoomImageIndex]})`,
+                  backgroundSize: '400%',
+                  backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
+                }}
+              />
+            </div>
+            
+            {/* Miniaturki podglądu */}
+            {previewImages.length > 1 && (
+              <div className="flex gap-3 justify-center">
+                {previewImages.map((img: string, index: number) => (
+                  <button
+                    key={index}
+                    onClick={() => setZoomImageIndex(index)}
+                    className={`w-16 h-20 md:w-20 md:h-24 overflow-hidden border-2 transition-all ${
+                      zoomImageIndex === index 
+                        ? 'border-[#00f2ff] shadow-[0_0_15px_rgba(0,242,255,0.5)]' 
+                        : 'border-zinc-700 hover:border-zinc-500'
+                    }`}
+                  >
+                    <img src={img} className="w-full h-full object-cover" alt={`Detail ${index + 1}`} />
+                  </button>
+                ))}
+              </div>
+            )}
+            
+            <div className="text-center">
+              <p className="text-[#00f2ff] font-mono text-xs uppercase tracking-widest animate-pulse">
+                🔍 Najedź myszką na zdjęcie aby powiększyć szczegóły
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16">
         <div className="space-y-4">
           {/* Główne zdjęcie */}
@@ -575,6 +733,41 @@ const ProductDetail = ({ productId, lang, addToCart, products }: { productId: st
                   </div>
                 </button>
               ))}
+            </div>
+          )}
+          
+          {/* Zdjęcia podglądu ze szczegółami (z lupą) */}
+          {hasPreviewImages && (
+            <div className="mt-6 space-y-3">
+              <div className="flex items-center gap-2">
+                <Search className="w-4 h-4 text-[#00f2ff]" />
+                <span className="text-xs font-black uppercase tracking-widest text-zinc-400">
+                  {lang === 'PL' ? 'PODGLĄD SZCZEGÓŁÓW' : lang === 'NL' ? 'DETAILS BEKIJKEN' : 'VIEW DETAILS'}
+                </span>
+              </div>
+              <div className="flex gap-3 overflow-x-auto pb-2">
+                {previewImages.map((img: string, index: number) => (
+                  <button
+                    key={index}
+                    onClick={() => openZoom(index)}
+                    className="relative flex-shrink-0 w-24 h-28 md:w-28 md:h-32 overflow-hidden border-2 border-dashed border-[#00f2ff]/50 hover:border-[#00f2ff] transition-all duration-300 group/preview"
+                  >
+                    <img 
+                      src={img} 
+                      className="w-full h-full object-cover group-hover/preview:scale-110 transition-transform duration-500" 
+                      alt={`${product.name} - Detail ${index + 1}`}
+                    />
+                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover/preview:opacity-100 transition-opacity">
+                      <div className="bg-[#00f2ff] p-2 rounded-full">
+                        <Search className="w-5 h-5 text-black" />
+                      </div>
+                    </div>
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-street py-1 text-center text-[8px] font-bold uppercase tracking-wider text-black">
+                      🔍 ZOOM
+                    </div>
+                  </button>
+                ))}
+              </div>
             </div>
           )}
         </div>

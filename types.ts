@@ -8,6 +8,7 @@ export interface Product {
   category: string;
   image: string;
   images: string[];
+  previewImages?: string[]; // Zdjęcia do podglądu z lupą - szczegóły produktu
   description: Record<Language, string>;
   colors: string[];
   sizes: string[];
