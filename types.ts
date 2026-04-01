@@ -5,10 +5,14 @@ export interface Product {
   id: string;
   name: string;
   price: number;
+  originalPrice?: number; // Oryginalna cena przekreślona (promocja)
+  available?: boolean; // Czy produkt jest dostępny (default: false = coming soon)
+  waitlistCount?: number; // Liczba osób czekających
   category: string;
   image: string;
   images: string[];
   previewImages?: string[]; // Zdjęcia do podglądu z lupą - szczegóły produktu
+  promoVideo?: string; // Film reklamowy produktu
   description: Record<Language, string>;
   colors: string[];
   sizes: string[];

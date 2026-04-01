@@ -4,7 +4,7 @@ import {
   ShoppingCart, Menu, X, Globe, User, ArrowRight, Instagram, Twitter, Facebook, 
   Sparkles, Check, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Trash2, Edit3, 
   TrendingUp, Users, DollarSign, BarChart3, Lock, Search, Zap, ShieldCheck, MapPin,
-  Flame, HardHat, Compass, Layers
+  Flame, HardHat, Compass, Layers, Play, Bell, Clock, Heart
 } from 'lucide-react';
 import { Language, Product, CartItem, Page, AdminTab } from './types';
 import { TRANSLATIONS, PRODUCTS as INITIAL_PRODUCTS } from './constants';
@@ -50,6 +50,335 @@ const Marquee = ({ text, speed = 'slow', className = '' }: { text: string, speed
     </div>
   </div>
 );
+
+// --- Video Gallery Component ---
+
+const PROMO_VIDEOS = [
+  { id: 1, title: 'STRAATFANAAT', subtitle: 'Street Culture', src: '/video/WhatsApp%20Video%202026-03-27%20at%2011.54.30%20PM.mp4', thumbnail: '/images/ok%C5%82adka%20home.png', productId: null },
+  { id: 2, title: 'CZAPKA HOOLIGAN', subtitle: 'New Drop', src: '/video/czapka%20hooligan.mp4', thumbnail: '/images/czapka.jpeg', productId: '16' },
+  { id: 3, title: 'SAVAGE', subtitle: 'Urban Style', src: '/video/savage%20.mp4', thumbnail: '/images/savage%20omerta.jpeg', productId: '8' },
+];
+
+const VideoGallery = () => {
+  const [selectedVideo, setSelectedVideo] = useState<number | null>(null);
+
+  return (
+    <>
+      {/* Video Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        {PROMO_VIDEOS.map((video, index) => (
+          <div 
+            key={video.id}
+            onClick={() => setSelectedVideo(video.id)}
+            className="group relative cursor-pointer"
+          >
+            {/* Outer Glow Frame */}
+            <div className="absolute -inset-[2px] bg-gradient-to-r from-[#00f2ff] via-[#adff2f] to-[#00f2ff] rounded-xl opacity-0 group-hover:opacity-100 blur-sm transition-all duration-500"></div>
+            
+            {/* Card Container */}
+            <div className="relative bg-zinc-950 rounded-xl overflow-hidden border border-zinc-800 group-hover:border-transparent transition-all duration-500">
+              {/* Cyber Corner Accents */}
+              <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#00f2ff] rounded-tl-xl z-10 opacity-60 group-hover:opacity-100 transition-opacity"></div>
+              <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-[#00f2ff] rounded-tr-xl z-10 opacity-60 group-hover:opacity-100 transition-opacity"></div>
+              <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-[#adff2f] rounded-bl-xl z-10 opacity-60 group-hover:opacity-100 transition-opacity"></div>
+              <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[#adff2f] rounded-br-xl z-10 opacity-60 group-hover:opacity-100 transition-opacity"></div>
+
+              {/* Video Thumbnail */}
+              <div className="aspect-video bg-zinc-900 relative overflow-hidden">
+                <video 
+                  className="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                  muted
+                  loop
+                  playsInline
+                  onMouseEnter={(e) => e.currentTarget.play()}
+                  onMouseLeave={(e) => { e.currentTarget.pause(); e.currentTarget.currentTime = 0; }}
+                >
+                  <source src={video.src} type="video/mp4" />
+                </video>
+                
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                
+                {/* Play Button */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/10 backdrop-blur-sm border-2 border-white/30 flex items-center justify-center group-hover:scale-110 group-hover:bg-[#00f2ff]/20 group-hover:border-[#00f2ff] transition-all duration-500 shadow-[0_0_30px_rgba(0,242,255,0.3)]">
+                    <Play className="w-6 h-6 md:w-8 md:h-8 text-white fill-white group-hover:text-[#00f2ff] group-hover:fill-[#00f2ff] transition-colors ml-1" />
+                  </div>
+                </div>
+
+                {/* Number Badge */}
+                <div className="absolute top-4 left-4 w-8 h-8 bg-gradient-street flex items-center justify-center font-black text-black text-sm">
+                  {String(index + 1).padStart(2, '0')}
+                </div>
+              </div>
+
+              {/* Card Info */}
+              <div className="p-4 md:p-6 relative">
+                <div className="absolute top-0 left-4 right-4 h-[1px] bg-gradient-to-r from-transparent via-[#00f2ff]/50 to-transparent"></div>
+                <span className="text-[10px] md:text-xs font-mono text-[#00f2ff] uppercase tracking-[0.3em]">{video.subtitle}</span>
+                <h3 className="text-lg md:text-2xl font-black italic uppercase tracking-tighter mt-1 group-hover:text-gradient-street transition-all">{video.title}</h3>
+                
+                {/* Progress Bar Decoration */}
+                <div className="mt-4 h-1 bg-zinc-800 rounded-full overflow-hidden">
+                  <div className="h-full w-0 group-hover:w-full bg-gradient-street transition-all duration-1000 ease-out"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Video Modal */}
+      {selectedVideo && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-xl"
+          onClick={() => setSelectedVideo(null)}
+        >
+          {/* Modal Glow Effect */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,242,255,0.1)_0%,transparent_70%)]"></div>
+          
+          {/* Close Button */}
+          <button 
+            className="absolute top-6 right-6 w-12 h-12 bg-zinc-900 border border-zinc-700 rounded-full flex items-center justify-center text-white hover:bg-[#00f2ff] hover:text-black hover:border-[#00f2ff] transition-all duration-300 z-10"
+            onClick={() => setSelectedVideo(null)}
+          >
+            <X className="w-6 h-6" />
+          </button>
+
+          {/* Video Container */}
+          <div 
+            className="relative w-full max-w-5xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Decorative Frame */}
+            <div className="absolute -inset-4 md:-inset-6">
+              <div className="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-[#00f2ff]"></div>
+              <div className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-[#00f2ff]"></div>
+              <div className="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-[#adff2f]"></div>
+              <div className="absolute bottom-0 right-0 w-16 h-16 border-b-2 border-r-2 border-[#adff2f]"></div>
+            </div>
+
+            {/* Video Player */}
+            <div className="relative bg-zinc-950 rounded-lg overflow-hidden shadow-[0_0_60px_rgba(0,242,255,0.3)]">
+              <video 
+                className="w-full h-auto"
+                controls
+                autoPlay
+                playsInline
+              >
+                <source src={PROMO_VIDEOS.find(v => v.id === selectedVideo)?.src} type="video/mp4" />
+              </video>
+            </div>
+
+            {/* Video Title */}
+            <div className="absolute -bottom-12 left-0 right-0 text-center">
+              <h3 className="text-xl md:text-3xl font-black italic uppercase tracking-tighter text-gradient-street">
+                {PROMO_VIDEOS.find(v => v.id === selectedVideo)?.title}
+              </h3>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+// --- Waitlist Modal Component ---
+
+const WaitlistModal = ({ 
+  product, 
+  isOpen, 
+  onClose, 
+  lang 
+}: { 
+  product: Product | null, 
+  isOpen: boolean, 
+  onClose: () => void, 
+  lang: Language 
+}) => {
+  const [contactType, setContactType] = useState<'email' | 'whatsapp'>('email');
+  const [contactValue, setContactValue] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [localWaitlistCount, setLocalWaitlistCount] = useState(product?.waitlistCount || 0);
+
+  // Reset state when product changes
+  useEffect(() => {
+    if (product) {
+      setLocalWaitlistCount(product.waitlistCount || 0);
+      setIsSubmitted(false);
+      setContactValue('');
+    }
+  }, [product]);
+
+  const texts = {
+    NL: {
+      title: 'BINNENKORT BESCHIKBAAR',
+      subtitle: 'Wees de eerste die het weet!',
+      description: 'Laat je gegevens achter en wij nemen contact met je op zodra dit product beschikbaar is.',
+      emailLabel: 'E-mail',
+      whatsappLabel: 'WhatsApp',
+      placeholder: contactType === 'email' ? 'jouw@email.nl' : '+31 6 12345678',
+      submit: 'INFORMEER MIJ',
+      waiting: 'mensen wachten al',
+      success: 'BEDANKT!',
+      successMsg: 'We nemen contact met je op zodra het product beschikbaar is.',
+    },
+    EN: {
+      title: 'COMING SOON',
+      subtitle: 'Be the first to know!',
+      description: 'Leave your details and we will contact you as soon as this product is available.',
+      emailLabel: 'Email',
+      whatsappLabel: 'WhatsApp',
+      placeholder: contactType === 'email' ? 'your@email.com' : '+31 6 12345678',
+      submit: 'NOTIFY ME',
+      waiting: 'people already waiting',
+      success: 'THANK YOU!',
+      successMsg: 'We will contact you when the product becomes available.',
+    },
+    PL: {
+      title: 'WKRÓTCE DOSTĘPNE',
+      subtitle: 'Bądź pierwszy!',
+      description: 'Zostaw swoje dane, a skontaktujemy się z Tobą, gdy produkt będzie dostępny.',
+      emailLabel: 'E-mail',
+      whatsappLabel: 'WhatsApp',
+      placeholder: contactType === 'email' ? 'twoj@email.pl' : '+48 123 456 789',
+      submit: 'POWIADOM MNIE',
+      waiting: 'osób już czeka',
+      success: 'DZIĘKUJEMY!',
+      successMsg: 'Skontaktujemy się z Tobą, gdy produkt będzie dostępny.',
+    }
+  };
+
+  const t = texts[lang];
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (contactValue.trim()) {
+      setIsSubmitted(true);
+      setLocalWaitlistCount(prev => prev + 1);
+      // Here you would normally send to backend
+      console.log('Waitlist signup:', { product: product?.name, contactType, contactValue });
+    }
+  };
+
+  if (!isOpen || !product) return null;
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl" onClick={onClose}>
+      <div 
+        className="relative w-full max-w-lg bg-zinc-950 border border-zinc-800 overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Decorative corners */}
+        <div className="absolute top-0 left-0 w-12 h-12 border-t-2 border-l-2 border-[#00f2ff]"></div>
+        <div className="absolute top-0 right-0 w-12 h-12 border-t-2 border-r-2 border-[#00f2ff]"></div>
+        <div className="absolute bottom-0 left-0 w-12 h-12 border-b-2 border-l-2 border-[#adff2f]"></div>
+        <div className="absolute bottom-0 right-0 w-12 h-12 border-b-2 border-r-2 border-[#adff2f]"></div>
+
+        {/* Close button */}
+        <button 
+          onClick={onClose}
+          className="absolute top-4 right-4 w-10 h-10 bg-zinc-900 border border-zinc-700 flex items-center justify-center text-white hover:bg-[#00f2ff] hover:text-black hover:border-[#00f2ff] transition-all duration-300 z-10"
+        >
+          <X className="w-5 h-5" />
+        </button>
+
+        {/* Product image - grayscale */}
+        <div className="relative h-48 overflow-hidden">
+          <img 
+            src={product.image} 
+            className="w-full h-full object-cover grayscale opacity-50"
+            alt={product.name}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/80 to-transparent"></div>
+          
+          {/* Coming Soon Badge */}
+          <div className="absolute top-4 left-4 px-4 py-2 bg-[#adff2f] text-black font-black text-xs uppercase tracking-wider flex items-center gap-2">
+            <Clock className="w-4 h-4" />
+            {t.title}
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="p-6 md:p-8 space-y-6">
+          {!isSubmitted ? (
+            <>
+              <div className="text-center space-y-2">
+                <h3 className="text-2xl md:text-3xl font-black italic uppercase tracking-tighter">{product.name}</h3>
+                <p className="text-[#00f2ff] font-bold text-sm uppercase tracking-wider">{t.subtitle}</p>
+                <p className="text-zinc-400 text-sm">{t.description}</p>
+              </div>
+
+              {/* Waitlist Counter */}
+              <div className="flex items-center justify-center gap-3 py-4 border-y border-zinc-800">
+                <div className="flex items-center gap-2 text-[#adff2f]">
+                  <Users className="w-5 h-5" />
+                  <span className="text-2xl font-black">{localWaitlistCount}</span>
+                </div>
+                <span className="text-zinc-500 text-sm">{t.waiting}</span>
+              </div>
+
+              {/* Contact Type Toggle */}
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setContactType('email')}
+                  className={`flex-1 py-3 font-bold uppercase text-sm tracking-wider transition-all duration-300 ${
+                    contactType === 'email' 
+                      ? 'bg-[#00f2ff] text-black' 
+                      : 'bg-zinc-900 text-zinc-500 hover:text-white'
+                  }`}
+                >
+                  {t.emailLabel}
+                </button>
+                <button
+                  onClick={() => setContactType('whatsapp')}
+                  className={`flex-1 py-3 font-bold uppercase text-sm tracking-wider transition-all duration-300 ${
+                    contactType === 'whatsapp' 
+                      ? 'bg-[#25D366] text-black' 
+                      : 'bg-zinc-900 text-zinc-500 hover:text-white'
+                  }`}
+                >
+                  {t.whatsappLabel}
+                </button>
+              </div>
+
+              {/* Form */}
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <input
+                  type={contactType === 'email' ? 'email' : 'tel'}
+                  value={contactValue}
+                  onChange={(e) => setContactValue(e.target.value)}
+                  placeholder={t.placeholder}
+                  className="w-full px-4 py-4 bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-600 focus:border-[#00f2ff] focus:outline-none transition-colors font-mono"
+                  required
+                />
+                <button
+                  type="submit"
+                  className="w-full py-4 bg-gradient-street text-black font-black uppercase tracking-wider hover:shadow-[0_0_30px_rgba(0,242,255,0.4)] transition-all duration-500 flex items-center justify-center gap-2"
+                >
+                  <Bell className="w-5 h-5" />
+                  {t.submit}
+                </button>
+              </form>
+            </>
+          ) : (
+            <div className="text-center space-y-4 py-8">
+              <div className="w-20 h-20 mx-auto bg-[#adff2f] rounded-full flex items-center justify-center">
+                <Check className="w-10 h-10 text-black" />
+              </div>
+              <h3 className="text-2xl font-black italic uppercase tracking-tighter text-[#adff2f]">{t.success}</h3>
+              <p className="text-zinc-400">{t.successMsg}</p>
+              <div className="pt-4 flex items-center justify-center gap-2 text-zinc-500 text-sm">
+                <Users className="w-4 h-4" />
+                <span>{localWaitlistCount} {t.waiting}</span>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // --- Home Component ---
 
@@ -98,24 +427,7 @@ const Home = ({ lang, onNavigate, products }: { lang: Language, onNavigate: (pag
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          {products.slice(0, 4).map((product, i) => (
-            <div key={product.id} className={`group relative overflow-hidden bg-zinc-950 border border-zinc-900 cursor-pointer transition-all duration-500 hover:border-[#00f2ff]/30 ${i === 1 || i === 2 ? 'lg:translate-y-12' : ''}`} onClick={() => onNavigate('product', product.id)}>
-              <div className="aspect-square bg-zinc-900 overflow-hidden">
-                <img src={product.image} className="w-full h-full object-contain group-hover:scale-110 transition-all duration-700" alt={product.name} />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 transform translate-y-4 md:translate-y-full group-hover:translate-y-0 transition-transform duration-500 opacity-0 group-hover:opacity-100">
-                <span className="text-gradient-street font-mono text-[8px] md:text-[10px] uppercase font-black">{product.category}</span>
-                <h3 className="text-xl md:text-3xl font-black italic uppercase tracking-tighter mt-1">{product.name}</h3>
-                <div className="flex justify-between items-center mt-4 md:mt-6">
-                   <span className="text-lg md:text-2xl font-mono font-black">€{product.price}</span>
-                   <div className="w-10 h-10 md:w-12 md:h-12 bg-white flex items-center justify-center text-black group-hover:bg-gradient-street group-hover:text-black transition-colors duration-500"><Plus className="w-5 h-5 md:w-6 md:h-6" /></div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        <VideoGallery />
       </section>
 
       <section className="relative py-24 md:py-48 px-4 overflow-hidden border-y border-zinc-900 bg-zinc-950 text-center">
@@ -554,11 +866,35 @@ const Lookbook = ({ lang, onNavigate }: { lang: Language, onNavigate: (page: Pag
 const Shop = ({ lang, onNavigate, onQuickView, products }: { lang: Language, onNavigate: (page: Page, id?: string) => void, onQuickView: (p: Product) => void, products: Product[] }) => {
   const t = TRANSLATIONS[lang];
   const [activeCategory, setActiveCategory] = useState('All');
+  const [waitlistProduct, setWaitlistProduct] = useState<Product | null>(null);
   const categories = ['All', 'Tees', 'Damskie', 'Hoodies', 'Pants', 'Accessories'];
-  const filteredProducts = activeCategory === 'All' ? products : products.filter(p => p.category === activeCategory);
+  const filteredProducts = (activeCategory === 'All' ? products : products.filter(p => p.category === activeCategory))
+    .sort((a, b) => (b.available === true ? 1 : 0) - (a.available === true ? 1 : 0));
+
+  const waitlistTexts = {
+    NL: { comingSoon: 'BINNENKORT', cantWait: 'IK KAN NIET WACHTEN', waiting: 'wachten' },
+    EN: { comingSoon: 'COMING SOON', cantWait: "CAN'T WAIT", waiting: 'waiting' },
+    PL: { comingSoon: 'WKRÓTCE', cantWait: 'NIE MOGĘ SIĘ DOCZEKAĆ', waiting: 'czeka' }
+  };
+  const wt = waitlistTexts[lang];
+
+  const handleProductClick = (product: Product) => {
+    if (product.available) {
+      onNavigate('product', product.id);
+    } else {
+      setWaitlistProduct(product);
+    }
+  };
 
   return (
     <div className="pt-24 pb-12 md:pt-32 md:pb-24 px-4 md:px-12 bg-black min-h-screen overflow-x-clip">
+      <WaitlistModal 
+        product={waitlistProduct} 
+        isOpen={!!waitlistProduct} 
+        onClose={() => setWaitlistProduct(null)} 
+        lang={lang} 
+      />
+      
       <div className="space-y-8 md:space-y-12">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8 border-b border-zinc-900 pb-8 md:pb-12">
           <h1 className="text-5xl md:text-8xl font-black italic uppercase tracking-tighter text-gradient-street pl-1 pr-4">{t.the_drop}</h1>
@@ -569,18 +905,88 @@ const Shop = ({ lang, onNavigate, onQuickView, products }: { lang: Language, onN
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {filteredProducts.map(product => (
-            <div key={product.id} className="group bg-zinc-950 border border-zinc-900 overflow-hidden cursor-pointer hover:border-[#00f2ff]/50 transition-all duration-500" onClick={() => onNavigate('product', product.id)}>
-              <div className="relative aspect-square overflow-hidden bg-zinc-900">
-                <img src={product.image} className="w-full h-full object-contain md:group-hover:scale-105 transition-all duration-700" alt={product.name} />
-                <button onClick={(e) => { e.stopPropagation(); onQuickView(product); }} className="absolute top-4 right-4 p-2.5 md:p-3 bg-white text-black hover:bg-gradient-street hover:text-black transition-all duration-500 shadow-xl rounded-sm" title="Quick View"><Eye className="w-5 h-5" /></button>
+          {filteredProducts.map(product => {
+            const isAvailable = product.available !== false;
+            
+            return (
+              <div 
+                key={product.id} 
+                className={`group bg-zinc-950 border overflow-hidden cursor-pointer transition-all duration-500 ${
+                  isAvailable 
+                    ? 'border-zinc-900 hover:border-[#00f2ff]/50' 
+                    : 'border-zinc-900 hover:border-[#adff2f]/50'
+                }`} 
+                onClick={() => handleProductClick(product)}
+              >
+                <div className="relative aspect-square overflow-hidden bg-zinc-900">
+                  <img 
+                    src={product.image} 
+                    className={`w-full h-full object-contain transition-all duration-700 ${
+                      isAvailable 
+                        ? 'md:group-hover:scale-105' 
+                        : 'grayscale group-hover:grayscale-0 opacity-70 group-hover:opacity-100 md:group-hover:scale-105'
+                    }`} 
+                    alt={product.name} 
+                  />
+                  
+                  {/* Coming Soon Badge */}
+                  {!isAvailable && (
+                    <div className="absolute top-4 left-4 px-3 py-1.5 bg-[#adff2f] text-black font-black text-[10px] uppercase tracking-wider flex items-center gap-1.5">
+                      <Clock className="w-3 h-3" />
+                      {wt.comingSoon}
+                    </div>
+                  )}
+                  
+                  {/* Quick View - only for available */}
+                  {isAvailable && (
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); onQuickView(product); }} 
+                      className="absolute top-4 right-4 p-2.5 md:p-3 bg-white text-black hover:bg-gradient-street hover:text-black transition-all duration-500 shadow-xl rounded-sm" 
+                      title="Quick View"
+                    >
+                      <Eye className="w-5 h-5" />
+                    </button>
+                  )}
+                  
+                  {/* Waitlist Counter Badge - for coming soon */}
+                  {!isAvailable && product.waitlistCount && (
+                    <div className="absolute top-4 right-4 px-3 py-1.5 bg-zinc-900/90 border border-zinc-700 text-white font-bold text-[10px] uppercase tracking-wider flex items-center gap-1.5">
+                      <Users className="w-3 h-3 text-[#adff2f]" />
+                      {product.waitlistCount} {wt.waiting}
+                    </div>
+                  )}
+                </div>
+                
+                <div className="p-4 md:p-6">
+                  <div className="flex justify-between items-start gap-4">
+                    <div>
+                      <span className={`font-mono text-[8px] md:text-[10px] uppercase font-black ${isAvailable ? 'text-[#00f2ff]' : 'text-[#adff2f]'}`}>
+                        {product.category}
+                      </span>
+                      <h3 className="text-xl md:text-2xl font-black italic uppercase tracking-tighter">{product.name}</h3>
+                    </div>
+                    <div className="text-right">
+                      {product.originalPrice && (
+                        <span className="text-sm md:text-base font-mono text-zinc-500 line-through block">€{product.originalPrice}</span>
+                      )}
+                      <span className="text-lg md:text-xl font-mono font-black text-gradient-street">€{product.price}</span>
+                    </div>
+                  </div>
+                  
+                  {/* Can't Wait Button for coming soon products */}
+                  {!isAvailable && (
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); setWaitlistProduct(product); }}
+                      className="mt-4 w-full py-3 bg-zinc-900 border border-[#adff2f]/50 text-[#adff2f] font-black text-xs uppercase tracking-wider hover:bg-[#adff2f] hover:text-black transition-all duration-500 flex items-center justify-center gap-2 group-hover:border-[#adff2f]"
+                    >
+                      <Heart className="w-4 h-4" />
+                      {wt.cantWait}
+                    </button>
+                  )}
+                </div>
               </div>
-              <div className="p-4 md:p-6 flex justify-between items-start gap-4">
-                <div><span className="text-[#00f2ff] font-mono text-[8px] md:text-[10px] uppercase font-black">{product.category}</span><h3 className="text-xl md:text-2xl font-black italic uppercase tracking-tighter">{product.name}</h3></div>
-                <span className="text-lg md:text-xl font-mono font-black text-gradient-street">€{product.price}</span>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>
@@ -599,6 +1005,9 @@ const ProductDetail = ({ productId, lang, addToCart, products }: { productId: st
   const [isZoomOpen, setIsZoomOpen] = useState(false);
   const [zoomImageIndex, setZoomImageIndex] = useState(0);
   const [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 });
+  const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
+  
+  const isAvailable = product.available !== false;
   
   // Użyj tablicy images jeśli dostępna, w przeciwnym razie użyj pojedynczego image
   const productImages = product.images && product.images.length > 0 ? product.images : [product.image];
@@ -606,6 +1015,13 @@ const ProductDetail = ({ productId, lang, addToCart, products }: { productId: st
   // Zdjęcia podglądu (z lupą) - szczegóły produktu
   const previewImages = (product as any).previewImages || [];
   const hasPreviewImages = previewImages.length > 0;
+
+  const waitlistTexts = {
+    NL: { comingSoon: 'BINNENKORT BESCHIKBAAR', cantWait: 'IK KAN NIET WACHTEN', waiting: 'mensen wachten al' },
+    EN: { comingSoon: 'COMING SOON', cantWait: "CAN'T WAIT", waiting: 'people already waiting' },
+    PL: { comingSoon: 'WKRÓTCE DOSTĘPNE', cantWait: 'NIE MOGĘ SIĘ DOCZEKAĆ', waiting: 'osób już czeka' }
+  };
+  const wt = waitlistTexts[lang];
 
   const fetchAdvice = async () => {
     setLoadingAdvice(true);
@@ -628,6 +1044,14 @@ const ProductDetail = ({ productId, lang, addToCart, products }: { productId: st
 
   return (
     <div className="pt-24 pb-12 md:pt-32 md:pb-24 px-4 md:px-12 bg-black min-h-screen">
+      {/* Waitlist Modal */}
+      <WaitlistModal 
+        product={product} 
+        isOpen={isWaitlistOpen} 
+        onClose={() => setIsWaitlistOpen(false)} 
+        lang={lang} 
+      />
+      
       {/* Zoom Modal */}
       {isZoomOpen && hasPreviewImages && (
         <div className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-md flex items-center justify-center p-4">
@@ -701,13 +1125,20 @@ const ProductDetail = ({ productId, lang, addToCart, products }: { productId: st
           <div className="bg-zinc-900 border border-zinc-800 overflow-hidden relative group">
             <img 
               src={productImages[selectedImageIndex]} 
-              className="w-full h-auto object-contain max-h-[70vh]" 
+              className={`w-full h-auto object-contain max-h-[70vh] transition-all duration-500 ${!isAvailable ? 'grayscale group-hover:grayscale-0' : ''}`}
               alt={`${product.name} - ${selectedImageIndex === 0 ? 'Przód' : 'Tył'}`}
             />
             {/* Etykieta przód/tył */}
             <div className="absolute top-4 left-4 px-3 py-1 bg-black/70 border border-zinc-700 text-[#00f2ff] text-xs font-black uppercase tracking-wider">
               {selectedImageIndex === 0 ? 'FRONT' : selectedImageIndex === 1 ? 'BACK' : `VIEW ${selectedImageIndex + 1}`}
             </div>
+            {/* Coming Soon Badge */}
+            {!isAvailable && (
+              <div className="absolute top-4 right-4 px-4 py-2 bg-[#adff2f] text-black font-black text-xs uppercase tracking-wider flex items-center gap-2">
+                <Clock className="w-4 h-4" />
+                {wt.comingSoon}
+              </div>
+            )}
           </div>
           
           {/* Miniaturki - przód i tył */}
@@ -770,23 +1201,87 @@ const ProductDetail = ({ productId, lang, addToCart, products }: { productId: st
               </div>
             </div>
           )}
+
+          {/* Film reklamowy produktu */}
+          {product.promoVideo && (
+            <div className="mt-6 space-y-3">
+              <div className="flex items-center gap-2">
+                <Play className="w-4 h-4 text-[#adff2f]" />
+                <span className="text-xs font-black uppercase tracking-widest text-zinc-400">
+                  {lang === 'PL' ? 'FILM PROMOCYJNY' : lang === 'NL' ? 'PROMO VIDEO' : 'PROMO VIDEO'}
+                </span>
+              </div>
+              <div className="relative overflow-hidden border-2 border-[#adff2f]/50 rounded-lg shadow-[0_0_20px_rgba(173,255,47,0.2)]">
+                <video 
+                  className="w-full h-auto"
+                  controls
+                  playsInline
+                  poster={product.image}
+                >
+                  <source src={product.promoVideo} type="video/mp4" />
+                </video>
+              </div>
+            </div>
+          )}
         </div>
         <div className="space-y-6 md:space-y-12">
           <div className="space-y-2 md:space-y-4">
             <span className="text-gradient-street font-mono text-xs md:text-sm uppercase font-black tracking-widest">{product.category}</span>
             <h1 className="text-4xl md:text-8xl font-black italic uppercase tracking-tighter leading-none">{product.name}</h1>
-            <p className="text-2xl md:text-4xl font-mono font-black text-white">€{product.price}</p>
-          </div>
-          <p className="text-lg md:text-xl text-zinc-400 font-light italic leading-relaxed">{product.description[lang]}</p>
-          <div className="space-y-4 border-y border-zinc-900 py-6 md:py-8">
-            <h4 className="font-black italic uppercase text-[10px] md:text-sm tracking-widest">{t.size}</h4>
-            <div className="flex flex-wrap gap-2 md:gap-4">
-              {product.sizes.map(size => (
-                <button key={size} onClick={() => setSelectedSize(size)} className={`w-10 h-10 md:w-12 md:h-12 flex items-center justify-center font-bold border transition-all duration-300 ${selectedSize === size ? 'bg-gradient-street text-black border-none shadow-[0_0_15px_rgba(0,242,255,0.4)]' : 'border-zinc-800 text-zinc-500 hover:border-[#00f2ff]'}`}>{size}</button>
-              ))}
+            <div className="flex items-center gap-4">
+              {product.originalPrice && (
+                <span className="text-xl md:text-2xl font-mono text-zinc-500 line-through">€{product.originalPrice}</span>
+              )}
+              <p className="text-2xl md:text-4xl font-mono font-black text-white">€{product.price}</p>
+              {product.originalPrice && (
+                <span className="px-2 py-1 bg-[#adff2f] text-black text-xs md:text-sm font-black uppercase">SALE</span>
+              )}
             </div>
           </div>
-          <Button onClick={() => addToCart(product, selectedSize)} variant="gradient" className="w-full py-5 md:py-6 text-lg md:text-xl">{t.add_to_cart}</Button>
+          <p className="text-lg md:text-xl text-zinc-400 font-light italic leading-relaxed">{product.description[lang]}</p>
+          
+          {/* Coming Soon Banner for unavailable products */}
+          {!isAvailable && (
+            <div className="bg-zinc-900 border border-[#adff2f]/50 p-4 md:p-6 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Clock className="w-6 h-6 text-[#adff2f]" />
+                <div>
+                  <span className="text-[#adff2f] font-black uppercase text-sm">{wt.comingSoon}</span>
+                  {product.waitlistCount && (
+                    <p className="text-zinc-500 text-xs flex items-center gap-1 mt-1">
+                      <Users className="w-3 h-3" /> {product.waitlistCount} {wt.waiting}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+          
+          {/* Size selection - only for available products */}
+          {isAvailable && (
+            <div className="space-y-4 border-y border-zinc-900 py-6 md:py-8">
+              <h4 className="font-black italic uppercase text-[10px] md:text-sm tracking-widest">{t.size}</h4>
+              <div className="flex flex-wrap gap-2 md:gap-4">
+                {product.sizes.map(size => (
+                  <button key={size} onClick={() => setSelectedSize(size)} className={`w-10 h-10 md:w-12 md:h-12 flex items-center justify-center font-bold border transition-all duration-300 ${selectedSize === size ? 'bg-gradient-street text-black border-none shadow-[0_0_15px_rgba(0,242,255,0.4)]' : 'border-zinc-800 text-zinc-500 hover:border-[#00f2ff]'}`}>{size}</button>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {/* Add to Cart or Waitlist Button */}
+          {isAvailable ? (
+            <Button onClick={() => addToCart(product, selectedSize)} variant="gradient" className="w-full py-5 md:py-6 text-lg md:text-xl">{t.add_to_cart}</Button>
+          ) : (
+            <button 
+              onClick={() => setIsWaitlistOpen(true)}
+              className="w-full py-5 md:py-6 bg-zinc-900 border-2 border-[#adff2f] text-[#adff2f] font-black uppercase tracking-wider text-lg md:text-xl hover:bg-[#adff2f] hover:text-black transition-all duration-500 flex items-center justify-center gap-3"
+            >
+              <Heart className="w-6 h-6" />
+              {wt.cantWait}
+            </button>
+          )}
+          
           <div className="bg-zinc-950 border border-zinc-900 p-6 md:p-8 space-y-4 relative group">
             <Sparkles className="absolute top-4 right-4 w-8 h-8 text-gradient-street opacity-20" />
             <h3 className="text-xl md:text-2xl font-black italic uppercase tracking-tighter">{t.ai_stylist_title}</h3>
