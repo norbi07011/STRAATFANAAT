@@ -866,7 +866,6 @@ const Lookbook = ({ lang, onNavigate }: { lang: Language, onNavigate: (page: Pag
 const Shop = ({ lang, onNavigate, onQuickView, products }: { lang: Language, onNavigate: (page: Page, id?: string) => void, onQuickView: (p: Product) => void, products: Product[] }) => {
   const t = TRANSLATIONS[lang];
   const [activeCategory, setActiveCategory] = useState('All');
-  const [waitlistProduct, setWaitlistProduct] = useState<Product | null>(null);
   const categories = ['All', 'Tees', 'Damskie', 'Hoodies', 'Pants', 'Accessories'];
   const filteredProducts = (activeCategory === 'All' ? products : products.filter(p => p.category === activeCategory))
     .sort((a, b) => (b.available === true ? 1 : 0) - (a.available === true ? 1 : 0));
@@ -879,22 +878,12 @@ const Shop = ({ lang, onNavigate, onQuickView, products }: { lang: Language, onN
   const wt = waitlistTexts[lang];
 
   const handleProductClick = (product: Product) => {
-    if (product.available) {
-      onNavigate('product', product.id);
-    } else {
-      setWaitlistProduct(product);
-    }
+    // Zawsze przechodź do strony produktu - klient może obejrzeć zdjęcia
+    onNavigate('product', product.id);
   };
 
   return (
     <div className="pt-24 pb-12 md:pt-32 md:pb-24 px-4 md:px-12 bg-black min-h-screen overflow-x-clip">
-      <WaitlistModal 
-        product={waitlistProduct} 
-        isOpen={!!waitlistProduct} 
-        onClose={() => setWaitlistProduct(null)} 
-        lang={lang} 
-      />
-      
       <div className="space-y-8 md:space-y-12">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8 border-b border-zinc-900 pb-8 md:pb-12">
           <h1 className="text-5xl md:text-8xl font-black italic uppercase tracking-tighter text-gradient-street pl-1 pr-4">{t.the_drop}</h1>
