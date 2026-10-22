@@ -23,7 +23,7 @@ export const About = () => {
       <section className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden px-4 pb-12 pt-28 md:px-8 md:pb-16">
         <div aria-hidden className="absolute right-[-10%] top-1/2 w-[80vw] max-w-[760px] -translate-y-1/2 opacity-25 md:right-0 md:w-[45vw] md:opacity-60">
           <motion.img
-            src="/images/opt/logo-800.webp"
+            src="/images/cutout/logo.webp"
             alt=""
             className="w-full"
             initial={{ opacity: 0, scale: 1.1 }}

@@ -421,6 +421,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '16',
+    cutout: '/images/cutout/czapka.webp',
     name: 'CZAPKA HOOLIGAN',
     price: 40,
     originalPrice: 55,
@@ -440,6 +441,8 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '17',
+    cutout: '/images/cutout/fc-den-haag-back-1.webp',
+    cutoutBack: '/images/cutout/fc-den-haag-back.webp',
     name: 'FC DEN HAAG BACK',
     price: 55,
     available: true,
@@ -457,6 +460,8 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '18',
+    cutout: '/images/cutout/elegant-1.webp',
+    cutoutBack: '/images/cutout/elegant-2.webp',
     name: 'ELEGANT HAGUE',
     price: 55,
     available: false,
@@ -475,6 +480,8 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '19',
+    cutout: '/images/cutout/hooligan-2.webp',
+    cutoutBack: '/images/cutout/hooligan-1.webp',
     name: 'HOOLIGAN Glitch',
     price: 55,
     available: false,
@@ -493,6 +500,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '20',
+    cutout: '/images/cutout/koszulka-z-abstrakcyjnym-nadrukiem.webp',
     name: 'FREEDOM Den Haag',
     price: 55,
     available: false,
@@ -511,6 +519,8 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '21',
+    cutout: '/images/cutout/straatfanaat-l-1.webp',
+    cutoutBack: '/images/cutout/straatfanaat-l-2.webp',
     name: 'STRAATFANAAT FREEDOM (L)',
     price: 55,
     available: false,
@@ -529,6 +539,8 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '22',
+    cutout: '/images/cutout/street-1.webp',
+    cutoutBack: '/images/cutout/street-2.webp',
     name: 'STREET Edition',
     price: 55,
     available: false,
@@ -547,6 +559,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '23',
+    cutout: '/images/cutout/t-shirt-z-geometrycznym-nadrukiem.webp',
     name: 'GEOMETRIA Street',
     price: 55,
     available: false,

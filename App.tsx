@@ -6,6 +6,9 @@ import { Header } from './site/Header';
 import { Footer } from './site/Footer';
 import { CartDrawer } from './site/CartDrawer';
 import { WaitlistModal } from './site/WaitlistModal';
+import { ScrollProgress } from './site/fx/scroll';
+import { ParticleIntro } from './site/fx/ParticleIntro';
+import { VictoryScene } from './site/fx/VictoryScene';
 import { Home } from './pages/Home';
 import { Shop } from './pages/Shop';
 import { ProductPage } from './pages/ProductPage';
@@ -70,6 +73,7 @@ const Shell = () => {
       <a href="#main" className="sr-only z-[300] bg-haag-yellow p-3 text-black focus:not-sr-only focus:fixed focus:left-2 focus:top-2">
         Skip to content
       </a>
+      <ScrollProgress />
       <Header />
       <main id="main">
         <Pages />
@@ -77,6 +81,8 @@ const Shell = () => {
       {route.page !== 'admin' && <Footer />}
       <CartDrawer />
       <WaitlistModal />
+      <VictoryScene />
+      <ParticleIntro logo="/images/cutout/logo.webp" />
     </>
   );
 };

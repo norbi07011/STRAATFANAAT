@@ -35,10 +35,15 @@ export const routeToPath = (route: Route): string => {
     case 'product':
       return `/product/${route.id ?? ''}`;
     case 'notfound':
-      return window.location.pathname;
+      return HASH_ROUTER ? window.location.hash.replace(/^#/, '') || '/' : window.location.pathname;
     default:
       return `/${route.page}`;
   }
 };
+
+// Tryb podglądu (VITE_HASH_ROUTER=1): adresy w formie #/shop, gdy strona nie stoi w katalogu głównym domeny
+export const HASH_ROUTER = import.meta.env.VITE_HASH_ROUTER === '1';
+export const currentPath = () => (HASH_ROUTER ? window.location.hash.replace(/^#/, '') || '/' : window.location.pathname);
+export const toHref = (route: Route) => (HASH_ROUTER ? `#${routeToPath(route)}` : routeToPath(route));
 
 export const routeKey = (route: Route) => `${route.page}:${route.id ?? ''}`;

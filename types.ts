@@ -13,6 +13,8 @@ export interface Product {
   images: string[];
   previewImages?: string[]; // Zdjęcia do podglądu z lupą - szczegóły produktu
   promoVideo?: string; // Film reklamowy produktu
+  cutout?: string; // Zdjęcie bez tła (public/images/cutout) do efektów 3D
+  cutoutBack?: string; // Tył bez tła
   description: Record<Language, string>;
   colors: string[];
   sizes: string[];

@@ -6,6 +6,7 @@ import { img } from '../lib/media';
 import { useStore } from './store';
 import { useNav } from './nav';
 import { Btn } from './ui';
+import { RollingNumber } from './fx/scroll';
 
 const FREE_SHIPPING = 75; // zgodnie z Checkout.tsx
 
@@ -93,7 +94,7 @@ export const CartDrawer = () => {
                         <div className="flex flex-1 flex-col">
                           <div className="flex items-start justify-between gap-3">
                             <h3 className="font-bold leading-tight">{item.name}</h3>
-                            <span className="font-bold tabular-nums">{eur(item.price * item.quantity, lang)}</span>
+                            <RollingNumber value={eur(item.price * item.quantity, lang)} className="font-bold" />
                           </div>
                           <p className="mt-1 text-sm text-black/60">
                             {u.size}: {item.selectedSize}
@@ -135,7 +136,7 @@ export const CartDrawer = () => {
               <div className="border-t-2 border-black px-5 py-5">
                 <div className="mb-4 flex items-baseline justify-between">
                   <span className="font-semibold">{u.subtotal}</span>
-                  <span className="font-banner text-4xl tabular-nums">{eur(cartTotal, lang)}</span>
+                  <RollingNumber value={eur(cartTotal, lang)} className="font-banner text-4xl" />
                 </div>
                 <Btn
                   variant="black"

@@ -4,6 +4,7 @@ import { eur, ui } from '../lib/i18n';
 import { useStore } from './store';
 import { NavLink } from './nav';
 import { Pic } from './ui';
+import { Tilt } from './fx/tilt';
 
 export const isAvailable = (p: Product) => p.available !== false;
 
@@ -28,6 +29,7 @@ export const ProductCard = ({
 
   return (
     <article className={`group relative flex flex-col ${className}`}>
+      <Tilt max={8}>
       <NavLink page="product" id={product.id} className="block" aria-label={product.name}>
         <div className={`relative overflow-hidden ${dark ? 'bg-asphalt-2' : 'bg-paper-2'} ${aspect}`}>
           <Pic
@@ -50,6 +52,7 @@ export const ProductCard = ({
           </div>
         </div>
       </NavLink>
+      </Tilt>
 
       <div className="flex flex-col gap-1 pt-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
         <div>

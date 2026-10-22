@@ -300,6 +300,8 @@ export const Checkout: React.FC<CheckoutProps> = ({ lang, cart, onBack, onSucces
       setOrderNumber(order.order_number);
       setCurrentStep('confirmation');
       clearCart();
+      // Scena zwycięstwa (konfetti, drżenie ekranu) — obsługiwana w site/fx/VictoryScene.tsx
+      window.dispatchEvent(new CustomEvent('sf:victory', { detail: { orderNumber: order.order_number } }));
 
     } catch (err: any) {
       console.error('Payment error:', err);

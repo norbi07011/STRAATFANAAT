@@ -1,12 +1,13 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
 import { useAnimate, useReducedMotion } from 'motion/react';
 import Lenis from 'lenis';
 import { Page } from '../types';
-import { parseRoute, Route, routeKey, routeToPath } from '../lib/router';
+import { currentPath, HASH_ROUTER, parseRoute, Route, routeKey, toHref } from '../lib/router';
 
 interface Nav {
   route: Route;
-  navigate: (page: Page, id?: string) => void;
+  navigate: (page: Page, id?: string, source?: HTMLElement | null) => void;
   lenis: React.MutableRefObject<Lenis | null>;
   /** true w trakcie zasłaniania ekranu przez przejście */
   transitioning: boolean;
@@ -22,7 +23,7 @@ const nextFrame = () => new Promise<void>((r) => requestAnimationFrame(() => req
  * pas w barwach Hagi zasłania ekran, podmieniamy stronę, pas odjeżdża w górę.
  */
 export const NavProvider = ({ children }: { children: React.ReactNode }) => {
-  const [route, setRoute] = useState<Route>(() => parseRoute(window.location.pathname));
+  const [route, setRoute] = useState<Route>(() => parseRoute(currentPath()));
   const [transitioning, setTransitioning] = useState(false);
   const [label, setLabel] = useState('');
   const [scope, animate] = useAnimate<HTMLDivElement>();
@@ -56,17 +57,32 @@ export const NavProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const go = useCallback(
-    async (next: Route, push: boolean) => {
+    async (next: Route, push: boolean, source?: HTMLElement | null) => {
       if (busy.current) return;
       if (routeKey(next) === routeKey(routeRef.current)) {
         lenis.current ? lenis.current.scrollTo(0) : window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
       }
-      if (push) window.history.pushState(null, '', routeToPath(next));
+      if (push) window.history.pushState(null, '', toHref(next));
 
       if (reduce || !scope.current) {
         setRoute(next);
         toTop();
+        return;
+      }
+
+      // View Transitions API: zdjęcie z karty „przelatuje” w zdjęcie na stronie produktu
+      const doc = document as Document & { startViewTransition?: (cb: () => void) => { finished: Promise<void> } };
+      if (source && next.page === 'product' && doc.startViewTransition) {
+        busy.current = true;
+        source.style.viewTransitionName = 'product-hero';
+        const vt = doc.startViewTransition(() => {
+          source.style.viewTransitionName = '';
+          flushSync(() => setRoute(next));
+          toTop();
+        });
+        await vt.finished.catch(() => {});
+        busy.current = false;
         return;
       }
 
@@ -84,12 +100,16 @@ export const NavProvider = ({ children }: { children: React.ReactNode }) => {
     [animate, reduce, scope]
   );
 
-  const navigate = useCallback((page: Page, id?: string) => go({ page, id }, true), [go]);
+  const navigate = useCallback((page: Page, id?: string, source?: HTMLElement | null) => go({ page, id }, true, source), [go]);
 
   useEffect(() => {
-    const onPop = () => go(parseRoute(window.location.pathname), false);
+    const onPop = () => go(parseRoute(currentPath()), false);
     window.addEventListener('popstate', onPop);
-    return () => window.removeEventListener('popstate', onPop);
+    if (HASH_ROUTER) window.addEventListener('hashchange', onPop);
+    return () => {
+      window.removeEventListener('popstate', onPop);
+      window.removeEventListener('hashchange', onPop);
+    };
   }, [go]);
 
   return (
@@ -130,13 +150,17 @@ export const NavLink = ({
   const { navigate } = useNav();
   return (
     <a
-      href={routeToPath({ page, id })}
+      href={toHref({ page, id })}
       className={className}
       onClick={(e) => {
         onClick?.(e);
         if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
         e.preventDefault();
-        navigate(page, id);
+        const source =
+          page === 'product'
+            ? ((e.currentTarget.querySelector('img') ?? e.currentTarget.closest('article')?.querySelector('img')) as HTMLElement | null)
+            : null;
+        navigate(page, id, source);
       }}
       {...rest}
     >

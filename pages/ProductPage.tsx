@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { Check, Sparkles, X, ZoomIn } from 'lucide-react';
 import { Product } from '../types';
@@ -7,6 +7,8 @@ import { img, video } from '../lib/media';
 import { useStore } from '../site/store';
 import { NavLink, useNav } from '../site/nav';
 import { Btn, Pic } from '../site/ui';
+import { flyToCart } from '../site/fx/flyToCart';
+import { RollingNumber } from '../site/fx/scroll';
 import { isAvailable, ProductCard } from '../site/ProductCard';
 
 const EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1];
@@ -107,6 +109,8 @@ export const ProductPage = ({ productId, products }: { productId?: string; produ
   const [advice, setAdvice] = useState('');
   const [loadingAdvice, setLoadingAdvice] = useState(false);
   const [needSize, setNeedSize] = useState(false);
+  const mainRef = useRef<HTMLDivElement>(null);
+  const [lens, setLens] = useState<{ x: number; y: number; w: number; h: number } | null>(null);
 
   useEffect(() => {
     setSize(product && product.sizes.length === 1 ? product.sizes[0] : null);
@@ -137,6 +141,7 @@ export const ProductPage = ({ productId, products }: { productId?: string; produ
       return;
     }
     addToCart(product, size);
+    flyToCart(img(gallery[active]), mainRef.current?.getBoundingClientRect() ?? null);
     setAdded(true);
     setTimeout(() => {
       setAdded(false);
@@ -158,7 +163,17 @@ export const ProductPage = ({ productId, products }: { productId?: string; produ
       <div className="mx-auto grid max-w-[1600px] gap-8 px-4 md:grid-cols-12 md:gap-10 md:px-8">
         {/* Galeria */}
         <div className="md:col-span-7">
-          <div className="relative aspect-[2/3] overflow-hidden bg-paper-2">
+          <div
+            ref={mainRef}
+            className="relative aspect-[2/3] overflow-hidden bg-paper-2 bg-cover bg-center"
+            style={{ viewTransitionName: 'product-hero', backgroundImage: `url(${img(gallery[0])})` }}
+            onPointerMove={(e) => {
+              if (e.pointerType !== 'mouse') return;
+              const r = e.currentTarget.getBoundingClientRect();
+              setLens({ x: e.clientX - r.left, y: e.clientY - r.top, w: r.width, h: r.height });
+            }}
+            onPointerLeave={() => setLens(null)}
+          >
             <AnimatePresence mode="popLayout" initial={false}>
               <motion.button
                 key={gallery[active]}
@@ -173,6 +188,21 @@ export const ProductPage = ({ productId, products }: { productId?: string; produ
                 <Pic src={gallery[active]} alt={`${product.name} ${labels[active] ?? active + 1}`} eager large sizes="(min-width: 768px) 58vw, 100vw" className="h-full w-full object-cover" />
               </motion.button>
             </AnimatePresence>
+            {/* image zoom lens / magnifier */}
+            {lens && (
+              <div
+                aria-hidden
+                className="pointer-events-none absolute z-20 h-48 w-48 rounded-full border-4 border-haag-yellow shadow-[0_20px_50px_rgba(0,0,0,0.45)]"
+                style={{
+                  left: lens.x - 96,
+                  top: lens.y - 96,
+                  backgroundImage: `url(${img(gallery[active], 1600)})`,
+                  backgroundRepeat: 'no-repeat',
+                  backgroundSize: `${lens.w * 2.6}px ${lens.h * 2.6}px`,
+                  backgroundPosition: `${-(lens.x * 2.6 - 96)}px ${-(lens.y * 2.6 - 96)}px`,
+                }}
+              />
+            )}
             <span className="pointer-events-none absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center bg-paper text-black">
               <ZoomIn className="h-5 w-5" />
             </span>
@@ -233,7 +263,7 @@ export const ProductPage = ({ productId, products }: { productId?: string; produ
               </div>
               <h1 className="font-banner mt-3 text-[16vw] [overflow-wrap:anywhere] md:text-[clamp(3.5rem,5.4vw,7rem)]">{product.name}</h1>
               <div className="mt-3 flex items-baseline gap-3 tabular-nums">
-                <span className="text-3xl font-bold">{eur(product.price, lang)}</span>
+                <RollingNumber value={eur(product.price, lang)} className="text-3xl font-bold" />
                 {product.originalPrice && <span className="text-xl text-black/45 line-through">{eur(product.originalPrice, lang)}</span>}
               </div>
             </motion.div>

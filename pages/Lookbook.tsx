@@ -4,6 +4,8 @@ import { ui } from '../lib/i18n';
 import { useStore } from '../site/store';
 import { NavLink, useNav } from '../site/nav';
 import { Btn, Pic } from '../site/ui';
+import { Coverflow } from '../site/fx/Coverflow';
+import { PRODUCTS } from '../constants';
 
 type Filter = 'all' | 'classic' | 'graphic' | 'women';
 
@@ -61,6 +63,13 @@ export const Lookbook = () => {
         >
           Lookbook
         </motion.h1>
+      </section>
+
+      <section className="overflow-hidden px-4 pt-16 md:px-8 md:pt-24">
+        <div className="mx-auto max-w-[1600px]">
+          <h2 className="font-banner mb-8 text-[16vw] md:text-[8rem]">Drop 2026</h2>
+          <Coverflow products={PRODUCTS} />
+        </div>
       </section>
 
       <section className="px-4 py-16 md:px-8 md:py-24">

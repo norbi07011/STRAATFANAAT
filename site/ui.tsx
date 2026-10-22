@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { img, srcSet } from '../lib/media';
+import { Magnetic } from './fx/tilt';
 
 /* ---------- Przycisk ---------- */
 
@@ -18,15 +19,17 @@ export const Btn = ({
   className = '',
   children,
   as = 'button',
+  magnetic,
   ...rest
 }: {
   variant?: Variant;
   as?: 'button' | 'a';
+  magnetic?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement> &
   React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
   const v = variants[variant];
   const Tag = as as any;
-  return (
+  const btn = (
     <Tag
       className={`group relative inline-flex items-center justify-center gap-3 overflow-hidden px-7 py-4 text-[15px] font-bold tracking-tight transition-colors disabled:pointer-events-none disabled:opacity-40 ${v.base} ${className}`}
       {...rest}
@@ -38,6 +41,8 @@ export const Btn = ({
       <span className={`relative flex items-center gap-3 transition-colors duration-300 ${v.hoverText}`}>{children}</span>
     </Tag>
   );
+  // magnetic button — przyciąga się do kursora (poza przyciskami na całą szerokość)
+  return (magnetic ?? !className.includes('w-full')) ? <Magnetic>{btn}</Magnetic> : btn;
 };
 
 /* ---------- Pojawianie się przy scrollu (używane oszczędnie) ---------- */
@@ -46,22 +51,25 @@ export const Reveal = ({
   children,
   delay = 0,
   className = '',
-  y = 40,
+  y = 60,
 }: {
   children: React.ReactNode;
   delay?: number;
   className?: string;
   y?: number;
 }) => (
-  <motion.div
-    className={className}
-    initial={{ opacity: 0, y }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: '-10% 0px' }}
-    transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay }}
-  >
-    {children}
-  </motion.div>
+  // scroll reveal: z rozmycia i z lekkim obrotem 3D
+  <div className={`[perspective:1200px] ${className}`}>
+    <motion.div
+      initial={{ opacity: 0, y, rotateX: 14, filter: 'blur(14px)' }}
+      whileInView={{ opacity: 1, y: 0, rotateX: 0, filter: 'blur(0px)' }}
+      viewport={{ once: true, margin: '-8% 0px' }}
+      transition={{ duration: 1.05, ease: [0.16, 1, 0.3, 1], delay }}
+      style={{ transformOrigin: '50% 100%' }}
+    >
+      {children}
+    </motion.div>
+  </div>
 );
 
 /* ---------- Zdjęcie z WebP, lazy i płynnym wejściem ---------- */

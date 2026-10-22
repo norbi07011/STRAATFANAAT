@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react';
+import { AnimatePresence, motion, useAnimate, useMotionValueEvent, useScroll } from 'motion/react';
 import { ShoppingBag, X } from 'lucide-react';
 import { Language } from '../types';
 import { TRANSLATIONS } from '../constants';
@@ -56,6 +56,21 @@ export const Header = () => {
 
   useEffect(() => setMenuOpen(false), [route]);
 
+  // fly-to-cart: pokaż nagłówek i podbij ikonę koszyka
+  const [cartScope, animateCart] = useAnimate<HTMLButtonElement>();
+  useEffect(() => {
+    const show = () => setHidden(false);
+    const bump = () => {
+      if (cartScope.current) animateCart(cartScope.current, { scale: [1, 1.45, 0.9, 1.1, 1], rotate: [0, -14, 10, -4, 0] }, { duration: 0.6 });
+    };
+    window.addEventListener('sf:show-header', show);
+    window.addEventListener('sf:cart-bump', bump);
+    return () => {
+      window.removeEventListener('sf:show-header', show);
+      window.removeEventListener('sf:cart-bump', bump);
+    };
+  }, [animateCart, cartScope]);
+
   // Na jasnych stronach (sklep, produkt) tekst nagłówka jest czarny, dopóki tło jest przezroczyste
   const lightPage = route.page === 'shop' || route.page === 'product' || route.page === 'notfound';
   const darkText = lightPage && !solid;
@@ -99,6 +114,8 @@ export const Header = () => {
               <LangSwitch dark={darkText} />
             </div>
             <button
+              ref={cartScope}
+              data-cart-icon
               onClick={() => setCartOpen(true)}
               className="relative flex h-10 w-10 items-center justify-center"
               aria-label={`${u.cart} (${cartCount})`}

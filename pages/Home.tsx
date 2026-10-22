@@ -9,6 +9,7 @@ import { useStore } from '../site/store';
 import { NavLink, useNav } from '../site/nav';
 import { Btn, Marquee, Pic, Reveal } from '../site/ui';
 import { isAvailable, ProductCard } from '../site/ProductCard';
+import { CollectionOrbit, DollyZoom, HeroScene, Stats, Story } from './HomeFx';
 
 const EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -21,100 +22,6 @@ const useMedia = (q: string) => {
     return () => mq.removeEventListener('change', on);
   }, [q]);
   return m;
-};
-
-/* ---------------- Hero ---------------- */
-
-const SplitWord = ({ word, delay }: { word: string; delay: number }) => (
-  <span className="block overflow-hidden pb-[0.04em]" aria-hidden>
-    {word.split('').map((ch, i) => (
-      <motion.span
-        key={i}
-        className="inline-block"
-        initial={{ y: '105%' }}
-        animate={{ y: '0%' }}
-        transition={{ duration: 1, ease: EXPO, delay: delay + i * 0.045 }}
-      >
-        {ch}
-      </motion.span>
-    ))}
-  </span>
-);
-
-const Hero = () => {
-  const { lang } = useStore();
-  const { navigate } = useNav();
-  const u = ui(lang);
-  const ref = useRef<HTMLElement>(null);
-  const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
-  const wordY = useTransform(scrollYProgress, [0, 1], ['0%', reduce ? '0%' : '35%']);
-  const vidScale = useTransform(scrollYProgress, [0, 1], [1.08, reduce ? 1.08 : 1.22]);
-  const fade = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
-
-  return (
-    <section ref={ref} className="grain relative min-h-[100svh] overflow-hidden bg-black text-white">
-      {/* Film: na telefonie tło, na desktopie pionowa karta po prawej */}
-      <motion.div
-        className="absolute inset-0 md:inset-y-24 md:left-auto md:right-8 md:w-[min(34vw,520px)]"
-        initial={{ clipPath: 'inset(100% 0% 0% 0%)' }}
-        animate={{ clipPath: 'inset(0% 0% 0% 0%)' }}
-        transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1], delay: 0.15 }}
-      >
-        <motion.video
-          style={{ scale: vidScale }}
-          className="h-full w-full object-cover brightness-[0.55] md:brightness-100"
-          src="/video/opt/hero-loop.mp4"
-          poster="/video/opt/savage.webp"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-black/40 md:hidden" />
-      </motion.div>
-
-      <motion.div
-        style={{ y: wordY, opacity: fade }}
-        className="relative z-10 mx-auto flex min-h-[100svh] max-w-[1600px] flex-col justify-end px-4 pb-28 pt-28 md:justify-center md:px-8 md:pb-24"
-      >
-        <h1 className="font-banner whitespace-nowrap text-[28vw] leading-[0.8] md:text-[min(19vw,21rem)]">
-          <span className="sr-only">STRAATFANAAT</span>
-          <SplitWord word="STRAAT" delay={0.35} />
-          <span className="block text-haag-yellow">
-            <SplitWord word="FANAAT" delay={0.55} />
-          </span>
-        </h1>
-        <motion.div
-          className="mt-8 flex max-w-xl flex-col gap-6 md:mt-10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: EXPO, delay: 1.1 }}
-        >
-          <p className="text-xl font-medium md:text-2xl">{u.tagline}</p>
-          <div className="flex flex-wrap gap-3">
-            <Btn variant="yellow" onClick={() => navigate('shop')}>
-              {u.shopDrop}
-            </Btn>
-            <Btn variant="outline-light" onClick={() => navigate('lookbook')}>
-              {u.seeLookbook}
-            </Btn>
-          </div>
-        </motion.div>
-      </motion.div>
-
-      <div className="absolute inset-x-0 bottom-0 z-20">
-        <div className="h-2 scarf-stripes" />
-        <div className="bg-haag-yellow py-3 text-black">
-          <Marquee
-            className="font-banner text-2xl md:text-3xl"
-            items={['Den Haag', lang === 'PL' ? 'Polskie korzenie' : lang === 'EN' ? 'Polish roots' : 'Poolse roots', '300gsm', 'Limited drops', 'Straatfanaat']}
-          />
-        </div>
-      </div>
-    </section>
-  );
 };
 
 /* ---------------- Dostępne teraz ---------------- */
@@ -368,46 +275,19 @@ const Manifesto = () => {
   );
 };
 
-/* ---------------- Duo ---------------- */
-
-const Duo = () => {
-  const { lang } = useStore();
-  const { navigate } = useNav();
-  const u = ui(lang);
-  const ref = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
-  const y = useTransform(scrollYProgress, [0, 1], reduce ? ['0%', '0%'] : ['-8%', '8%']);
-
+export const Home = ({ products }: { products: Product[] }) => {
+  const story = products.find((p) => p.id === '17' && p.cutout);
   return (
-    <section className="bg-paper px-4 py-20 md:px-8 md:py-32">
-      <div className="mx-auto grid max-w-[1600px] items-center gap-10 md:grid-cols-12">
-        <div ref={ref} className="relative aspect-[4/5] overflow-hidden md:col-span-7">
-          <motion.div style={{ y }} className="absolute -inset-y-[10%] inset-x-0">
-            <Pic src="/images/kolekcja%20dla%20niego%20dla%20niej%20sesia1.jpeg" alt="STRAATFANAAT duo" sizes="(min-width: 768px) 58vw, 100vw" className="h-full w-full object-cover" />
-          </motion.div>
-        </div>
-        <div className="flex flex-col gap-6 md:col-span-4 md:col-start-9">
-          <h2 className="font-banner text-[20vw] md:text-[8.5rem]">{u.duoTitle}</h2>
-          <p className="text-lg leading-relaxed">{u.duoText}</p>
-          <div>
-            <Btn variant="black" onClick={() => navigate('lookbook')}>
-              {u.viewDuo}
-            </Btn>
-          </div>
-        </div>
-      </div>
-    </section>
+    <>
+      <HeroScene products={products} />
+      {story && <Story product={story} />}
+      <AvailableNow products={products} />
+      <Stats products={products} />
+      <CollectionOrbit products={products} />
+      <NextDrop products={products} />
+      <Manifesto />
+      <DollyZoom />
+      <Clips />
+    </>
   );
 };
-
-export const Home = ({ products }: { products: Product[] }) => (
-  <>
-    <Hero />
-    <AvailableNow products={products} />
-    <NextDrop products={products} />
-    <Manifesto />
-    <Clips />
-    <Duo />
-  </>
-);

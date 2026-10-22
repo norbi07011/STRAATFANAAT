@@ -127,3 +127,56 @@ html.lenis, html.lenis body { height: auto; }
     scroll-behavior: auto !important;
   }
 }
+
+/* ---- Volumetric spotlights (stożki światła) ---- */
+.sf-beam {
+  position: absolute;
+  top: -10%;
+  width: 46vw;
+  height: 130%;
+  transform: translateX(-50%) rotate(8deg);
+  transform-origin: 50% 0;
+  background: conic-gradient(from 180deg at 50% 0%, transparent 168deg, rgba(255, 230, 150, 0.16) 180deg, transparent 192deg);
+  filter: blur(18px);
+  mix-blend-mode: screen;
+  animation: sf-sway 9s ease-in-out infinite alternate;
+}
+.sf-beam--b {
+  transform: translateX(-50%) rotate(-10deg);
+  animation-duration: 11s;
+  animation-direction: alternate-reverse;
+  background: conic-gradient(from 180deg at 50% 0%, transparent 166deg, rgba(120, 230, 160, 0.14) 180deg, transparent 194deg);
+}
+@keyframes sf-sway {
+  from { rotate: -4deg; }
+  to { rotate: 5deg; }
+}
+
+/* ---- Screen shake ---- */
+@keyframes sf-shake-hard {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  10% { transform: translate3d(-14px, 6px, 0) rotate(-0.6deg); }
+  20% { transform: translate3d(12px, -8px, 0) rotate(0.5deg); }
+  30% { transform: translate3d(-10px, 4px, 0); }
+  45% { transform: translate3d(8px, -4px, 0) rotate(0.3deg); }
+  60% { transform: translate3d(-5px, 2px, 0); }
+  80% { transform: translate3d(3px, -1px, 0); }
+}
+@keyframes sf-shake-soft {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  25% { transform: translate3d(-4px, 1px, 0); }
+  50% { transform: translate3d(4px, -1px, 0); }
+  75% { transform: translate3d(-2px, 0, 0); }
+}
+.sf-shake-hard { animation: sf-shake-hard 0.6s cubic-bezier(.36,.07,.19,.97) both; }
+.sf-shake-soft { animation: sf-shake-soft 0.35s ease both; }
+
+/* ---- View Transitions: zdjęcie produktu przelatuje z karty na stronę ---- */
+::view-transition-group(product-hero) {
+  animation-duration: 0.65s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.45s;
+}

@@ -5,6 +5,7 @@ import { ui } from '../lib/i18n';
 import { joinNewsletter } from '../lib/signups';
 import { useStore } from './store';
 import { NavLink } from './nav';
+import { TextFill } from './fx/scroll';
 
 // Wpisz adres profilu, a link pojawi się w stopce
 const INSTAGRAM_URL = '';
@@ -86,10 +87,8 @@ export const Footer = () => {
         </div>
       </div>
 
-      <div className="mx-auto max-w-[1600px] px-4 md:px-8" aria-hidden>
-        <p className="font-banner select-none whitespace-nowrap text-center text-[19.5vw] leading-[0.78] text-haag-yellow max-[1600px]:text-[19.5vw] min-[1600px]:text-[312px]">
-          Straatfanaat
-        </p>
+      <div className="mx-auto max-w-[1600px] px-4 md:px-8">
+        <TextFill text="Straatfanaat" className="font-banner whitespace-nowrap text-center text-[18vw] leading-[0.8] min-[1600px]:text-[288px]" />
       </div>
 
       <div className="mx-auto flex max-w-[1600px] flex-col justify-between gap-2 px-4 py-6 text-sm text-white/50 md:flex-row md:px-8">
