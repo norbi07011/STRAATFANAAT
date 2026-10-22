@@ -88,7 +88,7 @@ export const Footer = () => {
       </div>
 
       <div className="mx-auto max-w-[1600px] px-4 md:px-8">
-        <TextFill text="Straatfanaat" className="font-banner whitespace-nowrap text-center text-[18vw] leading-[0.8] min-[1600px]:text-[288px]" />
+        <TextFill text="Straatfanaat" className="font-banner whitespace-nowrap text-center text-[16vw] leading-[0.8] min-[1600px]:text-[256px]" />
       </div>
 
       <div className="mx-auto flex max-w-[1600px] flex-col justify-between gap-2 px-4 py-6 text-sm text-white/50 md:flex-row md:px-8">

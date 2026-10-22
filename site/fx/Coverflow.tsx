@@ -23,7 +23,7 @@ export const Coverflow = ({ products }: { products: Product[] }) => {
 
   useEffect(() => setIndex(Math.min(Math.floor(list.length / 2), list.length - 1)), [list]);
   useEffect(() => {
-    const on = () => setStep(window.innerWidth < 640 ? 150 : window.innerWidth < 1024 ? 210 : 270);
+    const on = () => setStep(Math.min(320, Math.max(170, window.innerWidth * 0.26)));
     on();
     window.addEventListener('resize', on);
     return () => window.removeEventListener('resize', on);
@@ -72,7 +72,7 @@ export const Coverflow = ({ products }: { products: Product[] }) => {
         dragConstraints={{ left: 0, right: 0 }}
         dragElastic={0.15}
         onDragEnd={(_, info) => {
-          const d = Math.round(-info.offset.x / (step * 0.7));
+          const d = Math.round(-info.offset.x / (step * 0.45));
           if (d) go(Math.max(-3, Math.min(3, d)));
         }}
       >
@@ -87,8 +87,9 @@ export const Coverflow = ({ products }: { products: Product[] }) => {
               style={{ zIndex: 100 - abs, marginLeft: 'calc(clamp(170px,26vw,320px) / -2)' }}
               initial={false}
               animate={{
-                x: off * step + (off === 0 ? 0 : Math.sign(off) * step * 0.25),
-                rotateY: off === 0 ? 0 : off < 0 ? 52 : -52,
+                x: off === 0 ? 0 : Math.sign(off) * (step * 0.68 + (abs - 1) * step * 0.4),
+                rotateY: off === 0 ? 0 : off < 0 ? 58 : -58,
+                scale: off === 0 ? 1.08 : 0.9,
                 z: off === 0 ? 80 : -abs * 90,
                 opacity: abs > 3 ? 0 : 1,
               }}

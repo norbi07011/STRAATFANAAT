@@ -14,12 +14,14 @@ export const ProductCard = ({
   sizes,
   className = '',
   aspect = 'aspect-[2/3]',
+  onQuickView,
 }: {
   product: Product;
   tone?: 'light' | 'dark';
   sizes?: string;
   className?: string;
   aspect?: string;
+  onQuickView?: () => void;
 }) => {
   const { lang, openWaitlist } = useStore();
   const u = ui(lang);
@@ -28,9 +30,9 @@ export const ProductCard = ({
   const dark = tone === 'dark';
 
   return (
-    <article className={`group relative flex flex-col ${className}`}>
+    <article className={`sf-view-in group relative flex flex-col ${className}`}>
       <Tilt max={8}>
-      <NavLink page="product" id={product.id} className="block" aria-label={product.name}>
+      <NavLink page="product" id={product.id} className="block" aria-label={product.name} data-cursor={u.cView}>
         <div className={`relative overflow-hidden ${dark ? 'bg-asphalt-2' : 'bg-paper-2'} ${aspect}`}>
           <Pic
             src={product.image}
@@ -52,6 +54,14 @@ export const ProductCard = ({
           </div>
         </div>
       </NavLink>
+      {onQuickView && (
+        <button
+          onClick={onQuickView}
+          className="absolute bottom-3 left-3 right-3 z-20 hidden translate-y-2 [@media(hover:hover)]:block bg-black/85 py-2.5 text-sm font-bold text-white opacity-0 backdrop-blur transition-all duration-300 hover:bg-haag-yellow hover:text-black focus:translate-y-0 focus:opacity-100 group-hover:translate-y-0 group-hover:opacity-100"
+        >
+          {u.quickView}
+        </button>
+      )}
       </Tilt>
 
       <div className="flex flex-col gap-1 pt-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">

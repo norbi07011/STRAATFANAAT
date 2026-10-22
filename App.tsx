@@ -9,6 +9,8 @@ import { WaitlistModal } from './site/WaitlistModal';
 import { ScrollProgress } from './site/fx/scroll';
 import { ParticleIntro } from './site/fx/ParticleIntro';
 import { VictoryScene } from './site/fx/VictoryScene';
+import { Cursor } from './site/fx/Cursor';
+import { Toasts } from './site/Toasts';
 import { Home } from './pages/Home';
 import { Shop } from './pages/Shop';
 import { ProductPage } from './pages/ProductPage';
@@ -82,6 +84,8 @@ const Shell = () => {
       <CartDrawer />
       <WaitlistModal />
       <VictoryScene />
+      <Toasts />
+      <Cursor />
       <ParticleIntro logo="/images/cutout/logo.webp" />
     </>
   );

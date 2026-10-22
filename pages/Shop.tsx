@@ -5,6 +5,8 @@ import { TRANSLATIONS } from '../constants';
 import { ui } from '../lib/i18n';
 import { useStore } from '../site/store';
 import { isAvailable, ProductCard } from '../site/ProductCard';
+import { LookViewer } from '../site/LookViewer';
+import { Look } from '../lib/looks';
 
 type Cat = 'all' | 'Tees' | 'Damskie' | 'Accessories';
 
@@ -14,6 +16,9 @@ export const Shop = ({ products }: { products: Product[] }) => {
   const u = ui(lang);
   const [cat, setCat] = useState<Cat>('all');
   const [onlyAvailable, setOnlyAvailable] = useState(false);
+  const [sort, setSort] = useState<'featured' | 'low' | 'high' | 'name'>('featured');
+  const [cols, setCols] = useState<3 | 4>(4);
+  const [quick, setQuick] = useState<number | null>(null);
 
   const cats: { id: Cat; label: string }[] = [
     { id: 'all', label: u.allItems },
@@ -27,9 +32,14 @@ export const Shop = ({ products }: { products: Product[] }) => {
       products
         .filter((p) => cat === 'all' || p.category === cat)
         .filter((p) => !onlyAvailable || isAvailable(p))
-        .sort((a, b) => Number(isAvailable(b)) - Number(isAvailable(a))),
-    [products, cat, onlyAvailable]
+        .sort((a, b) =>
+          sort === 'low' ? a.price - b.price : sort === 'high' ? b.price - a.price : sort === 'name' ? a.name.localeCompare(b.name) : Number(isAvailable(b)) - Number(isAvailable(a))
+        ),
+    [products, cat, onlyAvailable, sort]
   );
+
+  // quick view używa tego samego podglądu co lookbook (zdjęcie + szybki zakup)
+  const quickLooks: Look[] = list.map((p) => ({ id: `p${p.id}`, image: p.image, productId: p.id, chapter: 'classic', hotspot: { x: 50, y: 50 } }));
 
   return (
     <div className="min-h-screen bg-paper px-4 pb-24 pt-28 md:px-8 md:pt-36">
@@ -63,6 +73,29 @@ export const Shop = ({ products }: { products: Product[] }) => {
               </button>
             ))}
           </div>
+          <div className="flex flex-wrap items-center gap-4">
+          <label className="flex items-center gap-2 text-[15px] font-semibold">
+            <span className="sr-only md:not-sr-only">{u.sortLabel}</span>
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value as typeof sort)}
+              className="cursor-pointer border-2 border-black bg-transparent px-3 py-1.5 font-semibold outline-none focus:border-haag-green"
+            >
+              <option value="featured">{u.sortFeatured}</option>
+              <option value="low">{u.sortLow}</option>
+              <option value="high">{u.sortHigh}</option>
+              <option value="name">{u.sortName}</option>
+            </select>
+          </label>
+          <div className="hidden items-center border-2 border-black lg:flex" role="group" aria-label={u.gridLabel}>
+            {([3, 4] as const).map((n) => (
+              <button key={n} onClick={() => setCols(n)} aria-pressed={cols === n} className={`flex h-8 w-10 items-center justify-center gap-0.5 ${cols === n ? 'bg-black' : ''}`} aria-label={`${n}`}>
+                {Array.from({ length: n }, (_, i) => (
+                  <span key={i} className={`h-3.5 w-1 ${cols === n ? 'bg-haag-yellow' : 'bg-black'}`} />
+                ))}
+              </button>
+            ))}
+          </div>
           <label className="flex cursor-pointer items-center gap-3 text-[15px] font-semibold">
             <span>{u.onlyAvailable}</span>
             <button
@@ -78,12 +111,13 @@ export const Shop = ({ products }: { products: Product[] }) => {
               />
             </button>
           </label>
+          </div>
         </div>
 
         {list.length === 0 ? (
           <p className="py-24 text-lg">{u.noResults}</p>
         ) : (
-          <motion.div layout className="mt-6 grid grid-cols-2 gap-x-4 gap-y-12 md:grid-cols-3 md:gap-x-6 lg:grid-cols-4">
+          <motion.div layout className={`mt-6 grid grid-cols-2 gap-x-4 gap-y-12 md:grid-cols-3 md:gap-x-6 ${cols === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'}`}>
             <AnimatePresence mode="popLayout">
               {list.map((p, i) => (
                 <motion.div
@@ -94,13 +128,18 @@ export const Shop = ({ products }: { products: Product[] }) => {
                   exit={{ opacity: 0, scale: 0.96 }}
                   transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: Math.min(i, 8) * 0.04 }}
                 >
-                  <ProductCard product={p} sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw" />
+                  <ProductCard product={p} sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw" onQuickView={() => setQuick(i)} />
                 </motion.div>
               ))}
             </AnimatePresence>
           </motion.div>
         )}
       </div>
+      <AnimatePresence>
+        {quick !== null && quickLooks[quick] && (
+          <LookViewer looks={quickLooks} index={quick} products={products} onIndex={setQuick} onClose={() => setQuick(null)} counter={(i, n) => `${i} / ${n}`} />
+        )}
+      </AnimatePresence>
     </div>
   );
 };

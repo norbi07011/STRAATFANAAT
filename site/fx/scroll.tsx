@@ -104,7 +104,7 @@ export const CountUp = ({ to, format = (n) => String(Math.round(n)), duration = 
 /* ---------- Rolling number: cyfry przewijają się do nowej wartości ---------- */
 
 const Digit = ({ d }: { d: number }) => (
-  <span className="relative inline-block h-[1em] w-[0.62em] overflow-hidden align-baseline leading-none">
+  <span className="relative inline-block h-[1em] w-[0.62em] overflow-hidden leading-none">
     <motion.span
       className="absolute left-0 top-0 flex flex-col"
       initial={false}
@@ -121,10 +121,16 @@ const Digit = ({ d }: { d: number }) => (
 );
 
 export const RollingNumber = ({ value, className = '' }: { value: string; className?: string }) => (
-  <span className={`inline-flex items-baseline tabular-nums ${className}`} aria-label={value}>
-    <span aria-hidden className="inline-flex items-baseline">
+  <span className={`inline-flex items-end tabular-nums ${className}`} aria-label={value}>
+    <span aria-hidden className="inline-flex items-end">
       {value.split('').map((ch, i) =>
-        /\d/.test(ch) ? <Digit key={`${value.length - i}`} d={Number(ch)} /> : <span key={`s${value.length - i}`}>{ch}</span>
+        /\d/.test(ch) ? (
+          <Digit key={`${value.length - i}`} d={Number(ch)} />
+        ) : (
+          <span key={`s${value.length - i}`} className="inline-block h-[1em] whitespace-pre leading-none">
+            {ch}
+          </span>
+        )
       )}
     </span>
   </span>

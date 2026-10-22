@@ -6,6 +6,7 @@ import { TRANSLATIONS } from '../constants';
 import { ui } from '../lib/i18n';
 import { useStore } from './store';
 import { NavLink, useNav } from './nav';
+import { Scramble } from './fx/Scramble';
 
 const LANGS: Language[] = ['NL', 'EN', 'PL'];
 
@@ -99,7 +100,7 @@ export const Header = () => {
           <nav className="hidden items-center gap-8 md:flex">
             {links.map((l) => (
               <NavLink key={l.page} page={l.page} className="group relative py-1 text-[15px] font-semibold">
-                {l.label}
+                <Scramble text={l.label} />
                 <span
                   className={`absolute -bottom-0.5 left-0 h-[3px] w-full origin-left bg-haag-yellow transition-transform duration-500 ease-out-expo ${
                     route.page === l.page ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'

@@ -39,6 +39,20 @@ interface Store {
   setCartOpen: (v: boolean) => void;
   waitlistProduct: Product | null;
   openWaitlist: (p: Product | null) => void;
+  /** ostatnio oglądane produkty (id, najnowsze pierwsze) */
+  recent: string[];
+  markViewed: (id: string) => void;
+  toasts: Toast[];
+  toast: (t: Omit<Toast, 'id'>) => void;
+  dismissToast: (id: number) => void;
+}
+
+export interface Toast {
+  id: number;
+  title: string;
+  text?: string;
+  image?: string;
+  action?: { label: string; run: () => void };
 }
 
 const Ctx = createContext<Store | null>(null);
@@ -48,6 +62,25 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const [cart, setCart] = useState<CartItem[]>(() => read<CartItem[]>('sf-cart', []));
   const [isCartOpen, setCartOpen] = useState(false);
   const [waitlistProduct, openWaitlist] = useState<Product | null>(null);
+  const [recent, setRecent] = useState<string[]>(() => read<string[]>('sf-recent', []));
+  const [toasts, setToasts] = useState<Toast[]>([]);
+
+  const markViewed = useCallback((id: string) => {
+    setRecent((prev) => {
+      const next = [id, ...prev.filter((x) => x !== id)].slice(0, 12);
+      write('sf-recent', next);
+      return next;
+    });
+  }, []);
+  const dismissToast = useCallback((id: number) => setToasts((t) => t.filter((x) => x.id !== id)), []);
+  const toast = useCallback(
+    (t: Omit<Toast, 'id'>) => {
+      const id = Date.now() + Math.random();
+      setToasts((prev) => [...prev.slice(-2), { ...t, id }]);
+      setTimeout(() => dismissToast(id), 4200);
+    },
+    [dismissToast]
+  );
 
   useEffect(() => write('sf-cart', cart), [cart]);
   useEffect(() => {
@@ -93,8 +126,13 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
       setCartOpen,
       waitlistProduct,
       openWaitlist,
+      recent,
+      markViewed,
+      toasts,
+      toast,
+      dismissToast,
     }),
-    [lang, setLang, cart, addToCart, setQty, clearCart, isCartOpen, waitlistProduct]
+    [lang, setLang, cart, addToCart, setQty, clearCart, isCartOpen, waitlistProduct, recent, markViewed, toasts, toast, dismissToast]
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
