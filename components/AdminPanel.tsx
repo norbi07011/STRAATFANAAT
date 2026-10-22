@@ -59,7 +59,7 @@ const StatCard = ({ label, value, change, changeType, icon, color }: {
         <p className="text-2xl md:text-3xl font-black italic">{value}</p>
         {change && (
           <div className={`flex items-center gap-1 text-xs font-bold ${
-            changeType === 'up' ? 'text-[#adff2f]' : changeType === 'down' ? 'text-red-500' : 'text-zinc-500'
+            changeType === 'up' ? 'text-[#22b35e]' : changeType === 'down' ? 'text-red-500' : 'text-zinc-500'
           }`}>
             {changeType === 'up' ? <ArrowUpRight className="w-3 h-3" /> : 
              changeType === 'down' ? <ArrowDownRight className="w-3 h-3" /> : null}
@@ -105,7 +105,7 @@ const StatusBadge = ({ status, type }: { status: string; type: 'order' | 'paymen
 
 const LoadingSpinner = () => (
   <div className="flex items-center justify-center py-12">
-    <Loader2 className="w-8 h-8 animate-spin text-[#00f2ff]" />
+    <Loader2 className="w-8 h-8 animate-spin text-[#ffd21f]" />
   </div>
 );
 
@@ -145,7 +145,7 @@ const DashboardTab = ({ stats, recentOrders, topProducts, isLoading }: {
           change="+12.5% vs wczoraj"
           changeType="up"
           icon={<DollarSign className="w-5 h-5 text-black" />}
-          color="bg-[#adff2f]"
+          color="bg-[#22b35e]"
         />
         <StatCard 
           label="Zamówienia Dziś"
@@ -153,7 +153,7 @@ const DashboardTab = ({ stats, recentOrders, topProducts, isLoading }: {
           change="+3 vs wczoraj"
           changeType="up"
           icon={<ShoppingCart className="w-5 h-5 text-black" />}
-          color="bg-[#00f2ff]"
+          color="bg-[#ffd21f]"
         />
         <StatCard 
           label="Nowi Klienci"
@@ -203,7 +203,7 @@ const DashboardTab = ({ stats, recentOrders, topProducts, isLoading }: {
         <div className="bg-zinc-950 border border-zinc-900 p-6">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-lg font-black italic uppercase">Ostatnie Zamówienia</h3>
-            <span className="text-[#00f2ff] text-xs font-bold cursor-pointer hover:underline">Zobacz wszystkie →</span>
+            <span className="text-[#ffd21f] text-xs font-bold cursor-pointer hover:underline">Zobacz wszystkie →</span>
           </div>
           
           {recentOrders.length === 0 ? (
@@ -222,7 +222,7 @@ const DashboardTab = ({ stats, recentOrders, topProducts, isLoading }: {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-mono font-bold text-[#adff2f]">€{order.grand_total}</p>
+                    <p className="font-mono font-bold text-[#22b35e]">€{order.grand_total}</p>
                     <StatusBadge status={order.status} type="order" />
                   </div>
                 </div>
@@ -235,7 +235,7 @@ const DashboardTab = ({ stats, recentOrders, topProducts, isLoading }: {
         <div className="bg-zinc-950 border border-zinc-900 p-6">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-lg font-black italic uppercase">Top Produkty</h3>
-            <span className="text-[#00f2ff] text-xs font-bold cursor-pointer hover:underline">Zobacz wszystkie →</span>
+            <span className="text-[#ffd21f] text-xs font-bold cursor-pointer hover:underline">Zobacz wszystkie →</span>
           </div>
           
           {topProducts.length === 0 ? (
@@ -254,7 +254,7 @@ const DashboardTab = ({ stats, recentOrders, topProducts, isLoading }: {
                       <p className="text-[10px] text-zinc-500">{product.units_sold || 0} sprzedanych</p>
                     </div>
                   </div>
-                  <p className="font-mono font-bold text-[#adff2f]">€{product.revenue?.toFixed(2) || '0.00'}</p>
+                  <p className="font-mono font-bold text-[#22b35e]">€{product.revenue?.toFixed(2) || '0.00'}</p>
                 </div>
               ))}
             </div>
@@ -265,11 +265,11 @@ const DashboardTab = ({ stats, recentOrders, topProducts, isLoading }: {
       {/* Quick Stats Footer */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 bg-zinc-950 border border-zinc-900 p-4">
         <div className="text-center p-4">
-          <p className="text-2xl font-black text-[#00f2ff]">{stats?.total_orders || 0}</p>
+          <p className="text-2xl font-black text-[#ffd21f]">{stats?.total_orders || 0}</p>
           <p className="text-[10px] font-bold text-zinc-500 uppercase">Wszystkie Zamówienia</p>
         </div>
         <div className="text-center p-4 border-l border-zinc-900">
-          <p className="text-2xl font-black text-[#adff2f]">€{stats?.total_revenue?.toFixed(2) || '0.00'}</p>
+          <p className="text-2xl font-black text-[#22b35e]">€{stats?.total_revenue?.toFixed(2) || '0.00'}</p>
           <p className="text-[10px] font-bold text-zinc-500 uppercase">Całkowity Przychód</p>
         </div>
         <div className="text-center p-4 border-l border-zinc-900">
@@ -339,13 +339,13 @@ const ProductsTab = ({ products, categories, isLoading, onRefresh }: {
             placeholder="Szukaj produktów..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-zinc-950 border border-zinc-900 pl-12 pr-4 py-3 text-sm font-bold outline-none focus:border-[#00f2ff] transition-colors"
+            className="w-full bg-zinc-950 border border-zinc-900 pl-12 pr-4 py-3 text-sm font-bold outline-none focus:border-[#ffd21f] transition-colors"
           />
         </div>
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="bg-zinc-950 border border-zinc-900 px-4 py-3 text-sm font-bold outline-none focus:border-[#00f2ff]"
+          className="bg-zinc-950 border border-zinc-900 px-4 py-3 text-sm font-bold outline-none focus:border-[#ffd21f]"
         >
           <option value="all">Wszystkie kategorie</option>
           {categories.map(cat => (
@@ -377,10 +377,10 @@ const ProductsTab = ({ products, categories, isLoading, onRefresh }: {
                     <div>
                       <span className="font-bold italic uppercase">{product.name}</span>
                       {product.is_featured && (
-                        <span className="ml-2 px-2 py-0.5 text-[8px] bg-[#adff2f] text-black font-black rounded">FEATURED</span>
+                        <span className="ml-2 px-2 py-0.5 text-[8px] bg-[#22b35e] text-black font-black rounded">FEATURED</span>
                       )}
                       {product.is_new && (
-                        <span className="ml-1 px-2 py-0.5 text-[8px] bg-[#00f2ff] text-black font-black rounded">NEW</span>
+                        <span className="ml-1 px-2 py-0.5 text-[8px] bg-[#ffd21f] text-black font-black rounded">NEW</span>
                       )}
                     </div>
                   </div>
@@ -392,7 +392,7 @@ const ProductsTab = ({ products, categories, isLoading, onRefresh }: {
                   </span>
                 </td>
                 <td className="p-4 md:p-6 text-right">
-                  <span className="font-mono text-[#00f2ff] font-bold">€{product.price}</span>
+                  <span className="font-mono text-[#ffd21f] font-bold">€{product.price}</span>
                   {product.compare_at_price && (
                     <span className="ml-2 font-mono text-zinc-500 line-through text-xs">€{product.compare_at_price}</span>
                   )}
@@ -417,7 +417,7 @@ const ProductsTab = ({ products, categories, isLoading, onRefresh }: {
                     <button className="p-2 text-zinc-500 hover:text-white hover:bg-zinc-900 transition-colors rounded">
                       <Eye className="w-4 h-4" />
                     </button>
-                    <button className="p-2 text-zinc-500 hover:text-[#00f2ff] hover:bg-zinc-900 transition-colors rounded">
+                    <button className="p-2 text-zinc-500 hover:text-[#ffd21f] hover:bg-zinc-900 transition-colors rounded">
                       <Edit3 className="w-4 h-4" />
                     </button>
                     <button 
@@ -501,7 +501,7 @@ const OrdersTab = ({ orders, isLoading, onRefresh }: {
               onClick={() => setStatusFilter(status)}
               className={`p-3 text-center border transition-all ${
                 statusFilter === status 
-                  ? 'border-[#00f2ff] bg-[#00f2ff]/10' 
+                  ? 'border-[#ffd21f] bg-[#ffd21f]/10' 
                   : 'border-zinc-900 hover:border-zinc-800'
               }`}
             >
@@ -522,7 +522,7 @@ const OrdersTab = ({ orders, isLoading, onRefresh }: {
           placeholder="Szukaj po numerze zamówienia lub emailu..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full bg-zinc-950 border border-zinc-900 pl-12 pr-4 py-3 text-sm font-bold outline-none focus:border-[#00f2ff] transition-colors"
+          className="w-full bg-zinc-950 border border-zinc-900 pl-12 pr-4 py-3 text-sm font-bold outline-none focus:border-[#ffd21f] transition-colors"
         />
       </div>
 
@@ -576,7 +576,7 @@ const OrdersTab = ({ orders, isLoading, onRefresh }: {
                 <td className="p-4 md:p-6">
                   <StatusBadge status={order.fulfillment_status} type="fulfillment" />
                 </td>
-                <td className="p-4 md:p-6 text-right font-mono font-bold text-[#adff2f]">
+                <td className="p-4 md:p-6 text-right font-mono font-bold text-[#22b35e]">
                   €{order.grand_total}
                 </td>
                 <td className="p-4 md:p-6">
@@ -651,7 +651,7 @@ const CustomersTab = ({ customers, isLoading }: {
           placeholder="Szukaj klientów..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full bg-zinc-950 border border-zinc-900 pl-12 pr-4 py-3 text-sm font-bold outline-none focus:border-[#00f2ff] transition-colors"
+          className="w-full bg-zinc-950 border border-zinc-900 pl-12 pr-4 py-3 text-sm font-bold outline-none focus:border-[#ffd21f] transition-colors"
         />
       </div>
 
@@ -686,7 +686,7 @@ const CustomersTab = ({ customers, isLoading }: {
                 <td className="p-4 md:p-6">
                   <span className="font-bold">{customer.total_orders}</span>
                 </td>
-                <td className="p-4 md:p-6 text-right font-mono font-bold text-[#adff2f]">
+                <td className="p-4 md:p-6 text-right font-mono font-bold text-[#22b35e]">
                   €{customer.total_spent?.toFixed(2) || '0.00'}
                 </td>
                 <td className="p-4 md:p-6">
@@ -702,7 +702,7 @@ const CustomersTab = ({ customers, isLoading }: {
                     <button className="p-2 text-zinc-500 hover:text-white hover:bg-zinc-900 transition-colors rounded">
                       <Eye className="w-4 h-4" />
                     </button>
-                    <button className="p-2 text-zinc-500 hover:text-[#00f2ff] hover:bg-zinc-900 transition-colors rounded">
+                    <button className="p-2 text-zinc-500 hover:text-[#ffd21f] hover:bg-zinc-900 transition-colors rounded">
                       <Mail className="w-4 h-4" />
                     </button>
                   </div>
@@ -784,7 +784,7 @@ const PaymentsTab = ({ payments, isLoading, onRefresh }: {
         </div>
         <div className="bg-zinc-950 border border-zinc-900 p-6">
           <p className="text-xs font-bold uppercase text-zinc-500">Dziś</p>
-          <p className="text-3xl font-black font-mono text-[#adff2f]">€{todayRevenue.toFixed(2)}</p>
+          <p className="text-3xl font-black font-mono text-[#22b35e]">€{todayRevenue.toFixed(2)}</p>
         </div>
         <StatCard 
           label="Sukces"
@@ -805,7 +805,7 @@ const PaymentsTab = ({ payments, isLoading, onRefresh }: {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="bg-zinc-950 border border-zinc-900 px-4 py-2 text-sm font-bold outline-none focus:border-[#00f2ff]"
+          className="bg-zinc-950 border border-zinc-900 px-4 py-2 text-sm font-bold outline-none focus:border-[#ffd21f]"
           aria-label="Filtruj po statusie"
         >
           <option value="all">Wszystkie statusy</option>
@@ -817,7 +817,7 @@ const PaymentsTab = ({ payments, isLoading, onRefresh }: {
         <select
           value={dateRange}
           onChange={(e) => setDateRange(e.target.value)}
-          className="bg-zinc-950 border border-zinc-900 px-4 py-2 text-sm font-bold outline-none focus:border-[#00f2ff]"
+          className="bg-zinc-950 border border-zinc-900 px-4 py-2 text-sm font-bold outline-none focus:border-[#ffd21f]"
           aria-label="Zakres dat"
         >
           <option value="all">Cały okres</option>
@@ -849,7 +849,7 @@ const PaymentsTab = ({ payments, isLoading, onRefresh }: {
                   {payment.external_id?.slice(0, 16) || payment.id.slice(0, 8)}...
                 </td>
                 <td className="p-4 md:p-6">
-                  <span className="font-bold font-mono text-[#00f2ff]">
+                  <span className="font-bold font-mono text-[#ffd21f]">
                     {(payment as any).orders?.order_number || '-'}
                   </span>
                 </td>
@@ -879,7 +879,7 @@ const PaymentsTab = ({ payments, isLoading, onRefresh }: {
                 <td className="p-4 md:p-6">
                   <StatusBadge status={payment.status} type="payment" />
                 </td>
-                <td className="p-4 md:p-6 text-right font-mono font-bold text-[#adff2f]">
+                <td className="p-4 md:p-6 text-right font-mono font-bold text-[#22b35e]">
                   €{payment.amount.toFixed(2)}
                 </td>
                 <td className="p-4 md:p-6 text-zinc-500 text-xs">
@@ -894,7 +894,7 @@ const PaymentsTab = ({ payments, isLoading, onRefresh }: {
                 <td className="p-4 md:p-6 text-center">
                   <button 
                     onClick={(e) => { e.stopPropagation(); setSelectedPayment(payment); }}
-                    className="p-2 text-zinc-500 hover:text-[#00f2ff] hover:bg-zinc-900 transition-colors rounded"
+                    className="p-2 text-zinc-500 hover:text-[#ffd21f] hover:bg-zinc-900 transition-colors rounded"
                     title="Zobacz szczegóły"
                   >
                     <Eye className="w-4 h-4" />
@@ -933,7 +933,7 @@ const PaymentsTab = ({ payments, isLoading, onRefresh }: {
                 </div>
                 <div>
                   <p className="text-xs text-zinc-500 uppercase font-bold">Kwota</p>
-                  <p className="text-2xl font-mono font-black text-[#adff2f]">
+                  <p className="text-2xl font-mono font-black text-[#22b35e]">
                     €{selectedPayment.amount.toFixed(2)} {selectedPayment.currency}
                   </p>
                 </div>
@@ -1012,7 +1012,7 @@ const SettingsTab = ({ settings, isLoading }: {
               onClick={() => setActiveCategory(cat.id)}
               className={`flex items-center gap-3 p-4 font-bold uppercase text-sm transition-all whitespace-nowrap ${
                 activeCategory === cat.id 
-                  ? 'bg-[#00f2ff] text-black' 
+                  ? 'bg-[#ffd21f] text-black' 
                   : 'bg-zinc-950 border border-zinc-900 text-zinc-500 hover:text-white hover:border-zinc-800'
               }`}
             >
@@ -1035,7 +1035,7 @@ const SettingsTab = ({ settings, isLoading }: {
               {setting.type === 'boolean' ? (
                 <button
                   className={`px-4 py-2 text-sm font-bold uppercase transition-colors ${
-                    setting.value === 'true' || setting.value === true ? 'bg-[#adff2f] text-black' : 'bg-zinc-900 text-zinc-500'
+                    setting.value === 'true' || setting.value === true ? 'bg-[#22b35e] text-black' : 'bg-zinc-900 text-zinc-500'
                   }`}
                 >
                   {setting.value === 'true' || setting.value === true ? 'Włączone' : 'Wyłączone'}
@@ -1061,7 +1061,7 @@ const SettingsTab = ({ settings, isLoading }: {
                 <input
                   type={setting.type === 'number' ? 'number' : 'text'}
                   defaultValue={typeof setting.value === 'string' ? setting.value.replace(/"/g, '') : setting.value}
-                  className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-bold outline-none focus:border-[#00f2ff] transition-colors"
+                  className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-bold outline-none focus:border-[#ffd21f] transition-colors"
                 />
               )}
             </div>
@@ -1163,7 +1163,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ lang }) => {
               onClick={() => setActiveTab(tab.id)}
               className={`flex-shrink-0 flex items-center gap-3 p-3 md:p-4 font-black italic uppercase tracking-widest transition-all text-xs md:text-sm whitespace-nowrap ${
                 activeTab === tab.id 
-                  ? 'bg-[#00f2ff] text-black' 
+                  ? 'bg-[#ffd21f] text-black' 
                   : 'hover:bg-zinc-900 text-zinc-500 hover:text-white'
               }`}
             >
@@ -1219,14 +1219,14 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ lang }) => {
           )}
           {activeTab === 'discounts' && (
             <EmptyState 
-              icon={<Tag className="w-8 h-8 text-[#00f2ff]" />}
+              icon={<Tag className="w-8 h-8 text-[#ffd21f]" />}
               title="Kody Rabatowe"
               description="Sekcja kodów rabatowych - w przygotowaniu"
             />
           )}
           {activeTab === 'analytics' && (
             <EmptyState 
-              icon={<BarChart3 className="w-8 h-8 text-[#00f2ff]" />}
+              icon={<BarChart3 className="w-8 h-8 text-[#ffd21f]" />}
               title="Analityka"
               description="Zaawansowana analityka - w przygotowaniu"
             />

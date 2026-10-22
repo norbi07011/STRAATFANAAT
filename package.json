@@ -1,23 +1,32 @@
 {
-  "name": "straatfanaat---uliczny-fanatyk",
+  "name": "straatfanaat",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "optimize": "node scripts/optimize-media.mjs"
   },
   "dependencies": {
+    "@fontsource-variable/archivo": "^5.3.0",
     "@google/genai": "^1.35.0",
     "@supabase/supabase-js": "^2.90.1",
+    "lenis": "^1.3.27",
     "lucide-react": "^0.562.0",
+    "motion": "^14.6.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
     "@types/node": "^22.14.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^5.0.0",
+    "sharp": "^0.35.5",
+    "tailwindcss": "^4.3.3",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
   }

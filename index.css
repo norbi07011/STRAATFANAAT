@@ -1,0 +1,129 @@
+@import "tailwindcss";
+@import "@fontsource-variable/archivo/wdth.css";
+
+/*
+  STRAATFANAAT design tokens
+  Kolory wzięte z flagi Hagi (geel-groen) + beton i asfalt ulicy.
+*/
+@theme {
+  --color-black: #000000;
+  --color-asphalt: #1c1d1f;
+  --color-asphalt-2: #2a2b2e;
+  --color-concrete: #bfbeb8;
+  --color-paper: #e4e4e0;
+  --color-paper-2: #d6d6d1;
+  --color-haag-yellow: #ffd21f;
+  --color-haag-green: #0b8a44;
+  --color-haag-green-bright: #22b35e;
+
+  --font-sans: "Archivo Variable", "Archivo", ui-sans-serif, system-ui, sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+@layer base {
+  html {
+    background: var(--color-black);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    font-family: var(--font-sans);
+    font-stretch: 100%;
+    background: var(--color-paper);
+    color: var(--color-black);
+    overflow-x: clip;
+  }
+  ::selection {
+    background: var(--color-haag-yellow);
+    color: var(--color-black);
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-haag-yellow);
+    outline-offset: 3px;
+  }
+  button { cursor: pointer; }
+  img, video { display: block; max-width: 100%; }
+}
+
+/* Banner type — ultra-wąski, gruby krój jak transparent na trybunie */
+@utility font-banner {
+  font-family: var(--font-sans);
+  font-stretch: 62%;
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.84;
+  letter-spacing: -0.005em;
+}
+@utility font-wide {
+  font-family: var(--font-sans);
+  font-stretch: 125%;
+}
+@utility font-narrow {
+  font-family: var(--font-sans);
+  font-stretch: 75%;
+}
+
+/* Pasy szalika: żółty / zielony */
+@utility scarf-stripes {
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--color-haag-yellow) 0 64px,
+    var(--color-haag-green) 64px 128px
+  );
+}
+@utility scarf-stripes-diag {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--color-haag-yellow) 0 18px,
+    var(--color-haag-green) 18px 36px
+  );
+}
+
+@utility grain {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.08;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+}
+
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@utility animate-marquee {
+  animation: marquee 32s linear infinite;
+}
+
+/* Lenis smooth scroll */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: clip; }
+
+/* ---- Klasy zgodności dla Checkout i AdminPanel (starszy kod) ---- */
+.bg-gradient-street {
+  background: linear-gradient(100deg, var(--color-haag-yellow), #b8d936 55%, var(--color-haag-green-bright));
+}
+.text-gradient-street {
+  background: linear-gradient(100deg, var(--color-haag-yellow), #b8d936 55%, var(--color-haag-green-bright));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.bg-gradient-mesh { background: var(--color-asphalt); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

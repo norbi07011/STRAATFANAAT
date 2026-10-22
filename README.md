@@ -1,20 +1,35 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# STRAATFANAAT
 
-# Run and deploy your AI Studio app
+Sklep streetwear z Hagi (NL / EN / PL). React 19 + TypeScript + Vite, Tailwind v4, Motion, Lenis, Supabase.
 
-This contains everything you need to run your app locally.
+## Uruchomienie
 
-View your app in AI Studio: https://ai.studio/apps/drive/1BqzC5FkOXQv1DG9lFoRuzblqW64CyPNk
+```bash
+npm install
+npm run dev        # http://localhost:3000
+npm run build      # produkcja → dist/
+```
 
-## Run Locally
+Opcjonalnie w `.env.local`: `GEMINI_API_KEY=...` (stylista AI na stronie produktu).
 
-**Prerequisites:**  Node.js
+## Zdjęcia i filmy
 
+Oryginały leżą w `public/images` i `public/video`. Strona używa skompresowanych wersji
+(WebP 800/1600 px, MP4 720p) z folderów `opt/`. Po dodaniu nowych plików uruchom:
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+```bash
+npm run optimize
+```
+
+## Lista oczekujących i newsletter
+
+Uruchom raz `supabase/signups.sql` w Supabase → SQL Editor. Tworzy tabele `waitlist_signups`
+i `newsletter_subscribers` z polityką „tylko insert” dla klientów.
+
+## Struktura
+
+- `pages/` — strony: Home, Shop, ProductPage, Lookbook, About
+- `site/` — nagłówek, koszyk, stopka, przejścia między stronami (`nav.tsx`), stan (`store.tsx`)
+- `lib/` — Supabase, tłumaczenia UI (`i18n.ts`), mapowanie zdjęć (`media.ts`), routing
+- `components/` — Checkout i AdminPanel (ładowane na żądanie)
+- `constants.tsx` — produkty i teksty marki

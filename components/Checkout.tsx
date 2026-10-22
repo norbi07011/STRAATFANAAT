@@ -363,7 +363,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ lang, cart, onBack, onSucces
                     step.id === currentStep 
                       ? 'bg-gradient-street text-black' 
                       : steps.findIndex(s => s.id === currentStep) > index
-                        ? 'bg-[#adff2f] text-black'
+                        ? 'bg-[#22b35e] text-black'
                         : 'bg-zinc-900 text-zinc-500'
                   }`}
                 >
@@ -397,7 +397,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ lang, cart, onBack, onSucces
             {currentStep === 'info' && (
               <div className="bg-zinc-950 border border-zinc-900 p-6 md:p-8 space-y-6">
                 <h2 className="text-xl font-black italic uppercase flex items-center gap-3">
-                  <User className="w-5 h-5 text-[#00f2ff]" />
+                  <User className="w-5 h-5 text-[#ffd21f]" />
                   Dane Kontaktowe
                 </h2>
                 
@@ -410,7 +410,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ lang, cart, onBack, onSucces
                       type="email"
                       value={customerInfo.email}
                       onChange={(e) => setCustomerInfo({ ...customerInfo, email: e.target.value })}
-                      className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-bold outline-none focus:border-[#00f2ff] transition-colors"
+                      className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-bold outline-none focus:border-[#ffd21f] transition-colors"
                       placeholder="twoj@email.com"
                     />
                   </div>
@@ -420,7 +420,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ lang, cart, onBack, onSucces
                       type="text"
                       value={customerInfo.firstName}
                       onChange={(e) => setCustomerInfo({ ...customerInfo, firstName: e.target.value })}
-                      className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-bold outline-none focus:border-[#00f2ff] transition-colors"
+                      className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-bold outline-none focus:border-[#ffd21f] transition-colors"
                       placeholder="Jan"
                     />
                   </div>
@@ -430,7 +430,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ lang, cart, onBack, onSucces
                       type="text"
                       value={customerInfo.lastName}
                       onChange={(e) => setCustomerInfo({ ...customerInfo, lastName: e.target.value })}
-                      className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-bold outline-none focus:border-[#00f2ff] transition-colors"
+                      className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-bold outline-none focus:border-[#ffd21f] transition-colors"
                       placeholder="Kowalski"
                     />
                   </div>
@@ -442,7 +442,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ lang, cart, onBack, onSucces
                       type="tel"
                       value={customerInfo.phone}
                       onChange={(e) => setCustomerInfo({ ...customerInfo, phone: e.target.value })}
-                      className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-bold outline-none focus:border-[#00f2ff] transition-colors"
+                      className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-bold outline-none focus:border-[#ffd21f] transition-colors"
                       placeholder="+48 123 456 789"
                     />
                   </div>
@@ -461,7 +461,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ lang, cart, onBack, onSucces
             {currentStep === 'shipping' && (
               <div className="bg-zinc-950 border border-zinc-900 p-6 md:p-8 space-y-6">
                 <h2 className="text-xl font-black italic uppercase flex items-center gap-3">
-                  <MapPin className="w-5 h-5 text-[#00f2ff]" />
+                  <MapPin className="w-5 h-5 text-[#ffd21f]" />
                   Adres Dostawy
                 </h2>
                 
@@ -472,7 +472,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ lang, cart, onBack, onSucces
                       type="text"
                       value={shippingAddress.street}
                       onChange={(e) => setShippingAddress({ ...shippingAddress, street: e.target.value })}
-                      className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-bold outline-none focus:border-[#00f2ff] transition-colors"
+                      className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-bold outline-none focus:border-[#ffd21f] transition-colors"
                       placeholder="ul. Przykładowa 123"
                     />
                   </div>
@@ -482,7 +482,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ lang, cart, onBack, onSucces
                       type="text"
                       value={shippingAddress.apartment}
                       onChange={(e) => setShippingAddress({ ...shippingAddress, apartment: e.target.value })}
-                      className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-bold outline-none focus:border-[#00f2ff] transition-colors"
+                      className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-bold outline-none focus:border-[#ffd21f] transition-colors"
                       placeholder="m. 45"
                     />
                   </div>
@@ -492,7 +492,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ lang, cart, onBack, onSucces
                       type="text"
                       value={shippingAddress.city}
                       onChange={(e) => setShippingAddress({ ...shippingAddress, city: e.target.value })}
-                      className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-bold outline-none focus:border-[#00f2ff] transition-colors"
+                      className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-bold outline-none focus:border-[#ffd21f] transition-colors"
                       placeholder="Warszawa"
                     />
                   </div>
@@ -502,7 +502,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ lang, cart, onBack, onSucces
                       type="text"
                       value={shippingAddress.postalCode}
                       onChange={(e) => setShippingAddress({ ...shippingAddress, postalCode: e.target.value })}
-                      className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-bold outline-none focus:border-[#00f2ff] transition-colors"
+                      className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-bold outline-none focus:border-[#ffd21f] transition-colors"
                       placeholder="00-001"
                     />
                   </div>
@@ -513,7 +513,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ lang, cart, onBack, onSucces
                     <select
                       value={shippingAddress.country}
                       onChange={(e) => setShippingAddress({ ...shippingAddress, country: e.target.value })}
-                      className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-bold outline-none focus:border-[#00f2ff] transition-colors"
+                      className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-bold outline-none focus:border-[#ffd21f] transition-colors"
                     >
                       <option value="NL">Holandia</option>
                       <option value="PL">Polska</option>
@@ -528,7 +528,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ lang, cart, onBack, onSucces
                 {/* Shipping Options */}
                 <div className="space-y-3">
                   <h3 className="text-sm font-black uppercase text-zinc-400">Metoda Dostawy</h3>
-                  <div className={`p-4 border ${subtotal >= FREE_SHIPPING_THRESHOLD ? 'border-[#adff2f] bg-[#adff2f]/10' : 'border-zinc-800'} flex justify-between items-center`}>
+                  <div className={`p-4 border ${subtotal >= FREE_SHIPPING_THRESHOLD ? 'border-[#22b35e] bg-[#22b35e]/10' : 'border-zinc-800'} flex justify-between items-center`}>
                     <div className="flex items-center gap-3">
                       <Truck className="w-5 h-5" />
                       <div>
@@ -538,7 +538,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ lang, cart, onBack, onSucces
                     </div>
                     <div className="text-right">
                       {subtotal >= FREE_SHIPPING_THRESHOLD ? (
-                        <span className="text-[#adff2f] font-black">GRATIS</span>
+                        <span className="text-[#22b35e] font-black">GRATIS</span>
                       ) : (
                         <span className="font-mono font-bold">€{SHIPPING_COST}</span>
                       )}
@@ -564,12 +564,12 @@ export const Checkout: React.FC<CheckoutProps> = ({ lang, cart, onBack, onSucces
             {currentStep === 'payment' && (
               <div className="bg-zinc-950 border border-zinc-900 p-6 md:p-8 space-y-6">
                 <h2 className="text-xl font-black italic uppercase flex items-center gap-3">
-                  <CreditCard className="w-5 h-5 text-[#00f2ff]" />
+                  <CreditCard className="w-5 h-5 text-[#ffd21f]" />
                   Płatność Kartą
                 </h2>
 
                 <div className="flex items-center gap-2 p-3 bg-zinc-900/50 border border-zinc-800">
-                  <Lock className="w-4 h-4 text-[#adff2f]" />
+                  <Lock className="w-4 h-4 text-[#22b35e]" />
                   <span className="text-xs text-zinc-400">Twoje dane są bezpieczne i szyfrowane</span>
                 </div>
                 
@@ -582,7 +582,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ lang, cart, onBack, onSucces
                         value={paymentInfo.cardNumber}
                         onChange={(e) => setPaymentInfo({ ...paymentInfo, cardNumber: formatCardNumber(e.target.value) })}
                         maxLength={19}
-                        className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-mono font-bold outline-none focus:border-[#00f2ff] transition-colors"
+                        className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-mono font-bold outline-none focus:border-[#ffd21f] transition-colors"
                         placeholder="1234 5678 9012 3456"
                       />
                       <div className="absolute right-3 top-1/2 -translate-y-1/2 flex gap-1">
@@ -597,7 +597,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ lang, cart, onBack, onSucces
                       type="text"
                       value={paymentInfo.cardName}
                       onChange={(e) => setPaymentInfo({ ...paymentInfo, cardName: e.target.value.toUpperCase() })}
-                      className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-bold outline-none focus:border-[#00f2ff] transition-colors uppercase"
+                      className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-bold outline-none focus:border-[#ffd21f] transition-colors uppercase"
                       placeholder="JAN KOWALSKI"
                     />
                   </div>
@@ -609,7 +609,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ lang, cart, onBack, onSucces
                         value={paymentInfo.expiryDate}
                         onChange={(e) => setPaymentInfo({ ...paymentInfo, expiryDate: formatExpiryDate(e.target.value) })}
                         maxLength={5}
-                        className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-mono font-bold outline-none focus:border-[#00f2ff] transition-colors"
+                        className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-mono font-bold outline-none focus:border-[#ffd21f] transition-colors"
                         placeholder="MM/YY"
                       />
                     </div>
@@ -620,7 +620,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ lang, cart, onBack, onSucces
                         value={paymentInfo.cvv}
                         onChange={(e) => setPaymentInfo({ ...paymentInfo, cvv: e.target.value.replace(/\D/g, '').slice(0, 4) })}
                         maxLength={4}
-                        className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-mono font-bold outline-none focus:border-[#00f2ff] transition-colors"
+                        className="w-full bg-black border border-zinc-800 px-4 py-3 text-sm font-mono font-bold outline-none focus:border-[#ffd21f] transition-colors"
                         placeholder="•••"
                       />
                     </div>
@@ -650,7 +650,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ lang, cart, onBack, onSucces
             {/* Confirmation Step */}
             {currentStep === 'confirmation' && (
               <div className="bg-zinc-950 border border-zinc-900 p-8 md:p-12 text-center space-y-6">
-                <div className="w-20 h-20 mx-auto bg-[#adff2f] rounded-full flex items-center justify-center animate-bounce">
+                <div className="w-20 h-20 mx-auto bg-[#22b35e] rounded-full flex items-center justify-center animate-bounce">
                   <Check className="w-10 h-10 text-black" />
                 </div>
                 
@@ -663,7 +663,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ lang, cart, onBack, onSucces
 
                 <div className="bg-black border border-zinc-800 p-6 inline-block">
                   <p className="text-xs text-zinc-500 uppercase font-bold mb-1">Numer zamówienia</p>
-                  <p className="text-2xl font-mono font-black text-[#00f2ff]">{orderNumber}</p>
+                  <p className="text-2xl font-mono font-black text-[#ffd21f]">{orderNumber}</p>
                 </div>
 
                 <div className="text-sm text-zinc-500 space-y-2">
@@ -695,14 +695,14 @@ export const Checkout: React.FC<CheckoutProps> = ({ lang, cart, onBack, onSucces
                     <div key={`${item.id}-${item.selectedSize}`} className="flex gap-3">
                       <div className="relative">
                         <img src={item.image} alt={item.name} className="w-16 h-16 object-cover" />
-                        <span className="absolute -top-2 -right-2 w-5 h-5 bg-[#00f2ff] text-black text-[10px] font-black flex items-center justify-center rounded-full">
+                        <span className="absolute -top-2 -right-2 w-5 h-5 bg-[#ffd21f] text-black text-[10px] font-black flex items-center justify-center rounded-full">
                           {item.quantity}
                         </span>
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-bold text-sm truncate">{item.name}</p>
                         <p className="text-[10px] text-zinc-500">Rozmiar: {item.selectedSize}</p>
-                        <p className="font-mono text-sm text-[#00f2ff]">€{(item.price * item.quantity).toFixed(2)}</p>
+                        <p className="font-mono text-sm text-[#ffd21f]">€{(item.price * item.quantity).toFixed(2)}</p>
                       </div>
                     </div>
                   ))}
@@ -715,7 +715,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ lang, cart, onBack, onSucces
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-zinc-500">Wysyłka</span>
-                    <span className={`font-mono ${shipping === 0 ? 'text-[#adff2f]' : ''}`}>
+                    <span className={`font-mono ${shipping === 0 ? 'text-[#22b35e]' : ''}`}>
                       {shipping === 0 ? 'GRATIS' : `€${shipping.toFixed(2)}`}
                     </span>
                   </div>

@@ -93,5 +93,5 @@ export interface Translation {
   footer_made_by: string;
 }
 
-export type Page = 'home' | 'shop' | 'lookbook' | 'about' | 'product' | 'admin' | 'checkout';
+export type Page = 'home' | 'shop' | 'lookbook' | 'about' | 'product' | 'admin' | 'checkout' | 'notfound';
 export type AdminTab = 'dashboard' | 'products' | 'orders' | 'customers' | 'payments' | 'discounts' | 'analytics' | 'settings';

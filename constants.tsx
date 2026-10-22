@@ -301,7 +301,7 @@ export const PRODUCTS: Product[] = [
     category: 'Tees',
     image: '/images/savage%20omerta.jpeg',
     images: ['/images/savage%20omerta.jpeg', '/images/savage%20omerta1.jpeg', '/images/savage%20omerta2.jpeg'],
-    previewImages: ['/images/savage%20omerta2%20podglad.jpeg', '/images/savage%20omerta3%20podglad.jpeg'],
+    previewImages: [],
     description: {
       NL: 'SAVAGE OMERTA - De meest agressieve editie van de OMERTA-lijn. Wanneer stilte dodelijk wordt. Premium 300gsm katoen met explosieve grafiek die de essentie van straatcultuur vastlegt. Geen compromissen, geen excuses.',
       EN: 'SAVAGE OMERTA - The most aggressive edition of the OMERTA line. When silence becomes deadly. Premium 300gsm cotton with explosive graphics capturing the essence of street culture. No compromises, no excuses.',
