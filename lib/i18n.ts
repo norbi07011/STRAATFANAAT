@@ -125,6 +125,8 @@ const UI = {
     backToWall: 'Terug naar de muur',
     wallView: 'Muur',
     gridView: 'Raster',
+    flipHint: 'Klik of sleep om te draaien',
+    sideLabel: 'Kant',
   },
   EN: {
     tagline: 'Streetwear from The Hague. With Polish roots.',
@@ -249,6 +251,8 @@ const UI = {
     backToWall: 'Back to the wall',
     wallView: 'Wall',
     gridView: 'Grid',
+    flipHint: 'Click or drag to turn',
+    sideLabel: 'Side',
   },
   PL: {
     tagline: 'Streetwear z Hagi. Z polskimi korzeniami.',
@@ -373,6 +377,8 @@ const UI = {
     backToWall: 'Wróć do ściany',
     wallView: 'Ściana',
     gridView: 'Siatka',
+    flipHint: 'Kliknij lub przeciągnij, aby obrócić',
+    sideLabel: 'Strona',
   },
 } satisfies Record<Language, Record<string, unknown>>;
 
