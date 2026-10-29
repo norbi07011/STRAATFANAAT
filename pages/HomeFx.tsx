@@ -88,9 +88,9 @@ export const HeroScene = ({ products }: { products: Product[] }) => {
   const wordX = useTransform(mx, [-1, 1], [12, -12]);
 
   const pick = (id: string) => products.find((p) => p.id === id)?.cutout;
-  const left = pick('21');
+  const left = pick('24');
   const center = pick('17');
-  const right = pick('18');
+  const right = pick('26');
 
   return (
     <section ref={ref} {...bind} className="relative min-h-[100svh] overflow-hidden bg-black text-white">

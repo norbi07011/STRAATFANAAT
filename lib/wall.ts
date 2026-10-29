@@ -1,15 +1,8 @@
-// Zdjęcia do „ściany” w sklepie (generowane przez scripts/wall-mockups.py).
-// Każdy produkt ma przód i/lub tył na tym samym kroju koszulki.
+// Zdjęcia do „ściany” w sklepie: wycięcia bez tła (scripts/drop-images.py).
+// Każda koszulka ma przód i tył; czapka tylko jedno ujęcie.
 
 const ONLY: Record<string, 'f' | 'b'> = {
-  '8': 'f',
-  '10': 'f',
-  '11': 'b',
-  '12': 'f',
-  '13': 'b',
   '16': 'f',
-  '20': 'f',
-  '23': 'f',
 };
 
 export const wallSides = (id: string) => {

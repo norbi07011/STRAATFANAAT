@@ -181,13 +181,12 @@ export const Lookbook = () => {
       </section>
 
       <div className="bg-haag-yellow py-3 text-black">
-        <VelocityMarquee className="font-banner text-2xl md:text-3xl" items={[u.chapters.classic[0], u.chapters.graphic[0], u.chapters.women[0], 'Den Haag', u.shopLook]} />
+        <VelocityMarquee className="font-banner text-2xl md:text-3xl" items={[u.chapters.classic[0], u.chapters.graphic[0], 'Den Haag', u.shopLook]} />
       </div>
 
       {/* ROZDZIAŁY */}
       <ChapterBlock chapter="classic" onOpen={open} />
       <ChapterBlock chapter="graphic" onOpen={open} />
-      <ChapterBlock chapter="women" onOpen={open} />
 
       {/* ŚCIANA DO PRZECIĄGANIA */}
       <section className="border-t border-white/15 pt-16 md:pt-24">
