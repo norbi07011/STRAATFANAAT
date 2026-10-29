@@ -7,11 +7,12 @@ import { useStore } from '../site/store';
 import { isAvailable, ProductCard } from '../site/ProductCard';
 import { LookViewer } from '../site/LookViewer';
 import { Look } from '../lib/looks';
+import { ShelfWall } from '../site/fx/ShelfWall';
 
 type Cat = 'all' | 'Tees' | 'Damskie' | 'Accessories';
 
 export const Shop = ({ products }: { products: Product[] }) => {
-  const { lang } = useStore();
+  const { lang, shopView, setShopView } = useStore();
   const t = TRANSLATIONS[lang];
   const u = ui(lang);
   const [cat, setCat] = useState<Cat>('all');
@@ -41,6 +42,34 @@ export const Shop = ({ products }: { products: Product[] }) => {
   // quick view używa tego samego podglądu co lookbook (zdjęcie + szybki zakup)
   const quickLooks: Look[] = list.map((p) => ({ id: `p${p.id}`, image: p.image, productId: p.id, chapter: 'classic', hotspot: { x: 50, y: 50 } }));
 
+  const wallList = useMemo(() => [...products].sort((a, b) => Number(isAvailable(b)) - Number(isAvailable(a))), [products]);
+
+  const toggle = (dark: boolean) => (
+    <div className={`flex items-center rounded-full p-1 text-[13px] font-semibold ${dark ? 'bg-white/10 text-white backdrop-blur' : 'border-2 border-black'}`} role="group" aria-label={u.gridLabel}>
+      {(['wall', 'grid'] as const).map((v) => (
+        <button
+          key={v}
+          onClick={() => {
+            setShopView(v);
+            window.scrollTo(0, 0);
+          }}
+          aria-pressed={shopView === v}
+          className={`rounded-full px-3.5 py-1.5 transition ${shopView === v ? (dark ? 'bg-white text-black' : 'bg-black text-haag-yellow') : ''}`}
+        >
+          {v === 'wall' ? u.wallView : u.gridView}
+        </button>
+      ))}
+    </div>
+  );
+
+  if (shopView === 'wall') {
+    return (
+      <div className="relative bg-[#24201f]">
+        <ShelfWall products={wallList} extra={toggle(true)} />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-paper px-4 pb-24 pt-28 md:px-8 md:pt-36">
       <div className="mx-auto max-w-[1600px]">
@@ -53,7 +82,10 @@ export const Shop = ({ products }: { products: Product[] }) => {
           >
             {t.the_drop}
           </motion.h1>
-          <p className="text-lg font-semibold tabular-nums">{u.items(list.length)}</p>
+          <div className="flex flex-col items-start gap-3 md:items-end">
+            {toggle(false)}
+            <p className="text-lg font-semibold tabular-nums">{u.items(list.length)}</p>
+          </div>
         </header>
 
         <div className="sticky top-16 z-30 -mx-4 flex flex-wrap items-center justify-between gap-3 bg-paper/90 px-4 py-4 backdrop-blur md:top-20 md:-mx-8 md:px-8">

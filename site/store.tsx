@@ -45,6 +45,8 @@ interface Store {
   toasts: Toast[];
   toast: (t: Omit<Toast, 'id'>) => void;
   dismissToast: (id: number) => void;
+  shopView: 'wall' | 'grid';
+  setShopView: (v: 'wall' | 'grid') => void;
 }
 
 export interface Toast {
@@ -64,6 +66,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const [waitlistProduct, openWaitlist] = useState<Product | null>(null);
   const [recent, setRecent] = useState<string[]>(() => read<string[]>('sf-recent', []));
   const [toasts, setToasts] = useState<Toast[]>([]);
+  const [shopView, setShopView] = useState<'wall' | 'grid'>('wall');
 
   const markViewed = useCallback((id: string) => {
     setRecent((prev) => {
@@ -131,8 +134,10 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
       toasts,
       toast,
       dismissToast,
+      shopView,
+      setShopView,
     }),
-    [lang, setLang, cart, addToCart, setQty, clearCart, isCartOpen, waitlistProduct, recent, markViewed, toasts, toast, dismissToast]
+    [lang, setLang, cart, addToCart, setQty, clearCart, isCartOpen, waitlistProduct, recent, markViewed, toasts, toast, dismissToast, shopView]
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

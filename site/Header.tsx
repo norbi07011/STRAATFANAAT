@@ -40,7 +40,7 @@ const LangSwitch = ({ dark }: { dark: boolean }) => {
 };
 
 export const Header = () => {
-  const { lang, cartCount, setCartOpen } = useStore();
+  const { lang, cartCount, setCartOpen, shopView } = useStore();
   const { route } = useNav();
   const t = TRANSLATIONS[lang];
   const u = ui(lang);
@@ -73,7 +73,7 @@ export const Header = () => {
   }, [animateCart, cartScope]);
 
   // Na jasnych stronach (sklep, produkt) tekst nagłówka jest czarny, dopóki tło jest przezroczyste
-  const lightPage = route.page === 'shop' || route.page === 'product' || route.page === 'notfound';
+  const lightPage = (route.page === 'shop' && shopView === 'grid') || route.page === 'product' || route.page === 'notfound';
   const darkText = lightPage && !solid;
 
   const links = [
