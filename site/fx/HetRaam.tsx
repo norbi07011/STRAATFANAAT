@@ -16,8 +16,8 @@ const IMG = {
   roomM: '/het-raam/pokoj-m.webp',
   front: '/images/cutout/fc-den-haag-back-drop-front.webp',
   back: '/images/cutout/fc-den-haag-back-drop-back.webp',
-  cap: '/images/cutout/czapka.webp',
-  capBack: '/images/cutout/czapka-back.webp',
+  cap: '/images/cutout/czapka-s.webp',
+  capBack: '/images/cutout/czapka-s-back.webp',
 };
 
 type Act = { range: [number, number]; kicker: string; title: string };

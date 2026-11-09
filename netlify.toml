@@ -27,4 +27,5 @@
 [[headers]]
   for = "/images/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    # zdjęcia podmieniamy pod tą samą nazwą, więc telefon sprawdza nową wersję najpóźniej po dniu
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
