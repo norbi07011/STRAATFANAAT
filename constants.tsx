@@ -189,13 +189,14 @@ export const PRODUCTS: Product[] = [
   {
     id: '16',
     cutout: '/images/cutout/czapka.webp',
+    cutoutBack: '/images/cutout/czapka-back.webp',
     name: 'CZAPKA HOOLIGAN',
     price: 40,
     originalPrice: 55,
     available: true,
     category: 'Accessories',
-    image: '/images/czapka.jpeg',
-    images: ['/images/czapka.jpeg'],
+    image: '/images/czapka-s-przod.jpg',
+    images: ['/images/czapka-s-przod.jpg', '/images/czapka-s-bok.jpg', '/images/czapka-s-tyl.jpg'],
     previewImages: [],
     promoVideo: '/video/czapka%20hooligan.mp4',
     description: {

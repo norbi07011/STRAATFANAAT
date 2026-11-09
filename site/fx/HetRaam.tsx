@@ -17,6 +17,7 @@ const IMG = {
   front: '/images/cutout/fc-den-haag-back-drop-front.webp',
   back: '/images/cutout/fc-den-haag-back-drop-back.webp',
   cap: '/images/cutout/czapka.webp',
+  capBack: '/images/cutout/czapka-back.webp',
 };
 
 type Act = { range: [number, number]; kicker: string; title: string };
@@ -197,10 +198,11 @@ export const HetRaam = ({ products }: { products: Product[] }) => {
 
   /* koszulka: spada z sufitu z obrotem, ląduje, pełny obrót 360°, przy końcu jeszcze raz */
   const shirtY = useTransform(p, [0, 0.17, 0.23, 0.5, 0.6, 0.77, 1], ['-115vh', '3vh', '0vh', '0vh', '5vh', '0vh', '-4vh']);
-  const shirtRotY = useTransform(p, [0, 0.2, 0.26, 0.47, 0.77, 1], [-260, -12, 0, 360, 360, 720]);
+  // obrót szybko przechodzi przez bok (90°), a długo stoi przodem albo tyłem, żeby nigdy nie zatrzymać się na „kresce”
+  const shirtRotY = useTransform(p, [0, 0.2, 0.26, 0.32, 0.37, 0.43, 0.48, 1], [-260, -12, 0, 0, 180, 180, 360, 360]);
   const shirtRotX = useTransform(p, [0, 0.17, 0.23, 0.5, 0.6], [40, -10, 0, 0, 6]);
   const shirtRotZ = useTransform(p, [0, 0.17, 0.23], [-30, 5, 0]);
-  const shirtScale = useTransform(p, [0, 0.23, 0.77, 1], [0.75, 1, 1, 1.12]);
+  const shirtScale = useTransform(p, [0, 0.23, 0.77, 1], [0.75, 1, 1, 1.06]);
   const shirtTransform = useMotionTemplate`translateY(${shirtY}) rotateX(${shirtRotX}deg) rotateY(${shirtRotY}deg) rotateZ(${shirtRotZ}deg) scale(${shirtScale})`;
 
   /* połysk przesuwa się po materiale razem z obrotem */
@@ -217,7 +219,8 @@ export const HetRaam = ({ products }: { products: Product[] }) => {
 
   /* czapka S: spada wirując, łapie się nad kołnierzem */
   const capY = useTransform(p, [0.47, 0.6, 0.65, 0.77, 1], ['-120vh', '1vh', '0vh', '0vh', '-2vh']);
-  const capRotY = useTransform(p, [0.47, 0.63, 0.77, 1], [-720, -18, -18, 342]);
+  // czapka wiruje tylko w locie, po lądowaniu stoi przodem (lekko pod kątem)
+  const capRotY = useTransform(p, [0.47, 0.62, 1], [-720, -14, -14]);
   const capRotX = useTransform(p, [0.47, 0.6, 0.65], [70, -12, 8]);
   const capRotZ = useTransform(p, [0.47, 0.6, 0.65], [40, -8, -6]);
   const capOpacity = useTransform(p, [0.46, 0.48], [0, 1]);
@@ -267,15 +270,6 @@ export const HetRaam = ({ products }: { products: Product[] }) => {
             {/* koszulka: dwie strony, każda widoczna tylko od przodu */}
             <motion.div style={{ transform: shirtTransform }} className="absolute inset-0 [transform-style:preserve-3d] will-change-transform">
               <div className="animate-[raamFloat_5s_ease-in-out_infinite] absolute inset-0 [transform-style:preserve-3d]">
-                {/* grubość materiału: przy obrocie koszulka nie znika w kreskę */}
-                {[-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5].map((z) => (
-                  <div
-                    key={z}
-                    aria-hidden
-                    className="absolute inset-0 bg-[#0b0b0d]"
-                    style={{ transform: `translateZ(${z * 1.4}px)`, WebkitMaskImage: `url(${IMG.front})`, maskImage: `url(${IMG.front})`, WebkitMaskSize: '100% 100%', maskSize: '100% 100%' }}
-                  />
-                ))}
                 <Face src={IMG.front} sheenX={sheenX} shade={sideShade} />
                 <Face src={IMG.back} sheenX={sheenX} shade={sideShade} back />
               </div>
@@ -286,8 +280,9 @@ export const HetRaam = ({ products }: { products: Product[] }) => {
               style={{ transform: capTransform, opacity: capOpacity }}
               className="absolute left-1/2 top-[-27%] w-[46%] -translate-x-1/2 [transform-style:preserve-3d] will-change-transform"
             >
-              <div className="animate-[raamFloat_4.2s_ease-in-out_infinite_0.6s]">
+              <div className="relative animate-[raamFloat_4.2s_ease-in-out_infinite_0.6s] [transform-style:preserve-3d]">
                 <img src={IMG.cap} alt="Czapka S, STRAATFANAAT" className="w-full drop-shadow-[0_18px_30px_rgba(0,0,0,0.65)] [backface-visibility:hidden]" />
+                <img src={IMG.capBack} alt="" aria-hidden className="absolute inset-0 w-full drop-shadow-[0_18px_30px_rgba(0,0,0,0.65)] [backface-visibility:hidden] [transform:rotateY(180deg)]" />
               </div>
             </motion.div>
           </div>
