@@ -38,6 +38,7 @@ export const NavProvider = ({ children }: { children: React.ReactNode }) => {
     if (reduce) return;
     const l = new Lenis({ duration: 1.1, smoothWheel: true });
     lenis.current = l;
+    if (import.meta.env.DEV) (window as any).__lenis = l;
     let raf = 0;
     const loop = (t: number) => {
       l.raf(t);

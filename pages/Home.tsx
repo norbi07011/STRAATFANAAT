@@ -10,6 +10,9 @@ import { NavLink, useNav } from '../site/nav';
 import { Btn, Marquee, Pic, Reveal } from '../site/ui';
 import { isAvailable, ProductCard } from '../site/ProductCard';
 import { CollectionOrbit, DollyZoom, HeroScene, Stats, Story } from './HomeFx';
+import { HetRaam } from '../site/fx/HetRaam';
+import { Reel, ReelCoverflow } from '../site/fx/ReelCoverflow';
+import { Bohaterowie } from '../site/fx/Bohaterowie';
 
 const EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -132,103 +135,36 @@ const NextDrop = ({ products }: { products: Product[] }) => {
 
 /* ---------------- Filmy ---------------- */
 
-const CLIPS = [
+const OLD_CLIPS = [
   { src: '/video/WhatsApp%20Video%202026-03-27%20at%2011.54.30%20PM.mp4', title: 'Straatfanaat', productId: null as string | null },
   { src: '/video/savage%20.mp4', title: 'Savage Omerta', productId: '8' },
   { src: '/video/czapka%20hooligan.mp4', title: 'Czapka Hooligan', productId: '16' },
 ];
 
-const AutoClip = ({ src, poster }: { src: string; poster: string }) => {
-  const ref = useRef<HTMLVideoElement>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(([e]) => (e.isIntersecting ? el.play().catch(() => {}) : el.pause()), { threshold: 0.35 });
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-  return <video ref={ref} src={src} poster={poster} muted loop playsInline preload="none" className="h-full w-full object-cover" />;
-};
+const reel = (name: string, title: string, productId: string | null): Reel => ({ src: `/video/rolki/${name}.mp4`, poster: `/video/rolki/${name}.webp`, title, productId });
+
+const REELS: Reel[] = [
+  reel('v5-reklama', 'Den Haag draagt', null),
+  reel('v5-collectie', 'De collectie', null),
+  reel('joey-gold', 'FCDH Gold', '26'),
+  reel('v5-romy', 'Romy', '25'),
+  reel('joey-keizer', 'De Keizer', '28'),
+  reel('v5-duo', 'Joey & Romy', null),
+  ...OLD_CLIPS.map((c) => ({ ...video(c.src), title: c.title, productId: c.productId })),
+];
 
 const Clips = () => {
   const { lang } = useStore();
-  const { lenis } = useNav();
   const u = ui(lang);
-  const [open, setOpen] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (open !== null) lenis.current?.stop();
-    else lenis.current?.start();
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(null);
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [open, lenis]);
-
   return (
-    <section className="bg-black px-4 py-20 text-white md:px-8 md:py-32">
+    <section className="overflow-hidden bg-black px-4 py-20 text-white md:px-8 md:py-32">
       <div className="mx-auto max-w-[1600px]">
         <div className="mb-10 flex flex-col justify-between gap-4 md:mb-16 md:flex-row md:items-end">
           <h2 className="font-banner text-[18vw] md:text-[10rem]">{u.onTheStreet}</h2>
           <p className="max-w-xs text-lg text-white/70 md:text-right">{u.onTheStreetLead}</p>
         </div>
-        <div className="grid gap-5 sm:grid-cols-3">
-          {CLIPS.map((c, i) => {
-            const v = video(c.src);
-            return (
-              <Reveal key={c.src} delay={i * 0.1}>
-                <div className="group relative aspect-[9/14] overflow-hidden bg-asphalt">
-                  <AutoClip src={v.src} poster={v.poster} />
-                  <button
-                    onClick={() => setOpen(i)}
-                    className="absolute inset-0 flex items-end justify-between bg-gradient-to-t from-black/80 via-transparent to-transparent p-5 text-left"
-                    aria-label={`${u.playWithSound}: ${c.title}`}
-                  >
-                    <span className="font-banner text-5xl">{c.title}</span>
-                    <span className="flex h-14 w-14 shrink-0 items-center justify-center bg-haag-yellow text-black transition-transform duration-500 ease-out-expo group-hover:scale-110">
-                      <Play className="h-6 w-6 fill-black" />
-                    </span>
-                  </button>
-                </div>
-                {c.productId && (
-                  <NavLink page="product" id={c.productId} className="mt-3 inline-block font-semibold underline decoration-2 underline-offset-4 hover:text-haag-yellow">
-                    {u.viewProduct}
-                  </NavLink>
-                )}
-              </Reveal>
-            );
-          })}
-        </div>
+        <ReelCoverflow reels={REELS} />
       </div>
-
-      <AnimatePresence>
-        {open !== null && (
-          <motion.div
-            className="fixed inset-0 z-[120] flex items-center justify-center bg-black/95 p-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setOpen(null)}
-            role="dialog"
-            aria-modal="true"
-          >
-            <button className="absolute right-4 top-4 flex h-12 w-12 items-center justify-center bg-haag-yellow text-black" aria-label={u.close}>
-              <X className="h-6 w-6" />
-            </button>
-            <motion.video
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5, ease: EXPO }}
-              onClick={(e) => e.stopPropagation()}
-              src={video(CLIPS[open].src).src}
-              poster={video(CLIPS[open].src).poster}
-              controls
-              autoPlay
-              playsInline
-              className="max-h-[88vh] w-auto max-w-full"
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   );
 };
@@ -280,8 +216,10 @@ export const Home = ({ products }: { products: Product[] }) => {
   return (
     <>
       <HeroScene products={products} />
+      <HetRaam products={products} />
       {story && <Story product={story} />}
       <AvailableNow products={products} />
+      <Bohaterowie />
       <Stats products={products} />
       <CollectionOrbit products={products} />
       <NextDrop products={products} />
