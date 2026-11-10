@@ -224,7 +224,8 @@ export const HetRaam = ({ products }: { products: Product[] }) => {
   const capRotX = useTransform(p, [0.47, 0.6, 0.65], [70, -12, 8]);
   const capRotZ = useTransform(p, [0.47, 0.6, 0.65], [40, -8, -6]);
   const capOpacity = useTransform(p, [0.46, 0.48], [0, 1]);
-  const capTransform = useMotionTemplate`translateY(${capY}) rotateX(${capRotX}deg) rotateY(${capRotY}deg) rotateZ(${capRotZ}deg)`;
+  // translateZ: czapka zawsze przed koszulką, inaczej daszek przecina jej płaszczyznę i widać linię
+  const capTransform = useMotionTemplate`translateY(${capY}) translateZ(140px) rotateX(${capRotX}deg) rotateY(${capRotY}deg) rotateZ(${capRotZ}deg)`;
 
   /* błysk przy lądowaniu czapki */
   const flash = useTransform(p, [0.6, 0.62, 0.68], [0, 0.35, 0]);
@@ -278,7 +279,7 @@ export const HetRaam = ({ products }: { products: Product[] }) => {
             {/* czapka nad kołnierzem */}
             <motion.div
               style={{ transform: capTransform, opacity: capOpacity }}
-              className="absolute left-1/2 top-[-27%] w-[46%] -translate-x-1/2 [transform-style:preserve-3d] will-change-transform"
+              className="absolute left-1/2 top-[-25%] w-[41%] -translate-x-1/2 [transform-style:preserve-3d] will-change-transform"
             >
               <div className="relative animate-[raamFloat_4.2s_ease-in-out_infinite_0.6s] [transform-style:preserve-3d]">
                 <img src={IMG.cap} alt="Czapka S, STRAATFANAAT" className="w-full drop-shadow-[0_18px_30px_rgba(0,0,0,0.65)] [backface-visibility:hidden]" />

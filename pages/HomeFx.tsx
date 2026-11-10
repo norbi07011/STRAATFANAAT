@@ -4,7 +4,7 @@ import { Product } from '../types';
 import { eur, ui } from '../lib/i18n';
 import { useStore } from '../site/store';
 import { NavLink, useNav } from '../site/nav';
-import { Btn, Pic } from '../site/ui';
+import { Btn } from '../site/ui';
 import { SmokeShader } from '../site/fx/SmokeShader';
 import { Spotlights } from '../site/fx/Spotlights';
 import { useMouseParallax } from '../site/fx/tilt';
@@ -160,8 +160,8 @@ export const HeroScene = ({ products }: { products: Product[] }) => {
 
 /* ================= SCROLLYTELLING: przypięta koszulka obraca się, opis zmienia się ze scrollem ================= */
 
-export const Story = ({ product }: { product: Product }) => {
-  const { lang, addToCart } = useStore();
+export const Story = ({ product, steps: customSteps }: { product: Product; steps?: { t: string; d: string }[] }) => {
+  const { lang, addToCart, openWaitlist } = useStore();
   const u = ui(lang);
   const reduce = useReducedMotion();
   const ref = useRef<HTMLElement>(null);
@@ -179,7 +179,7 @@ export const Story = ({ product }: { product: Product }) => {
 
   useMotionValueEvent(scrollYProgress, 'change', (v) => setStep(v < 0.25 ? 0 : v < 0.52 ? 1 : v < 0.74 ? 2 : 3));
 
-  const steps = u.story;
+  const steps = customSteps ?? u.story;
   const add = () => {
     if (!size) return;
     addToCart(product, size);
@@ -219,7 +219,15 @@ export const Story = ({ product }: { product: Product }) => {
               >
                 <h2 className="font-banner text-[17vw] md:text-[clamp(4rem,8vw,8.5rem)]">{steps[step].t}</h2>
                 <p className="mt-3 max-w-md text-lg text-white/80 md:text-xl">{steps[step].d}</p>
-                {step === 3 && (
+                {step === 3 && product.available === false && (
+                  <div className="mt-6 flex flex-wrap items-center gap-3">
+                    <span className="font-banner text-5xl tabular-nums">{eur(product.price, lang)}</span>
+                    <Btn variant="yellow" onClick={() => openWaitlist(product)}>
+                      {u.notifyMe}
+                    </Btn>
+                  </div>
+                )}
+                {step === 3 && product.available !== false && (
                   <div className="mt-6 flex flex-wrap items-center gap-3">
                     <span className="font-banner text-5xl tabular-nums">{eur(product.price, lang)}</span>
                     <div className="flex flex-wrap gap-1.5">
@@ -266,12 +274,11 @@ export const Story = ({ product }: { product: Product }) => {
 export const Stats = ({ products }: { products: Product[] }) => {
   const { lang } = useStore();
   const u = ui(lang);
-  const waiting = products.reduce((n, p) => n + (p.waitlistCount ?? 0), 0);
   const fmt = (n: number) => Math.round(n).toLocaleString(lang === 'EN' ? 'en-GB' : lang === 'PL' ? 'pl-PL' : 'nl-NL');
   const stats = [
     { to: products.length, label: u.statModels },
     { to: 300, label: u.statGsm },
-    { to: waiting, label: u.statWaiting },
+    { to: 75, label: u.statShipping }, // prawdziwy próg darmowej wysyłki zamiast wpisanej na sztywno liczby zapisów
     { to: 3, label: u.statLangs },
   ];
   return (
@@ -327,48 +334,3 @@ export const CollectionOrbit = ({ products }: { products: Product[] }) => {
   );
 };
 
-/* ================= Dolly zoom: kamera „wjeżdża” w zdjęcie ================= */
-
-export const DollyZoom = () => {
-  const { lang } = useStore();
-  const { navigate } = useNav();
-  const u = ui(lang);
-  const ref = useRef<HTMLElement>(null);
-  const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] });
-  const clip = useTransform(scrollYProgress, [0, 0.6], reduce ? ['inset(0% 0% 0% 0%)', 'inset(0% 0% 0% 0%)'] : ['inset(24% 34% 24% 34%)', 'inset(0% 0% 0% 0%)']);
-  const imgScale = useTransform(scrollYProgress, [0, 0.6, 1], reduce ? [1, 1, 1] : [1.6, 1.05, 1]);
-  const textOpacity = useTransform(scrollYProgress, [0.5, 0.75], [0, 1]);
-  const textY = useTransform(scrollYProgress, [0.5, 0.8], [60, 0]);
-  const titleScale = useTransform(scrollYProgress, [0, 0.6], [1, 0.6]);
-  const titleOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
-
-  return (
-    <section ref={ref} className="relative bg-paper" style={{ height: '260vh' }}>
-      <div className="sticky top-0 h-[100svh] overflow-hidden">
-        <motion.p
-          aria-hidden
-          style={{ scale: titleScale, opacity: titleOpacity }}
-          className="font-banner absolute inset-x-0 top-[8%] z-0 text-center text-[22vw] text-black md:text-[16vw]"
-        >
-          Duo
-        </motion.p>
-        <motion.div style={{ clipPath: clip }} className="absolute inset-0 z-10">
-          <motion.div style={{ scale: imgScale }} className="h-full w-full">
-            <Pic src="/images/kolekcja%20dla%20niego%20dla%20niej%20sesia1.jpeg" alt="STRAATFANAAT duo" large sizes="100vw" className="h-full w-full object-cover" />
-          </motion.div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-        </motion.div>
-        <motion.div style={{ opacity: textOpacity, y: textY }} className="absolute inset-x-0 bottom-0 z-20 mx-auto max-w-[1600px] px-4 pb-14 text-white md:px-8">
-          <h2 className="font-banner text-[18vw] md:text-[9rem]">{u.duoTitle}</h2>
-          <p className="mt-3 max-w-lg text-lg md:text-xl">{u.duoText}</p>
-          <div className="mt-6">
-            <Btn variant="yellow" onClick={() => navigate('lookbook')}>
-              {u.viewDuo}
-            </Btn>
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-};

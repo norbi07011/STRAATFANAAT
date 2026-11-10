@@ -218,7 +218,7 @@ export const Lookbook = () => {
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4 md:col-span-6 md:col-start-7">
-            <Pic src="/images/kolekcja%20dla%20niego%20dla%20niej%20sesia%20.jpeg" alt="" sizes="25vw" className="aspect-[4/5] w-full object-cover" />
+            <img src="/images/duo/k02-black-trench-keizer-passage.webp" alt="" loading="lazy" decoding="async" className="aspect-[4/5] w-full object-cover object-top" />
             <Pic src="/images/kolekcja%20dla%20niej%20dla%20niego%20damska%20.jpeg" alt="" sizes="25vw" className="mt-16 aspect-[4/5] w-full object-cover" />
           </div>
         </div>

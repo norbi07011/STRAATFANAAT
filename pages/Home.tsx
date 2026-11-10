@@ -9,7 +9,8 @@ import { useStore } from '../site/store';
 import { NavLink, useNav } from '../site/nav';
 import { Btn, Marquee, Pic, Reveal } from '../site/ui';
 import { isAvailable, ProductCard } from '../site/ProductCard';
-import { CollectionOrbit, DollyZoom, HeroScene, Stats, Story } from './HomeFx';
+import { CollectionOrbit, HeroScene, Stats, Story } from './HomeFx';
+import { DuoCarousel } from '../site/fx/DuoCarousel';
 import { HetRaam } from '../site/fx/HetRaam';
 import { Reel, ReelCoverflow } from '../site/fx/ReelCoverflow';
 import { Bohaterowie } from '../site/fx/Bohaterowie';
@@ -212,19 +213,21 @@ const Manifesto = () => {
 };
 
 export const Home = ({ products }: { products: Product[] }) => {
-  const story = products.find((p) => p.id === '17' && p.cutout);
+  // właściciel wybrał DE KEIZER do sekcji pod HET RAAM (2026-11-09)
+  const { lang } = useStore();
+  const story = products.find((p) => p.id === '28' && p.cutout);
   return (
     <>
       <HeroScene products={products} />
       <HetRaam products={products} />
-      {story && <Story product={story} />}
+      {story && <Story product={story} steps={ui(lang).storyKeizer} />}
       <AvailableNow products={products} />
       <Bohaterowie />
       <Stats products={products} />
       <CollectionOrbit products={products} />
       <NextDrop products={products} />
       <Manifesto />
-      <DollyZoom />
+      <DuoCarousel />
       <Clips />
     </>
   );
