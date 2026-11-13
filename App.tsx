@@ -16,6 +16,18 @@ import { Shop } from './pages/Shop';
 import { ProductPage } from './pages/ProductPage';
 import { Lookbook } from './pages/Lookbook';
 import { About, NotFound } from './pages/About';
+import { ONLINE_CHECKOUT_ENABLED } from './lib/whatsapp';
+
+// Kasa online wyłączona: adres /checkout otwiera koszyk z zamówieniem przez WhatsApp
+const CheckoutBlocked = () => {
+  const { navigate } = useNav();
+  const { setCartOpen } = useStore();
+  useEffect(() => {
+    navigate('shop');
+    setCartOpen(true);
+  }, [navigate, setCartOpen]);
+  return <Loading />;
+};
 
 // Kasa i panel admina ładowane dopiero gdy są potrzebne (mniejszy bundle startowy)
 const Checkout = lazy(() => import('./components/Checkout').then((m) => ({ default: m.Checkout })));
@@ -52,6 +64,7 @@ const Pages = () => {
     case 'about':
       return <About />;
     case 'checkout':
+      if (!ONLINE_CHECKOUT_ENABLED) return <CheckoutBlocked />;
       return (
         <Suspense fallback={<Loading />}>
           <Checkout lang={lang} cart={cart} onBack={() => navigate('shop')} onSuccess={() => navigate('home')} clearCart={clearCart} />

@@ -7,6 +7,7 @@ import { useStore } from './store';
 import { useNav } from './nav';
 import { Btn } from './ui';
 import { RollingNumber } from './fx/scroll';
+import { HAS_WHATSAPP, ONLINE_CHECKOUT_ENABLED, whatsappOrderLink } from '../lib/whatsapp';
 
 const FREE_SHIPPING = 75; // zgodnie z Checkout.tsx
 
@@ -138,16 +139,29 @@ export const CartDrawer = () => {
                   <span className="font-semibold">{u.subtotal}</span>
                   <RollingNumber value={eur(cartTotal, lang)} className="font-banner text-4xl" />
                 </div>
-                <Btn
-                  variant="black"
-                  className="w-full"
-                  onClick={() => {
-                    setCartOpen(false);
-                    navigate('checkout');
-                  }}
-                >
-                  {u.checkout}
-                </Btn>
+                {ONLINE_CHECKOUT_ENABLED ? (
+                  <Btn
+                    variant="black"
+                    className="w-full"
+                    onClick={() => {
+                      setCartOpen(false);
+                      navigate('checkout');
+                    }}
+                  >
+                    {u.checkout}
+                  </Btn>
+                ) : (
+                  <>
+                    <Btn
+                      variant="black"
+                      className="w-full"
+                      onClick={() => window.open(whatsappOrderLink(cart, lang), '_blank', 'noopener')}
+                    >
+                      {HAS_WHATSAPP ? u.orderWhatsapp : u.orderDm}
+                    </Btn>
+                    <p className="mt-3 text-sm leading-snug text-black/70">{HAS_WHATSAPP ? u.orderNote : u.orderNoteDm}</p>
+                  </>
+                )}
               </div>
             )}
           </motion.aside>
