@@ -8,11 +8,14 @@ import { video } from '../lib/media';
 import { useStore } from '../site/store';
 import { NavLink, useNav } from '../site/nav';
 import { Btn, Marquee, Pic, Reveal } from '../site/ui';
-import { isAvailable, ProductCard } from '../site/ProductCard';
-import { CollectionOrbit, HeroScene, Stats, Story } from './HomeFx';
+import { isAvailable } from '../site/ProductCard';
+import { GalleryCard } from '../site/GalleryCard';
+import { CollectionOrbit, Story } from './HomeFx';
+import { HeroNow } from '../site/HeroNow';
+import { DropStage } from '../site/fx/DropStage';
 import { DuoCarousel } from '../site/fx/DuoCarousel';
 import { HetRaam } from '../site/fx/HetRaam';
-import { KeizerOrbitFilm, SoulOrbitFilm } from '../site/fx/ScrollFilm';
+import { BearOrbitFilm, KeizerOrbitFilm, SoulOrbitFilm } from '../site/fx/ScrollFilm';
 import { Reel, ReelCoverflow } from '../site/fx/ReelCoverflow';
 import { Bohaterowie } from '../site/fx/Bohaterowie';
 
@@ -36,22 +39,20 @@ const AvailableNow = ({ products }: { products: Product[] }) => {
   const u = ui(lang);
   const items = products.filter(isAvailable);
   return (
-    <section className="bg-paper px-4 py-20 md:px-8 md:py-32">
+    <section className="bg-black px-4 py-20 text-white md:px-8 md:py-32">
       <div className="mx-auto max-w-[1600px]">
-        <div className="mb-10 flex flex-col justify-between gap-4 md:mb-16 md:flex-row md:items-end">
-          <h2 className="font-banner text-[18vw] md:text-[10rem]">{u.availableNow}</h2>
+        <div className="mb-10 flex flex-col justify-between gap-5 md:mb-14 md:flex-row md:items-end">
+          <h2 className="sf-h2">{u.availableNow}</h2>
           <div className="flex max-w-xs flex-col gap-3 md:items-end md:text-right">
-            <p className="text-lg">{u.availableNowLead}</p>
-            <NavLink page="shop" className="font-semibold underline decoration-2 underline-offset-4 hover:text-haag-green">
+            <p className="text-lg text-white/65">{u.availableNowLead}</p>
+            <NavLink page="shop" className="font-semibold text-white underline decoration-gold decoration-2 underline-offset-[6px] hover:text-haag-yellow">
               {u.shopDrop}
             </NavLink>
           </div>
         </div>
-        <div className="grid gap-x-6 gap-y-14 sm:grid-cols-2 md:grid-cols-3">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:gap-x-6 lg:grid-cols-4">
           {items.map((p, i) => (
-            <Reveal key={p.id} delay={i * 0.08} className={i === 1 ? 'md:translate-y-24' : ''}>
-              <ProductCard product={p} sizes="(min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw" />
-            </Reveal>
+            <GalleryCard key={p.id} product={p} />
           ))}
         </div>
       </div>
@@ -65,7 +66,7 @@ const Track = ({ items, x }: { items: Product[]; x?: MotionValue<number> }) => (
   <motion.div style={x ? { x } : undefined} className="flex w-max gap-5 px-4 md:gap-8 md:px-8">
     {items.map((p) => (
       <div key={p.id} className="w-[68vw] shrink-0 snap-start sm:w-[42vw] md:w-[clamp(240px,21vw,340px)]">
-        <ProductCard product={p} tone="dark" sizes="(min-width: 768px) 22vw, 68vw" />
+        <GalleryCard product={p} />
       </div>
     ))}
   </motion.div>
@@ -102,14 +103,14 @@ const NextDrop = ({ products }: { products: Product[] }) => {
 
   const header = (
     <div className="mx-auto mb-10 flex w-full max-w-[1600px] flex-col justify-between gap-4 px-4 md:mb-12 md:flex-row md:items-end md:px-8">
-      <h2 className="font-banner text-[18vw] text-white md:text-[10rem]">{u.nextDrop}</h2>
+      <h2 className="sf-h2 text-white">{u.nextDrop}</h2>
       <p className="max-w-sm text-lg text-white/70 md:text-right">{u.nextDropLead}</p>
     </div>
   );
 
   if (!pinned) {
     return (
-      <section className="bg-asphalt py-20 text-white">
+      <section className="bg-ink py-20 text-white">
         {header}
         <div className="snap-x snap-mandatory overflow-x-auto pb-4 [scrollbar-width:none]" data-lenis-prevent-touch>
           <Track items={items} />
@@ -119,7 +120,7 @@ const NextDrop = ({ products }: { products: Product[] }) => {
   }
 
   return (
-    <section ref={sectionRef} className="relative bg-asphalt text-white" style={{ height: `calc(100vh + ${distance}px)` }}>
+    <section ref={sectionRef} className="relative bg-ink text-white" style={{ height: `calc(100vh + ${distance}px)` }}>
       <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden pt-16">
         {header}
         <div ref={trackRef} className="w-max">
@@ -162,7 +163,7 @@ const Clips = () => {
     <section className="overflow-hidden bg-black px-4 py-20 text-white md:px-8 md:py-32">
       <div className="mx-auto max-w-[1600px]">
         <div className="mb-10 flex flex-col justify-between gap-4 md:mb-16 md:flex-row md:items-end">
-          <h2 className="font-banner text-[18vw] md:text-[10rem]">{u.onTheStreet}</h2>
+          <h2 className="sf-h2">{u.onTheStreet}</h2>
           <p className="max-w-xs text-lg text-white/70 md:text-right">{u.onTheStreetLead}</p>
         </div>
         <ReelCoverflow reels={REELS} />
@@ -219,17 +220,16 @@ export const Home = ({ products }: { products: Product[] }) => {
   const story = products.find((p) => p.id === '28' && p.cutout);
   return (
     <>
-      <HeroScene products={products} />
+      <HeroNow products={products} />
       <HetRaam products={products} />
+      <DropStage products={products} />
       <KeizerOrbitFilm />
-      <SoulOrbitFilm products={products} />
-      {story && <Story product={story} steps={ui(lang).storyKeizer} />}
-      <AvailableNow products={products} />
       <Bohaterowie />
-      <Stats products={products} />
       <CollectionOrbit products={products} />
+      <SoulOrbitFilm products={products} />
       <NextDrop products={products} />
       <Manifesto />
+      <BearOrbitFilm products={products} />
       <DuoCarousel />
       <Clips />
     </>

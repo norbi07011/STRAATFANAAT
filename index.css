@@ -12,6 +12,9 @@
   --color-concrete: #bfbeb8;
   --color-paper: #e4e4e0;
   --color-paper-2: #d6d6d1;
+  --color-ink: #0b0c0d;
+  --color-ink-2: #131416;
+  --color-gold: #d8a63a;
   --color-haag-yellow: #ffd21f;
   --color-haag-green: #0b8a44;
   --color-haag-green-bright: #22b35e;
@@ -55,6 +58,17 @@
   text-transform: uppercase;
   line-height: 0.84;
   letter-spacing: -0.005em;
+}
+/* Tytuł sekcji: ten sam krój co baner, ale w spokojnej skali (max 6rem) */
+@utility sf-h2 {
+  font-family: var(--font-sans);
+  font-stretch: 62%;
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.9;
+  letter-spacing: -0.005em;
+  font-size: clamp(2.75rem, 7.2vw, 6rem);
+  text-wrap: balance;
 }
 @utility font-wide {
   font-family: var(--font-sans);
@@ -206,3 +220,12 @@ html.lenis, html.lenis body { height: auto; }
     }
   }
 }
+
+/* Karuzela na górze strony: trzy kopie listy przesuwają się o jedną trzecią, więc pętla nie ma szwu */
+@keyframes sf-hero-track {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-100% / 3)); }
+}
+.sf-hero-track { animation: sf-hero-track 38s linear infinite; }
+.sf-hero-rail:hover .sf-hero-track,
+.sf-hero-rail:focus-within .sf-hero-track { animation-play-state: paused; }

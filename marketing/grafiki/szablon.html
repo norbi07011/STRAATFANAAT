@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>STRAATFANAAT grafiki</title>
+<style>
+@font-face {
+  font-family: "Archivo";
+  src: url("../../node_modules/@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2") format("woff2");
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+}
+:root {
+  --black: #000;
+  --asphalt: #1c1d1f;
+  --asphalt2: #2a2b2e;
+  --paper: #e4e4e0;
+  --yellow: #ffd21f;
+  --green: #0b8a44;
+  --green2: #22b35e;
+  --img: "../../public/images/cutout/";
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { background: #000; }
+body { font-family: "Archivo", sans-serif; color: var(--paper); }
+.canvas { position: relative; overflow: hidden; background: radial-gradient(120% 80% at 50% 38%, #26282b 0%, #111213 55%, #000 100%); }
+.post { width: 1080px; height: 1350px; }
+.story { width: 1080px; height: 1920px; }
+.banner { font-stretch: 62%; font-weight: 900; text-transform: uppercase; line-height: .84; letter-spacing: -.005em; }
+.wide { font-stretch: 125%; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+.y { color: var(--yellow); }
+.g { color: var(--green2); }
+.scarf { position: absolute; left: 0; right: 0; height: 28px;
+  background: repeating-linear-gradient(90deg, var(--yellow) 0 90px, var(--green) 90px 180px); }
+.scarf.top { top: 0; } .scarf.bottom { bottom: 0; }
+.logo { position: absolute; top: 74px; left: 72px; font-size: 40px; }
+.tag070 { position: absolute; top: 74px; right: 72px; font-size: 40px; }
+.foot { position: absolute; left: 72px; right: 72px; bottom: 74px; display: flex; justify-content: space-between; align-items: flex-end; font-size: 26px; }
+.shirt { position: absolute; filter: drop-shadow(0 50px 60px rgba(0,0,0,.75)); }
+.spot { position: absolute; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,210,31,.16), transparent); }
+.pill { display: inline-block; padding: 18px 34px; border-radius: 999px; background: var(--yellow); color: #000; }
+.num { position: absolute; font-size: 360px; color: transparent; -webkit-text-stroke: 3px rgba(255,210,31,.85); }
+.smoke { position: absolute; inset: 0; background:
+  radial-gradient(40% 30% at 20% 80%, rgba(11,138,68,.22), transparent 70%),
+  radial-gradient(35% 25% at 85% 20%, rgba(255,210,31,.12), transparent 70%); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const IMG = '../../public/images/cutout/';
+const S = {
+  haagF: IMG + 'fc-den-haag-back-drop-front.webp',
+  haagB: IMG + 'fc-den-haag-back-drop-back.webp',
+  savF: IMG + 'savage-drop-front.webp',
+  savB: IMG + 'savage-drop-back.webp',
+};
+const head = (right = '070') => `
+  <div class="scarf top"></div>
+  <div class="logo banner">STRAATFANAAT</div>
+  <div class="tag070 banner y">${right}</div>`;
+const foot = (l = 'Den Haag', r = '@straatfanaat') => `
+  <div class="foot"><span class="wide">${l}</span><span class="wide y">${r}</span></div>
+  <div class="scarf bottom"></div>`;
+
+const slides = {
+  // Post 2 — karuzela HAAG Back!
+  'post02-1-haagback-voor': () => `<div class="canvas post"><div class="smoke"></div>${head()}
+    <div class="spot" style="left:90px;top:300px;width:900px;height:900px"></div>
+    <img class="shirt" src="${S.haagF}" style="left:150px;top:300px;width:780px">
+    <div class="banner" style="position:absolute;left:72px;top:150px;font-size:150px">HAAG <span class="y">BACK!</span></div>
+    ${foot('Voor', 'Swipe →')}</div>`,
+  'post02-2-haagback-achter': () => `<div class="canvas post"><div class="smoke"></div>${head()}
+    <div class="spot" style="left:90px;top:300px;width:900px;height:900px"></div>
+    <img class="shirt" src="${S.haagB}" style="left:150px;top:260px;width:780px">
+    ${foot('Achter', 'Oversized fit')}</div>`,
+  'post02-6-haagback-prijs': () => `<div class="canvas post" style="background:#000">${head()}
+    <img class="shirt" src="${S.haagF}" style="left:520px;top:520px;width:640px;opacity:.95">
+    <div style="position:absolute;left:72px;top:230px">
+      <div class="banner" style="font-size:190px">HAAG<br><span class="y">BACK!</span></div>
+      <div class="banner" style="font-size:300px;margin-top:40px">€55</div>
+      <div class="wide" style="font-size:34px;margin-top:40px;line-height:1.6">Maten S t/m XXL<br>Zware katoen</div>
+      <div class="pill wide" style="font-size:34px;margin-top:50px">Bestel via DM</div>
+    </div>${foot('Ophalen of PostNL')}</div>`,
+  // Post 4 — SAVAGE
+  'post04-savage-kaart': () => `<div class="canvas post"><div class="smoke"></div>${head()}
+    <img class="shirt" src="${S.savB}" style="left:330px;top:250px;width:720px">
+    <img class="shirt" src="${S.savF}" style="left:-110px;top:720px;width:440px;transform:rotate(-6deg)">
+    <div class="banner" style="position:absolute;left:72px;top:150px;font-size:170px">SAVA<span class="g">G</span><span class="y">E</span></div>
+    <div style="position:absolute;right:72px;bottom:160px;text-align:right">
+      <div class="banner" style="font-size:150px">€55</div>
+      <div class="wide" style="font-size:28px;margin-top:16px">S t/m XXL · DM voor je maat</div>
+    </div>${foot('Groen · Geel')}</div>`,
+  // Post 5 — Zo bestel je
+  'post05-zo-bestel-je': () => `<div class="canvas post"><div class="smoke"></div>${head()}
+    <img class="shirt" src="${S.savF}" style="left:700px;top:200px;width:400px;transform:rotate(6deg)">
+    <img class="shirt" src="${S.haagF}" style="left:500px;top:300px;width:440px;transform:rotate(-4deg)">
+    <div class="banner" style="position:absolute;left:72px;top:190px;font-size:200px">ZO<br>BESTEL<br><span class="y">JE</span></div>
+    <div style="position:absolute;left:72px;right:72px;top:820px;display:grid;gap:34px">
+      ${[['1','Stuur een DM of WhatsApp met model en maat'],['2','Je krijgt een Tikkie van €55'],['3','Ophalen in Den Haag of verzenden met PostNL']]
+        .map(([n,t])=>`<div style="display:flex;gap:34px;align-items:center">
+          <div class="banner" style="width:96px;height:96px;border-radius:50%;background:var(--yellow);color:#000;font-size:72px;display:flex;align-items:center;justify-content:center;flex:none;line-height:1">${n}</div>
+          <div class="wide" style="font-size:31px;line-height:1.3">${t}</div></div>`).join('')}
+    </div>${foot('Webshop binnenkort live')}</div>`,
+  // Post 11 — Black Friday
+  'post11-geen-black-friday': () => `<div class="canvas post" style="background:#000">${head()}
+    <div style="position:absolute;left:72px;top:200px">
+      <div class="banner" style="font-size:230px">GEEN<br>BLACK<br>FRIDAY.</div>
+      <div class="banner y" style="font-size:160px;margin-top:50px">WEL EEN DROP.</div>
+      <div class="wide" style="font-size:30px;margin-top:50px;line-height:1.6;color:#bfbeb8">Elke dag dezelfde eerlijke prijs.<br>Zet je op de lijst. Link in bio.</div>
+    </div>${foot()}</div>`,
+  // Reels — end cards 9:16
+  'reel-eindkaart-uit-den-haag': () => `<div class="canvas story" style="background:#000">
+    <div class="scarf top"></div>
+    <div style="position:absolute;left:0;right:0;top:640px;text-align:center">
+      <div class="banner" style="font-size:210px">STRAAT<br><span class="y">FANAAT</span></div>
+      <div class="wide" style="font-size:44px;margin-top:70px">Uit Den Haag · 070</div>
+    </div>
+    <div class="wide y" style="position:absolute;left:0;right:0;bottom:200px;text-align:center;font-size:36px">@straatfanaat</div>
+    <div class="scarf bottom"></div></div>`,
+  'reel-eindkaart-webshop': () => `<div class="canvas story"><div class="smoke"></div>
+    <div class="scarf top"></div>
+    <img class="shirt" src="${S.haagF}" style="left:80px;top:300px;width:560px;transform:rotate(-6deg)">
+    <img class="shirt" src="${S.savB}" style="left:440px;top:420px;width:580px;transform:rotate(5deg)">
+    <div style="position:absolute;left:72px;right:72px;top:1080px">
+      <div class="banner" style="font-size:190px">WEBSHOP<br><span class="y">BINNENKORT</span><br>LIVE</div>
+      <div class="pill wide" style="font-size:38px;margin-top:60px">Link in bio</div>
+    </div>
+    <div class="scarf bottom"></div></div>`,
+};
+
+const key = decodeURIComponent(location.hash.slice(1));
+document.getElementById('root').innerHTML = slides[key] ? slides[key]() :
+  '<div style="padding:40px;color:#fff;font:20px sans-serif">' + Object.keys(slides).map(k => `<p><a style="color:#ffd21f" href="#${k}" onclick="setTimeout(()=>location.reload())">${k}</a></p>`).join('') + '</div>';
+window.SLIDES = Object.keys(slides);
+</script>
+</body>
+</html>

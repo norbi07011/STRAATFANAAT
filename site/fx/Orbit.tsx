@@ -80,23 +80,11 @@ export const Orbit = ({ products, onHover }: { products: Product[]; onHover?: (p
       onPointerCancel={() => (dragging.current = null)}
     >
       <motion.div ref={ringRef} style={{ rotateX: tiltX, rotateZ: tiltZ, transformStyle: 'preserve-3d' }} className="absolute inset-0">
-        {/* środek: logo + poświata */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" style={{ transformStyle: 'preserve-3d' }}>
-          <div className="absolute left-1/2 top-1/2 h-[60vmin] w-[60vmin] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,210,31,0.35),rgba(11,138,68,0.18)_45%,transparent_70%)] blur-2xl" />
-          <motion.img
-            src="/images/cutout/logo.webp"
-            alt="STRAATFANAAT"
-            draggable={false}
-            className="relative w-[min(34vw,300px)]"
-            animate={reduce ? undefined : { rotateY: [0, 360] }}
-            transition={{ duration: 18, ease: 'linear', repeat: Infinity }}
-          />
-        </div>
         {/* pierścień */}
         <div className="absolute left-1/2 top-1/2" style={{ transformStyle: 'preserve-3d' }}>
           <div
             aria-hidden
-            className="absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed border-haag-yellow/30"
+            className="absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full border border-gold/25"
             style={{ width: radius * 2, height: radius * 2, transform: 'translate(-50%,-50%) rotateX(90deg)' }}
           />
           {items.map((p, i) => (

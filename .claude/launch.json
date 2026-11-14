@@ -1,0 +1,7 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    { "name": "straatfanaat", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev"], "port": 3000 },
+    { "name": "studio", "runtimeExecutable": "E:\\AI\\ComfyUI\\venv\\Scripts\\python.exe", "runtimeArgs": ["E:\\AI\\ComfyUI\\main.py", "--port", "8188", "--preview-method", "auto"], "port": 8188 }
+  ]
+}

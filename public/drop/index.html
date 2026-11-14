@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FCDH Gold 1905 · STRAATFANAAT</title>
+<meta name="description" content="FCDH GOLD 1905, de luxe editie van STRAATFANAAT in zwart en goud. Den Haag, Zuid-Holland.">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="icon" href="../images/cutout/logo.webp" type="image/webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* STRAATFANAAT drop-pagina „FCDH GOLD 1905” — scroll vertelt één verhaal: het shirt draait in het midden (Three.js),
+   4 hoofdstukken van 25%, tekst links, stippen rechts, gloed achter het shirt wisselt per hoofdstuk, eind: de collectie. */
+@property --glow { syntax: '<color>'; inherits: true; initial-value: rgba(214, 170, 60, 0.42); }
+:root {
+  --bg: #0a0a0a; --ink: #f5f5f0; --muted: #a3a39b; --yellow: #ffd21f; --gold: #d6aa3c; --green: #0b8a44; --line: rgba(255,255,255,.1);
+  --display: 'Anton', Impact, 'Arial Narrow Bold', sans-serif; --sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+::selection { background: var(--yellow); color: #0a0a0a; }
+
+/* kop */
+.top { position: fixed; inset: 0 0 auto; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: calc(14px + env(safe-area-inset-top, 0px)) max(18px, env(safe-area-inset-right, 0px)) 14px max(18px, env(safe-area-inset-left, 0px));
+  background: linear-gradient(180deg, rgba(10,10,10,.85), rgba(10,10,10,0)); pointer-events: none; }
+.top > * { pointer-events: auto; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.brand img { width: 34px; height: 34px; object-fit: contain; }
+.brand span { font-family: var(--display); font-size: 20px; letter-spacing: .04em; }
+.brand span b { color: var(--yellow); font-weight: 400; }
+.top nav { display: flex; gap: 8px; align-items: center; }
+.btn { display: inline-flex; align-items: center; gap: 8px; border-radius: 999px; padding: 10px 18px; font-weight: 700; font-size: 13px;
+  letter-spacing: .06em; text-transform: uppercase; text-decoration: none; border: 1px solid transparent; transition: background .2s, transform .2s; }
+.btn.y { background: var(--yellow); color: #0a0a0a; box-shadow: 0 6px 22px rgba(255,210,31,.28); }
+.btn.y:hover { background: #ffe05c; transform: translateY(-1px); }
+.btn.g { border-color: var(--line); color: var(--ink); background: rgba(255,255,255,.04); }
+.btn.g:hover { border-color: var(--yellow); }
+.btn:focus-visible, .dots button:focus-visible { outline: 2px solid var(--yellow); outline-offset: 3px; }
+
+/* het verhaal */
+#story { position: relative; height: 520vh; }
+.stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
+#bg { position: absolute; inset: 0; transition: --glow .6s ease;
+  background: radial-gradient(60vmax 55vmax at 50% 46%, var(--glow), transparent 62%), radial-gradient(90vmax 70vmax at 50% 120%, rgba(11,138,68,.10), transparent 60%), var(--bg); }
+#c { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.grain { position: absolute; inset: 0; pointer-events: none; opacity: .07; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>"); }
+
+.copy { position: absolute; left: max(6vw, 18px); top: 50%; transform: translateY(-50%); width: min(430px, 40vw); z-index: 5; }
+/* zachte donkere achtergrond achter de tekst, zodat die leesbaar blijft als het shirt dichtbij komt */
+.stage::before { content: ""; position: absolute; inset: 0; z-index: 4; pointer-events: none;
+  background: linear-gradient(90deg, rgba(10,10,10,.78) 0%, rgba(10,10,10,.45) 30%, rgba(10,10,10,0) 48%); }
+.chap h1, .chap h2, .chap p { text-shadow: 0 2px 18px rgba(0,0,0,.7); }
+.chap { position: absolute; left: 0; top: 0; transform: translateY(calc(-50% + 20px)); opacity: 0; visibility: hidden;
+  transition: opacity .45s ease, transform .45s ease, visibility 0s linear .45s; }
+.chap.on { opacity: 1; visibility: visible; transform: translateY(-50%); transition: opacity .5s ease .15s, transform .5s ease .15s, visibility 0s; }
+.eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--yellow); }
+.eyebrow::before { content: ""; width: 22px; height: 2px; background: currentColor; }
+.chap h1, .chap h2 { font-family: var(--display); font-weight: 400; text-transform: uppercase; letter-spacing: .01em; line-height: .95; margin: 14px 0 16px; text-wrap: balance; }
+.chap h1 { font-size: clamp(46px, 6.4vw, 96px); }
+.chap h2 { font-size: clamp(38px, 4.8vw, 72px); }
+.chap p { color: #d8d8d0; font-size: 16.5px; line-height: 1.6; margin: 0 0 20px; max-width: 40ch; }
+.chap .meta { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.price { font-family: var(--display); font-size: 34px; letter-spacing: .02em; }
+.chip { font-size: 12px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); background: rgba(255,255,255,.03); }
+.chip.dot::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--green); margin-right: 7px; vertical-align: 1px; }
+.num { font-family: var(--display); font-size: 15px; color: var(--muted); letter-spacing: .1em; }
+
+.dots { position: absolute; right: max(3vw, 14px); top: 50%; transform: translateY(-50%); z-index: 6; display: flex; flex-direction: column; gap: 14px; }
+.dots button { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,.45); background: transparent; padding: 0; cursor: pointer; transition: all .3s; position: relative; }
+.dots button.on { background: var(--yellow); border-color: var(--yellow); box-shadow: 0 0 0 5px rgba(255,210,31,.18); }
+.dots button span { position: absolute; right: 22px; top: 50%; transform: translateY(-50%); white-space: nowrap; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); opacity: 0; transition: opacity .2s; }
+.dots button:hover span, .dots button.on span { opacity: 1; }
+.dots button.on span { color: var(--ink); }
+
+.progress { position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: rgba(255,255,255,.06); z-index: 6; }
+.progress i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--yellow), #9fd13a 60%, #22b35e); }
+.hint { position: absolute; left: 50%; bottom: calc(26px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 6; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 8px; transition: opacity .4s; }
+.hint::after { content: ""; width: 1px; height: 34px; background: linear-gradient(var(--yellow), transparent); animation: drip 1.8s ease-in-out infinite; }
+@keyframes drip { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+.loading { position: absolute; inset: 0; display: grid; place-items: center; z-index: 4; font-family: var(--display); letter-spacing: .1em; color: var(--muted); transition: opacity .5s; }
+
+/* koop + collectie (ook zonder 3D leesbaar) */
+.buy { position: relative; padding: 110px max(6vw, 18px) 90px; background: linear-gradient(180deg, #0a0a0a, #0e0e0c); border-top: 1px solid var(--line); }
+.buy-in { max-width: 1180px; margin: 0 auto; }
+.buy h2 { font-family: var(--display); font-weight: 400; text-transform: uppercase; font-size: clamp(40px, 6vw, 80px); line-height: .95; margin: 10px 0 18px; }
+.buy-hero { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 40px; align-items: center; margin-bottom: 80px; }
+.buy-hero figure { margin: 0; aspect-ratio: 1; border-radius: 28px; display: grid; place-items: center; border: 1px solid var(--line);
+  background: radial-gradient(70% 60% at 50% 45%, rgba(214,170,60,.35), transparent 70%), #111; }
+.buy-hero figure img { width: 78%; height: auto; filter: drop-shadow(0 30px 40px rgba(0,0,0,.6)); }
+.buy-hero p { color: #d8d8d0; line-height: 1.65; max-width: 48ch; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px; }
+.card { text-decoration: none; border: 1px solid var(--line); border-radius: 22px; padding: 18px; background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01)), #111; transition: transform .25s, border-color .25s; display: flex; flex-direction: column; gap: 12px; }
+.card:hover { transform: translateY(-4px); border-color: rgba(255,210,31,.5); }
+.card .ph { aspect-ratio: 1; display: grid; place-items: center; border-radius: 16px; background: radial-gradient(60% 55% at 50% 45%, rgba(255,210,31,.12), transparent 70%); }
+.card .ph img { width: 82%; height: auto; }
+.card b { font-family: var(--display); font-weight: 400; font-size: 20px; letter-spacing: .02em; text-transform: uppercase; }
+.card .row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.card .pr { font-weight: 700; color: var(--yellow); }
+footer { padding: 30px max(6vw, 18px) calc(30px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+@media (max-width: 760px) {
+  .top .btn.g { display: none; }
+  .brand span { font-size: 17px; }
+  .copy { left: 18px; right: 18px; width: auto; top: auto; bottom: calc(70px + env(safe-area-inset-bottom, 0px)); transform: none; }
+  .chap { top: auto; bottom: 0; transform: translateY(20px); padding: 18px; border-radius: 22px; background: linear-gradient(180deg, rgba(10,10,10,.55), rgba(10,10,10,.82)); backdrop-filter: blur(10px); border: 1px solid var(--line); width: 100%; }
+  .chap.on { transform: none; }
+  .chap h1 { font-size: 44px; } .chap h2 { font-size: 36px; }
+  .chap p { font-size: 14.5px; margin-bottom: 12px; }
+  .dots { right: 10px; top: 42%; gap: 10px; }
+  .dots button span { display: none; }
+  .hint { display: none; }
+  .buy-hero { grid-template-columns: minmax(0,1fr); gap: 26px; }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .card { padding: 12px; border-radius: 18px; } .card b { font-size: 16px; }
+}
+@media (prefers-reduced-motion: reduce) { .hint::after { animation: none; } .chap, .chap.on { transition: opacity .2s; } }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a class="brand" href="../" aria-label="STRAATFANAAT shop"><img src="../images/cutout/logo.webp" alt=""><span>STRAAT<b>FANAAT</b></span></a>
+  <nav>
+    <a class="btn g" href="../shop">Shop</a>
+    <a class="btn y" href="../product/26">Wachtlijst · €65</a>
+  </nav>
+</header>
+
+<main>
+<section id="story" aria-label="FCDH GOLD 1905, het verhaal">
+  <div class="stage">
+    <div id="bg"></div>
+    <canvas id="c" aria-hidden="true"></canvas>
+    <div class="grain"></div>
+    <div class="loading" id="loading">LADEN…</div>
+
+    <div class="copy">
+      <article class="chap on" data-i="0">
+        <span class="eyebrow">Drop 01 · Binnenkort</span>
+        <h1>FCDH<br>Gold 1905</h1>
+        <p>De luxe editie in zwart en goud. Voorop het gouden FCDH-logo met ooievaar. Scroll en draai het shirt rond.</p>
+        <div class="meta"><span class="price">€65</span><span class="chip dot">Den Haag · 070</span></div>
+      </article>
+      <article class="chap" data-i="1">
+        <span class="eyebrow"><span class="num">02</span> Schouders</span>
+        <h2>Ooievaars over je schouders</h2>
+        <p>Over beide schouders loopt tape met gouden ooievaars. Het detail dat je pas ziet als je dichtbij komt.</p>
+      </article>
+      <article class="chap" data-i="2">
+        <span class="eyebrow"><span class="num">03</span> De rug</span>
+        <h2>Ooievaar &amp; zeemeermin</h2>
+        <p>Op de rug een gouden medaillon met ooievaar en zeemeermin met schild. Den Haag, Zuid-Holland.</p>
+      </article>
+      <article class="chap" data-i="3">
+        <span class="eyebrow"><span class="num">04</span> De collectie</span>
+        <h2>Eén stad.<br>Acht stukken.</h2>
+        <p>Gold 1905 staat niet alleen. FCDH SOUL, De Keizer, Money Bear, Geen Risico en meer: elk stuk vertelt een verhaal van 070.</p>
+        <div class="meta"><a class="btn y" href="../product/26">Zet je op de wachtlijst</a><a class="btn g" href="#collectie">Bekijk alles</a></div>
+      </article>
+    </div>
+
+    <nav class="dots" aria-label="Hoofdstukken">
+      <button class="on" data-go="0" aria-label="Voorkant"><span>Voorkant</span></button>
+      <button data-go="1" aria-label="Schouders"><span>Schouders</span></button>
+      <button data-go="2" aria-label="De rug"><span>De rug</span></button>
+      <button data-go="3" aria-label="De collectie"><span>Collectie</span></button>
+    </nav>
+    <div class="hint" id="hint">Scroll</div>
+    <div class="progress"><i id="bar"></i></div>
+  </div>
+</section>
+
+<section class="buy" id="collectie">
+  <div class="buy-in">
+    <div class="buy-hero">
+      <figure><img src="../images/cutout/fcdh-gold-1905-back.webp" alt="FCDH GOLD 1905, achterkant met gouden medaillon" loading="lazy"></figure>
+      <div>
+        <span class="eyebrow">Binnenkort</span>
+        <h2>FCDH Gold 1905</h2>
+        <p>De luxe editie in zwart en goud. Voorop het gouden FCDH-logo met ooievaar, over de schouders tape met ooievaars. Op de rug een gouden medaillon met ooievaar en zeemeermin met schild. Den Haag, Zuid-Holland.</p>
+        <p>Zet je op de wachtlijst en hoor als eerste wanneer hij binnen is.</p>
+        <div class="meta" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:18px">
+          <span class="price">€65</span><a class="btn y" href="../product/26">Zet je op de wachtlijst</a>
+        </div>
+      </div>
+    </div>
+    <span class="eyebrow">De collectie</span>
+    <h2 style="font-size:clamp(34px,4vw,54px)">Draag je stad</h2>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+</main>
+
+<footer><span>© STRAATFANAAT · Den Haag, Zuid-Holland</span><span>070 · FCDH · Since 1905</span></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ---------- gegevens (uit de shop: constants.tsx) ----------
+// id + available = dezelfde waarden als in constants.tsx van de shop (available:false → „Binnenkort” + wachtlijst)
+// Pas dit aan wanneer een product in de shop beschikbaar wordt.
+const HERO = { id: '26', name: 'FCDH GOLD 1905', price: 65, available: false, front: '../images/cutout/fcdh-gold-1905-front.webp', back: '../images/cutout/fcdh-gold-1905-back.webp' };
+const OTHERS = [
+  { id: '24', name: 'FCDH SOUL Neon', price: 55, available: false, front: '../images/cutout/fcdh-soul-neon-front.webp' },
+  { id: '28', name: 'DE KEIZER', price: 55, available: true, front: '../images/cutout/de-keizer-front.webp' },
+  { id: '27', name: 'MONEY BEAR', price: 55, available: false, front: '../images/cutout/money-bear-front.webp' },
+  { id: '17', name: 'FC DEN HAAG BACK', price: 55, available: true, front: '../images/cutout/fc-den-haag-back-drop-front.webp' },
+  { id: '25', name: 'FCDH SOUL Pink', price: 55, available: false, front: '../images/cutout/fcdh-soul-pink-front.webp' },
+  { id: '29', name: 'GEEN RISICO', price: 55, available: false, front: '../images/cutout/geen-risico-front.webp' },
+  { id: '8', name: 'SAVAGE OMERTA', price: 38, available: true, front: '../images/cutout/savage-drop-front.webp' },
+];
+// collectie-raster (gewone HTML: werkt ook zonder WebGL) — elke kaart opent de productpagina in de shop
+document.getElementById('grid').innerHTML = [HERO, ...OTHERS].map(p =>
+  `<a class="card" href="../product/${p.id}"><div class="ph"><img src="${p.front}" alt="${p.name}" loading="lazy"></div>
+   <div class="row"><b>${p.name}</b><span class="pr">€${p.price}</span></div>
+   <span class="chip${p.available ? ' dot' : ''}" style="align-self:flex-start">${p.available ? 'Nu verkrijgbaar' : 'Binnenkort'}</span></a>`).join('');
+
+// ---------- hoofdstukken ----------
+const chaps = [...document.querySelectorAll('.chap')], dots = [...document.querySelectorAll('.dots button')];
+const GLOW = ['rgba(214,170,60,0.42)', 'rgba(255,210,31,0.36)', 'rgba(11,138,68,0.42)', 'rgba(214,170,60,0.30)'];
+const story = document.getElementById('story'), bg = document.getElementById('bg'), bar = document.getElementById('bar'), hint = document.getElementById('hint');
+let chapter = -1;
+function progress() {
+  const r = story.getBoundingClientRect(), total = story.offsetHeight - innerHeight;
+  return Math.min(1, Math.max(0, -r.top / total));
+}
+function setChapter(i) {
+  if (i === chapter) return; chapter = i;
+  chaps.forEach((c, k) => c.classList.toggle('on', k === i));
+  dots.forEach((d, k) => { d.classList.toggle('on', k === i); d.setAttribute('aria-current', k === i ? 'step' : 'false'); });
+  bg.style.setProperty('--glow', GLOW[i]);
+}
+dots.forEach(d => d.addEventListener('click', () => {
+  const i = +d.dataset.go, total = story.offsetHeight - innerHeight;
+  scrollTo({ top: story.offsetTop + total * (i * 0.25 + 0.1), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+}));
+function onScroll() {
+  const p = progress();
+  setChapter(Math.min(3, Math.floor(p * 4)));
+  bar.style.width = (p * 100).toFixed(1) + '%';
+  hint.style.opacity = p > 0.03 ? 0 : 1;
+}
+addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+// ---------- 3D (Three.js) ----------
+(function () {
+  const canvas = document.getElementById('c'), loading = document.getElementById('loading');
+  if (!window.THREE) { loading.textContent = ''; return; }
+  let renderer;
+  try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true }); } catch (e) { loading.textContent = ''; return; }
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // licht: zacht front, één sterk licht achter het shirt (randen gloeien), warm goud
+  scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+  const key = new THREE.DirectionalLight(0xfff2d6, 0.9); key.position.set(-2.5, 3, 5); scene.add(key);
+  const rim = new THREE.PointLight(0xffd36b, 3, 12); rim.position.set(0, 1.2, -2.2); scene.add(rim);
+
+  // lichtstraal achter het shirt (zoals in de studio-video: één bundel licht in een donkere zaal)
+  function canvasTex(draw, w = 256, h = 512) { const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h); const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; return t; }
+  const beamTex = canvasTex((g, w, h) => {
+    const gx = g.createLinearGradient(0, 0, w, 0); gx.addColorStop(0, 'rgba(255,230,160,0)'); gx.addColorStop(0.5, 'rgba(255,236,180,0.85)'); gx.addColorStop(1, 'rgba(255,230,160,0)');
+    g.fillStyle = gx; g.fillRect(0, 0, w, h);
+    const gy = g.createLinearGradient(0, 0, 0, h); gy.addColorStop(0, 'rgba(0,0,0,1)'); gy.addColorStop(0.25, 'rgba(0,0,0,0)'); gy.addColorStop(0.8, 'rgba(0,0,0,0)'); gy.addColorStop(1, 'rgba(0,0,0,1)');
+    g.globalCompositeOperation = 'destination-out'; g.fillStyle = gy; g.fillRect(0, 0, w, h);
+  });
+  const beamMat = new THREE.MeshBasicMaterial({ map: beamTex, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0.55, color: 0xffe2a0 });
+  const beam = new THREE.Mesh(new THREE.PlaneGeometry(2.6, 11), beamMat); beam.position.set(0, 1, -3.2); scene.add(beam);
+
+  // schaduw op de vloer
+  const shadowTex = canvasTex((g, w, h) => { const r = g.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w / 2); r.addColorStop(0, 'rgba(0,0,0,0.75)'); r.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = r; g.fillRect(0, 0, w, h); }, 256, 256);
+  const shadow = new THREE.Mesh(new THREE.PlaneGeometry(3.4, 1.1), new THREE.MeshBasicMaterial({ map: shadowTex, transparent: true, depthWrite: false }));
+  shadow.rotation.x = -Math.PI / 2; shadow.position.y = -2.05; scene.add(shadow);
+
+  // stofdeeltjes in de lichtstraal
+  const N = reduce ? 0 : 140, pts = new Float32Array(N * 3);
+  for (let i = 0; i < N; i++) { pts[i * 3] = (Math.random() - 0.5) * 2.4; pts[i * 3 + 1] = (Math.random() - 0.5) * 7; pts[i * 3 + 2] = -2.6 + Math.random() * 2; }
+  const dustGeo = new THREE.BufferGeometry(); dustGeo.setAttribute('position', new THREE.BufferAttribute(pts, 3));
+  const dust = new THREE.Points(dustGeo, new THREE.PointsMaterial({ size: 0.025, color: 0xffe7a8, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending, depthWrite: false }));
+  scene.add(dust);
+
+  // gebogen vlak = lichaam van het shirt (voorkant bolt naar voren, achterkant naar achteren → dikte bij het draaien)
+  function bent(w, h, bulge) {
+    const g = new THREE.PlaneGeometry(w, h, 48, 12), pos = g.attributes.position;
+    for (let i = 0; i < pos.count; i++) { const n = pos.getX(i) / (w / 2), m = pos.getY(i) / (h / 2); pos.setZ(i, bulge * (1 - n * n) * (1 - 0.25 * m * m)); }
+    pos.needsUpdate = true; g.computeVertexNormals(); return g;
+  }
+  const loader = new THREE.TextureLoader();
+  const loadTex = src => new Promise(res => loader.load(src, t => { t.encoding = THREE.sRGBEncoding; t.anisotropy = 8; res(t); }, undefined, () => res(null)));
+  function shirtSide(tex, h, bulge) {
+    const w = h * tex.image.width / tex.image.height;
+    return new THREE.Mesh(bent(w, h, bulge), new THREE.MeshStandardMaterial({ map: tex, transparent: true, alphaTest: 0.45, roughness: 0.82, metalness: 0.05 }));
+  }
+
+  const hero = new THREE.Group(); scene.add(hero);
+  const lineup = [];
+  Promise.all([loadTex(HERO.front), loadTex(HERO.back), ...OTHERS.map(o => loadTex(o.front))]).then(([f, b, ...rest]) => {
+    const H = 3.6;
+    if (f) { const m = shirtSide(f, H, 0.32); m.position.z = 0.02; hero.add(m); }
+    if (b) { const m = shirtSide(b, H * 0.985, 0.32); m.rotation.y = Math.PI; m.position.z = -0.02; hero.add(m); }
+    rest.forEach((t, i) => {
+      if (!t) return;
+      const m = shirtSide(t, H * 0.78, 0.22);
+      const side = i % 2 === 0 ? -1 : 1, slot = Math.floor(i / 2) + 1;              // links/rechts afwisselend
+      m.userData = { side, slot, delay: (slot - 1) * 0.12 + (side > 0 ? 0.05 : 0) };
+      scene.add(m); lineup.push(m);
+    });
+    loading.style.opacity = 0;
+  });
+
+  // sleutelmomenten van het verhaal (p = scrollvoortgang 0..1)
+  const K = [
+    // sx = hoe ver het shirt rechts van het midden staat (desktop), zodat de tekst links vrij blijft
+    { p: 0.00, rot: 0.0, cx: 0.0, cy: 0.15, cz: 8.2, ly: 0.0, lu: 0, sx: 1.15 },
+    { p: 0.17, rot: 0.32, cx: 0.0, cy: 0.15, cz: 7.6, ly: 0.0, lu: 0, sx: 1.15 },
+    { p: 0.31, rot: -0.62, cx: -0.35, cy: 1.0, cz: 5.3, ly: 0.75, lu: 0, sx: 1.75 },   // schouders dichtbij
+    { p: 0.44, rot: -0.82, cx: -0.4, cy: 1.05, cz: 5.0, ly: 0.8, lu: 0, sx: 1.8 },
+    { p: 0.56, rot: Math.PI, cx: 0.0, cy: 0.2, cz: 7.2, ly: 0.05, lu: 0, sx: 1.15 },   // de rug
+    { p: 0.70, rot: Math.PI + 0.22, cx: 0.0, cy: 0.2, cz: 6.9, ly: 0.05, lu: 0, sx: 1.15 },
+    { p: 0.82, rot: Math.PI * 2, cx: 0.0, cy: 0.5, cz: 12.5, ly: 0.0, lu: 0.25, sx: 0.8 }, // collectie komt binnen
+    { p: 1.00, rot: Math.PI * 2, cx: 0.0, cy: 0.6, cz: 14.5, ly: 0.0, lu: 1, sx: 0 },
+  ];
+  const ease = t => t * t * (3 - 2 * t);
+  function at(p) {
+    let a = K[0], b = K[K.length - 1];
+    for (let i = 0; i < K.length - 1; i++) if (p >= K[i].p && p <= K[i + 1].p) { a = K[i]; b = K[i + 1]; break; }
+    const t = ease((p - a.p) / Math.max(1e-6, b.p - a.p)), o = {};
+    for (const k of ['rot', 'cx', 'cy', 'cz', 'ly', 'lu', 'sx']) o[k] = a[k] + (b[k] - a[k]) * t;
+    return o;
+  }
+  const BEAM = [new THREE.Color(0xffd98a), new THREE.Color(0xffe066), new THREE.Color(0x9fe8b8), new THREE.Color(0xffd98a)];
+  const cur = at(0), beamCol = BEAM[0].clone();
+
+  function resize() {
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+  }
+  addEventListener('resize', resize); resize();
+
+  const clock = new THREE.Clock();
+  (function frame() {
+    const t = clock.getElapsedTime(), tgt = at(progress()), k = reduce ? 1 : 0.075;
+    for (const key of Object.keys(cur)) cur[key] += (tgt[key] - cur[key]) * k;
+    const narrow = camera.aspect < 0.8, zMul = narrow ? 1.55 : 1, xMul = narrow ? 0.35 : 1;
+    // op desktop staat het shirt iets rechts van het midden, zodat de tekst links ruimte heeft
+    const shiftX = narrow ? 0 : cur.sx;
+    hero.position.set(shiftX, (reduce ? 0 : Math.sin(t * 0.9) * 0.05) + (narrow ? 0.55 : 0), 0);
+    hero.rotation.y = cur.rot + (reduce ? 0 : Math.sin(t * 0.6) * 0.03);
+    hero.rotation.z = reduce ? 0 : Math.sin(t * 0.5) * 0.012;
+    shadow.position.x = hero.position.x;
+    camera.position.set(cur.cx * xMul + shiftX * 0.25, cur.cy, cur.cz * zMul);
+    camera.lookAt(shiftX * 0.75, cur.ly + (narrow ? 0.55 : 0), 0);
+    // collectie: van links en rechts naar binnen schuiven en naast elkaar gaan staan
+    lineup.forEach(m => {
+      const u = m.userData, l = Math.min(1, Math.max(0, (cur.lu - u.delay) / 0.55)), e = ease(l);
+      const gap = narrow ? 1.75 : 2.15, target = u.side * u.slot * gap;
+      m.position.set(target + u.side * (1 - e) * 14, -0.3 + (reduce ? 0 : Math.sin(t * 0.8 + u.slot) * 0.03), -0.9);
+      m.rotation.y = -u.side * (0.22 + (1 - e) * 0.6);
+      m.visible = l > 0.001;
+    });
+    beam.position.x = hero.position.x;
+    beamCol.lerp(BEAM[Math.max(0, chapter)], 0.04); beamMat.color.copy(beamCol);
+    if (N) { dust.rotation.y = t * 0.02; dust.position.x = hero.position.x; dust.position.y = Math.sin(t * 0.2) * 0.2; }
+    renderer.render(scene, camera);
+    requestAnimationFrame(frame);
+  })();
+})();
+</script>
+</body>
+</html>
