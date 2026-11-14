@@ -119,12 +119,32 @@ const Rain = ({ speed }: { speed: MotionValue<number> }) => {
 };
 
 /* ---------- film Joeya przewijany scrollem ----------
-   Gdy w public/het-raam/ leży joey.mp4 (Kling: spada, obraca się, ląduje, łapie czapkę),
+   Gdy w public/het-raam/ leży joey.mp4 (Joey wpada, ląduje, wstaje, najazd kamery; telefon: joey-m.mp4),
    film zastępuje scenę 3D i jest „przewijany” scrollem. Bez pliku zostaje scena 3D.
    Kodowanie pod przewijanie: każda klatka kluczowa (ffmpeg -g 1), bez dźwięku. */
 
 const JOEY_SRC = '/het-raam/joey.mp4';
 const JOEY_POSTER = '/het-raam/joey.webp';
+const JOEY_SRC_M = '/het-raam/joey-m.mp4';
+const JOEY_POSTER_M = '/het-raam/joey-m.webp';
+const PORTRAIT = '(max-aspect-ratio: 4/5)';
+
+/* pionowy ekran dostaje pionowy film, jeśli plik istnieje */
+const useJoeySource = () => {
+  const [portrait, setPortrait] = React.useState(() => typeof window !== 'undefined' && window.matchMedia(PORTRAIT).matches);
+  const [hasM, setHasM] = React.useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia(PORTRAIT);
+    const on = () => setPortrait(mq.matches);
+    mq.addEventListener('change', on);
+    let alive = true;
+    fetch(JOEY_SRC_M, { method: 'HEAD' })
+      .then((r) => alive && setHasM(r.ok && (r.headers.get('content-type') ?? '').startsWith('video')))
+      .catch(() => {});
+    return () => { alive = false; mq.removeEventListener('change', on); };
+  }, []);
+  return portrait && hasM ? { src: JOEY_SRC_M, poster: JOEY_POSTER_M } : { src: JOEY_SRC, poster: JOEY_POSTER };
+};
 
 const useJoeyAvailable = () => {
   const [ok, setOk] = React.useState(false);
@@ -140,6 +160,7 @@ const useJoeyAvailable = () => {
 
 const JoeyScrub = ({ progress, onReady }: { progress: MotionValue<number>; onReady: () => void }) => {
   const ref = useRef<HTMLVideoElement>(null);
+  const { src, poster } = useJoeySource();
   useEffect(() => {
     const v = ref.current;
     if (!v) return;
@@ -160,16 +181,17 @@ const JoeyScrub = ({ progress, onReady }: { progress: MotionValue<number>; onRea
     if (v.readyState >= 1) onMeta();
     const off = progress.on('change', set);
     return () => { off(); v.removeEventListener('loadedmetadata', onMeta); if (raf) cancelAnimationFrame(raf); };
-  }, [progress, onReady]);
+  }, [progress, onReady, src]);
   return (
     <video
       ref={ref}
-      src={JOEY_SRC}
-      poster={JOEY_POSTER}
+      key={src}
+      src={src}
+      poster={poster}
       muted
       playsInline
       preload="auto"
-      aria-label="Joey in HAAG Back! en de S-pet"
+      aria-label="Joey in het HAAG Back! shirt"
       className="absolute inset-0 h-full w-full object-cover object-[50%_40%]"
     />
   );
