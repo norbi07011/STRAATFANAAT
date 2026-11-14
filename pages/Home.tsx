@@ -12,6 +12,7 @@ import { isAvailable, ProductCard } from '../site/ProductCard';
 import { CollectionOrbit, HeroScene, Stats, Story } from './HomeFx';
 import { DuoCarousel } from '../site/fx/DuoCarousel';
 import { HetRaam } from '../site/fx/HetRaam';
+import { KeizerOrbitFilm, SoulOrbitFilm } from '../site/fx/ScrollFilm';
 import { Reel, ReelCoverflow } from '../site/fx/ReelCoverflow';
 import { Bohaterowie } from '../site/fx/Bohaterowie';
 
@@ -220,6 +221,8 @@ export const Home = ({ products }: { products: Product[] }) => {
     <>
       <HeroScene products={products} />
       <HetRaam products={products} />
+      <KeizerOrbitFilm />
+      <SoulOrbitFilm products={products} />
       {story && <Story product={story} steps={ui(lang).storyKeizer} />}
       <AvailableNow products={products} />
       <Bohaterowie />
