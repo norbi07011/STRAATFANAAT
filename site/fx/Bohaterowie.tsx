@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion, useScroll } from 'motion/react';
 import { useStore } from '../store';
 import { NavLink } from '../nav';
 import { DragRail } from './DragRail';
@@ -60,15 +60,14 @@ export const Bohaterowie = () => {
   const c = COPY[lang] ?? COPY.NL;
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
-  const titleX = useTransform(scrollYProgress, [0, 1], ['6%', '-12%']);
 
   return (
     <section ref={ref} className="overflow-hidden bg-black py-20 text-white md:py-32">
       <div className="mx-auto mb-10 max-w-[1600px] px-4 md:mb-14 md:px-8">
-        <motion.h2 style={{ x: titleX }} className="font-banner whitespace-nowrap text-[20vw] leading-[0.85] md:text-[12rem]">
+        <h2 className="sf-h2">
           {c.title}
-        </motion.h2>
-        <p className="mt-6 max-w-md text-lg text-white/70">{c.lead}</p>
+        </h2>
+        <p className="mt-5 max-w-md text-lg text-white/65">{c.lead}</p>
       </div>
       <div className="px-4 md:px-8">
         <DragRail cursor={c.drag} dark>

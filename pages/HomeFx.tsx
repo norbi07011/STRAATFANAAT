@@ -187,7 +187,7 @@ export const Story = ({ product, steps: customSteps }: { product: Product; steps
   };
 
   return (
-    <section ref={ref} className="relative bg-black text-white" style={{ height: '420vh' }}>
+    <section ref={ref} className="relative bg-black text-white" style={{ height: '300vh' }}>
       <div className="sticky top-0 flex h-[100svh] flex-col overflow-hidden md:flex-row">
         <Spotlights className="opacity-70" />
         {/* scena z koszulką */}
@@ -305,11 +305,9 @@ export const CollectionOrbit = ({ products }: { products: Product[] }) => {
   const [hover, setHover] = useState<Product | null>(null);
   return (
     <section className="relative overflow-hidden bg-black py-20 text-white md:py-28">
-      <div className="absolute inset-0 opacity-60">
-        <SmokeShader />
-      </div>
+      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(60%_55%_at_50%_58%,rgba(216,166,58,0.10),transparent_70%)]" />
       <div className="relative z-10 mx-auto flex max-w-[1600px] flex-col justify-between gap-4 px-4 md:flex-row md:items-end md:px-8">
-        <h2 className="font-banner text-[18vw] md:text-[10rem]">{u.orbitTitle}</h2>
+        <h2 className="sf-h2">{u.orbitTitle}</h2>
         <p className="max-w-xs text-lg text-white/70 md:text-right">{u.orbitLead}</p>
       </div>
       <div className="relative z-10">

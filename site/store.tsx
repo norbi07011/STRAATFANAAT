@@ -66,7 +66,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const [waitlistProduct, openWaitlist] = useState<Product | null>(null);
   const [recent, setRecent] = useState<string[]>(() => read<string[]>('sf-recent', []));
   const [toasts, setToasts] = useState<Toast[]>([]);
-  const [shopView, setShopView] = useState<'wall' | 'grid'>('wall');
+  const [shopView, setShopView] = useState<'wall' | 'grid'>('grid');
 
   const markViewed = useCallback((id: string) => {
     setRecent((prev) => {

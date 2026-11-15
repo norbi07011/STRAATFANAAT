@@ -69,8 +69,8 @@ const ActText = ({ act, progress, last, children }: { act: Act; progress: Motion
   return (
     <motion.div style={{ opacity, y }} className="pointer-events-none absolute inset-x-0 bottom-0 z-30 px-4 pb-8 md:px-10 md:pb-14">
       <div className="mx-auto max-w-[1600px]">
-        <p className="mb-2 text-xs font-bold uppercase tracking-[0.3em] text-haag-yellow md:text-sm">{act.kicker}</p>
-        <p className="font-banner text-[14vw] leading-[0.85] text-white [text-shadow:0_4px_30px_rgba(0,0,0,0.6)] md:text-[min(8vw,8.5rem)]">{act.title}</p>
+        <p className="font-banner text-[14vw] leading-[0.85] text-white [text-shadow:0_4px_30px_rgba(0,0,0,0.6)] md:text-[min(7vw,6rem)]">{act.title}</p>
+        <p className="mt-3 text-base text-white/75 md:text-lg">{act.kicker}</p>
         {children && <motion.div style={{ pointerEvents: pe }} className="mt-5">{children}</motion.div>}
       </div>
     </motion.div>
@@ -261,7 +261,7 @@ export const HetRaam = ({ products }: { products: Product[] }) => {
   const joeyScale = useTransform(p, [0, 1], [1, 1.08]);
 
   return (
-    <section ref={sectionRef} aria-label="STRAATFANAAT: Het Raam" className="relative h-[520vh] bg-black text-white">
+    <section ref={sectionRef} aria-label="STRAATFANAAT: Het Raam" className="relative h-[380vh] bg-black text-white">
       <div className="sticky top-0 h-[100svh] w-full overflow-hidden [perspective:1400px]">
         {/* pokój */}
         <motion.div style={{ scale: roomScale, y: roomY }} className="absolute inset-0 origin-[50%_45%] will-change-transform">

@@ -4,92 +4,153 @@ import { TRANSLATIONS } from '../constants';
 import { ui } from '../lib/i18n';
 import { useStore } from '../site/store';
 import { useNav } from '../site/nav';
-import { Btn, Marquee, Pic, Reveal } from '../site/ui';
+import { Btn, Reveal } from '../site/ui';
+
+const EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const INSTAGRAM = 'https://www.instagram.com/straatfanat/';
+
+type Fact = { t: string; d: string };
+const COPY: Record<string, { lead: string; story: string[]; factsTitle: string; facts: Fact[]; shop: string; follow: string }> = {
+  NL: {
+    lead: 'Streetwear uit Den Haag, gemaakt door mensen uit de stad.',
+    story: [
+      'STRAATFANAAT is begonnen in Den Haag met één simpel probleem. Als fan van 070 had je weinig keus: officiële merch, of hetzelfde shirt dat in elke winkelstraat hangt.',
+      'Dus maken we het zelf. We tekenen elke print, laten kleine series naaien en verkopen ze aan mensen die de stad net zo dragen als wij.',
+    ],
+    factsTitle: 'Zo werken we',
+    facts: [
+      { t: 'Eigen ontwerp', d: 'Elke print begint als schets bij ons. De ooievaar, 1905, groen en geel: het komt uit de stad.' },
+      { t: 'Kleine series', d: 'We maken weinig stuks per model. De eerste serie DE KEIZER telt 60 shirts.' },
+      { t: 'Eigen atelier', d: 'De shirts worden genaaid in ons eigen atelier. Zo houden we stof, print en pasvorm zelf in de hand.' },
+      { t: 'Bestellen bij mensen', d: 'Bestellen gaat nu via DM op Instagram. Je krijgt antwoord van ons en een betaallink. We sturen met PostNL of je haalt op in Den Haag.' },
+    ],
+    shop: 'Bekijk de shirts',
+    follow: 'Volg @straatfanat',
+  },
+  EN: {
+    lead: 'Streetwear from The Hague, made by people from the city.',
+    story: [
+      'STRAATFANAAT started in The Hague with one simple problem. As a fan from 070 you had little choice: official merch, or the same shirt that hangs in every high street.',
+      'So we make it ourselves. We draw every print, have small runs sewn and sell them to people who wear the city the way we do.',
+    ],
+    factsTitle: 'How we work',
+    facts: [
+      { t: 'Our own design', d: 'Every print starts as a sketch with us. The stork, 1905, green and yellow: it comes from the city.' },
+      { t: 'Small runs', d: 'We make few pieces per model. The first run of DE KEIZER is 60 shirts.' },
+      { t: 'Our own workshop', d: 'The shirts are sewn in our own workshop. That keeps fabric, print and fit in our hands.' },
+      { t: 'Ordering from people', d: 'For now you order via Instagram DM. You get an answer from us and a payment link. We ship with PostNL or you pick up in The Hague.' },
+    ],
+    shop: 'See the shirts',
+    follow: 'Follow @straatfanat',
+  },
+  PL: {
+    lead: 'Streetwear z Hagi, robiony przez ludzi z miasta.',
+    story: [
+      'STRAATFANAAT zaczął się w Hadze od jednego prostego problemu. Kibic z 070 miał mały wybór: oficjalny merch albo ta sama koszulka, która wisi w każdej sieciówce.',
+      'Więc robimy to sami. Rysujemy każdy nadruk, szyjemy małe serie i sprzedajemy je ludziom, którzy noszą miasto tak jak my.',
+    ],
+    factsTitle: 'Tak pracujemy',
+    facts: [
+      { t: 'Własny projekt', d: 'Każdy nadruk zaczyna się u nas od szkicu. Bocian, 1905, zieleń i żółć: to wszystko jest z miasta.' },
+      { t: 'Małe serie', d: 'Robimy mało sztuk każdego modelu. Pierwsza seria DE KEIZER to 60 koszulek.' },
+      { t: 'Własna szwalnia', d: 'Koszulki szyjemy we własnej szwalni. Dzięki temu sami pilnujemy materiału, nadruku i kroju.' },
+      { t: 'Zamawiasz u ludzi', d: 'Na razie zamawiasz przez DM na Instagramie. Odpisujemy sami i wysyłamy link do płatności. Paczka idzie PostNL albo odbierasz w Hadze.' },
+    ],
+    shop: 'Zobacz koszulki',
+    follow: 'Obserwuj @straatfanat',
+  },
+};
 
 export const About = () => {
   const { lang } = useStore();
   const { navigate } = useNav();
   const t = TRANSLATIONS[lang];
-  const u = ui(lang);
-
-  const pillars = [
-    { title: t.pillar_auth_title, desc: t.pillar_auth_desc },
-    { title: t.pillar_innov_title, desc: t.pillar_innov_desc },
-    { title: t.pillar_comm_title, desc: t.pillar_comm_desc },
-  ];
+  const c = COPY[lang] ?? COPY.NL;
 
   return (
     <div className="bg-black text-white">
-      <section className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden px-4 pb-12 pt-28 md:px-8 md:pb-16">
-        <div aria-hidden className="absolute right-[-10%] top-1/2 w-[80vw] max-w-[760px] -translate-y-1/2 opacity-25 md:right-0 md:w-[45vw] md:opacity-60">
-          <motion.img
-            src="/images/cutout/logo.webp"
-            alt=""
-            className="w-full"
-            initial={{ opacity: 0, scale: 1.1 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
-          />
-        </div>
+      {/* HERO: ekipa na Den Haag Centraal, tytuł u dołu */}
+      <section className="relative flex min-h-[92svh] flex-col justify-end overflow-hidden px-4 pb-12 pt-28 md:px-8 md:pb-16">
+        <motion.img
+          src="/images/bohaterowie/crew-haag-back-centraal.webp"
+          alt=""
+          aria-hidden
+          className="absolute inset-0 h-full w-full object-cover object-[50%_30%]"
+          initial={{ scale: 1.08, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1.6, ease: EXPO }}
+        />
+        <div aria-hidden className="absolute inset-0 bg-[linear-gradient(to_top,#000_4%,rgba(0,0,0,0.55)_42%,rgba(0,0,0,0.35)_100%)]" />
         <div className="relative mx-auto w-full max-w-[1600px]">
           <motion.h1
-            className="font-banner text-[26vw] leading-[0.8] md:text-[17rem]"
-            initial={{ y: 60, opacity: 0 }}
+            className="sf-h2 max-w-[14ch]"
+            initial={{ y: 40, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+            transition={{ duration: 1, ease: EXPO, delay: 0.15 }}
           >
-            {t.brand_story}
+            {t.manifesto_title}
           </motion.h1>
           <motion.p
-            className="mt-6 max-w-xl text-xl md:text-2xl"
+            className="mt-5 max-w-xl text-xl text-white/80 md:text-2xl"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
           >
-            {u.tagline}
+            {c.lead}
           </motion.p>
         </div>
       </section>
 
-      <div className="bg-haag-yellow py-3 text-black">
-        <Marquee className="font-banner text-3xl md:text-4xl" items={[t.no_boundaries, t.join_revolution, 'Den Haag', t.no_boundaries, t.join_revolution, 'Den Haag']} />
-      </div>
-
-      <section className="bg-paper px-4 py-20 text-black md:px-8 md:py-32">
-        <div className="mx-auto grid max-w-[1600px] gap-12 md:grid-cols-12">
-          <div className="md:col-span-7">
-            <h2 className="font-banner text-[15vw] md:text-[8rem]">{t.manifesto_title}</h2>
-          </div>
-          <div className="flex flex-col gap-8 md:col-span-4 md:col-start-9 md:pt-4">
-            <p className="text-xl leading-relaxed">{t.manifesto_desc}</p>
-            <Pic src="/images/metki%20ubran.jpeg" alt="STRAATFANAAT labels" sizes="(min-width: 768px) 33vw, 100vw" className="w-full" />
-          </div>
-        </div>
-      </section>
-
+      {/* HISTORIA */}
       <section className="px-4 py-20 md:px-8 md:py-32">
-        <div className="mx-auto max-w-[1600px] border-t-2 border-white">
-          {pillars.map((p, i) => (
-            <Reveal key={p.title} delay={i * 0.05}>
-              <div className="group relative grid gap-4 overflow-hidden border-b-2 border-white py-10 md:grid-cols-12 md:items-end md:py-14">
-                <span
-                  aria-hidden
-                  className="absolute inset-0 origin-bottom scale-y-0 bg-haag-yellow transition-transform duration-700 ease-out-expo group-hover:scale-y-100"
-                />
-                <h3 className="font-banner relative text-[16vw] transition-colors duration-500 group-hover:text-black md:col-span-7 md:text-[9rem]">{p.title}</h3>
-                <p className="relative max-w-md text-lg text-white/75 transition-colors duration-500 group-hover:text-black md:col-span-4 md:col-start-9">{p.desc}</p>
-              </div>
-            </Reveal>
-          ))}
+        <div className="mx-auto grid max-w-[1600px] gap-10 md:grid-cols-12 md:items-center md:gap-8">
+          <Reveal className="md:col-span-5">
+            <div className="relative overflow-hidden bg-ink-2">
+              <span aria-hidden className="absolute inset-x-8 top-0 z-10 h-px bg-gradient-to-r from-transparent via-gold to-transparent opacity-70" />
+              <img src="/images/duo/j-joey-keizer-tramlijn.webp" alt="Joey in DE KEIZER, Den Haag" loading="lazy" decoding="async" className="aspect-[4/5] w-full object-cover" />
+            </div>
+          </Reveal>
+          <div className="md:col-span-6 md:col-start-7">
+            {c.story.map((p, i) => (
+              <Reveal key={i} delay={i * 0.08}>
+                <p className={`max-w-[58ch] text-pretty ${i === 0 ? 'text-2xl leading-snug text-white md:text-[2rem] md:leading-[1.25]' : 'mt-8 text-lg leading-relaxed text-white/70 md:text-xl'}`}>{p}</p>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="relative overflow-hidden px-4 pb-24 pt-8 md:px-8 md:pb-32">
+      {/* TAK PRACUJEMY */}
+      <section className="bg-ink px-4 py-20 md:px-8 md:py-28">
+        <div className="mx-auto max-w-[1600px]">
+          <h2 className="sf-h2 mb-10 md:mb-14">{c.factsTitle}</h2>
+          <dl className="border-t border-white/12">
+            {c.facts.map((f, i) => (
+              <Reveal key={f.t} delay={i * 0.05}>
+                <div className="grid gap-2 border-b border-white/12 py-7 md:grid-cols-12 md:items-baseline md:gap-8 md:py-9">
+                  <dt className="font-narrow text-2xl font-bold md:col-span-4 md:text-3xl">{f.t}</dt>
+                  <dd className="max-w-[62ch] text-lg leading-relaxed text-white/70 md:col-span-7 md:col-start-6">{f.d}</dd>
+                </div>
+              </Reveal>
+            ))}
+          </dl>
+        </div>
+      </section>
+
+      {/* ZAMKNIĘCIE */}
+      <section className="px-4 py-24 md:px-8 md:py-36">
         <div className="mx-auto flex max-w-[1600px] flex-col items-start gap-10">
-          <h2 className="font-banner text-[14vw] text-haag-yellow md:text-[10rem]">{t.born_in}</h2>
-          <Btn variant="yellow" onClick={() => navigate('shop')}>
-            {t.join_family}
-          </Btn>
+          <p className="sf-h2 max-w-[18ch] text-haag-yellow">
+            {t.culture_manifesto_head} {t.culture_manifesto_sub}
+          </p>
+          <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+            <Btn variant="yellow" onClick={() => navigate('shop')}>
+              {c.shop}
+            </Btn>
+            <a href={INSTAGRAM} target="_blank" rel="noopener noreferrer" className="font-semibold text-white underline decoration-gold decoration-2 underline-offset-[6px] hover:text-haag-yellow">
+              {c.follow}
+            </a>
+          </div>
         </div>
       </section>
     </div>

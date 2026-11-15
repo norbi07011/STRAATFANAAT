@@ -48,15 +48,15 @@ const ChapterText = ({ ch, progress, last, children }: { ch: Chapter; progress: 
   return (
     <motion.div style={{ opacity, y }} className="pointer-events-none absolute inset-x-0 bottom-0 z-30 px-4 pb-10 md:px-10 md:pb-14">
       <div className="mx-auto max-w-[1600px]">
-        <p className="mb-2 text-xs font-bold uppercase tracking-[0.3em] text-haag-yellow md:text-sm">{ch.kicker}</p>
-        <p className="font-banner text-[12vw] leading-[0.88] text-white [text-shadow:0_4px_30px_rgba(0,0,0,0.7)] md:text-[min(6.5vw,7rem)]">{ch.title}</p>
+        <p className="font-banner text-[12vw] leading-[0.88] text-white [text-shadow:0_4px_30px_rgba(0,0,0,0.7)] md:text-[min(6.5vw,6rem)]">{ch.title}</p>
+        <p className="mt-3 text-base text-white/75 md:text-lg">{ch.kicker}</p>
         {children && <motion.div style={{ pointerEvents: pe }} className="mt-5">{children}</motion.div>}
       </div>
     </motion.div>
   );
 };
 
-export const ScrollFilm = ({ src, poster, label, copy, height = '420vh', onCta }: ScrollFilmProps) => {
+export const ScrollFilm = ({ src, poster, label, copy, height = '300vh', onCta }: ScrollFilmProps) => {
   const { lang } = useStore();
   const c = copy[lang] ?? copy.NL;
   const reduce = useReducedMotion();
@@ -170,6 +170,49 @@ export const SoulOrbitFilm = ({ products }: { products: Product[] }) => {
   const { openWaitlist } = useStore();
   const neon = products.find((p) => p.name === 'FCDH SOUL Neon') ?? null;
   return (
-    <ScrollFilm src="/films/orbit-soul-neon.mp4" poster="/films/orbit-soul-neon.webp" label="FCDH SOUL Pink en Neon, van voor tot de rugprint" copy={SOUL_COPY} height="520vh" onCta={neon ? () => openWaitlist(neon) : undefined} />
+    <ScrollFilm src="/films/orbit-soul-neon.mp4" poster="/films/orbit-soul-neon.webp" label="FCDH SOUL Pink en Neon, van voor tot de rugprint" copy={SOUL_COPY} height="380vh" onCta={neon ? () => openWaitlist(neon) : undefined} />
+  );
+};
+
+/* ---------- film 3: GEEN RISICO + MONEY BEAR, przód, przejście między koszulkami, plecy i powrót ---------- */
+
+const BEAR_COPY: Record<string, Copy> = {
+  NL: {
+    chapters: [
+      { range: [0, 0.15], kicker: 'Binnenkort', title: 'GEEN RISICO + MONEY BEAR' },
+      { range: [0.2, 0.36], kicker: 'Script op de borst, de wereldkaart ernaast', title: 'Twee shirts, één straat' },
+      { range: [0.43, 0.6], kicker: 'Loop er tussendoor', title: 'Dan de rug' },
+      { range: [0.66, 0.8], kicker: 'MONEY BEAR', title: 'Een beer van biljetten' },
+      { range: [0.86, 1], kicker: 'Nieuwe drop komt eraan', title: 'Zet je op de lijst' },
+    ],
+    cta: 'Zet me op de lijst',
+  },
+  EN: {
+    chapters: [
+      { range: [0, 0.15], kicker: 'Coming soon', title: 'GEEN RISICO + MONEY BEAR' },
+      { range: [0.2, 0.36], kicker: 'Script on the chest, the world map next to it', title: 'Two shirts, one street' },
+      { range: [0.43, 0.6], kicker: 'Walk between them', title: 'Then the back' },
+      { range: [0.66, 0.8], kicker: 'MONEY BEAR', title: 'A bear made of banknotes' },
+      { range: [0.86, 1], kicker: 'New drop coming', title: 'Get on the list' },
+    ],
+    cta: 'Put me on the list',
+  },
+  PL: {
+    chapters: [
+      { range: [0, 0.15], kicker: 'Wkrótce', title: 'GEEN RISICO + MONEY BEAR' },
+      { range: [0.2, 0.36], kicker: 'Napis na piersi, obok mapa świata', title: 'Dwie koszulki, jedna ulica' },
+      { range: [0.43, 0.6], kicker: 'Przejdź między nimi', title: 'Teraz plecy' },
+      { range: [0.66, 0.8], kicker: 'MONEY BEAR', title: 'Miś z banknotów' },
+      { range: [0.86, 1], kicker: 'Nowy drop nadchodzi', title: 'Zapisz się na listę' },
+    ],
+    cta: 'Zapisz mnie na listę',
+  },
+};
+
+export const BearOrbitFilm = ({ products }: { products: Product[] }) => {
+  const { openWaitlist } = useStore();
+  const bear = products.find((p) => p.name === 'MONEY BEAR') ?? null;
+  return (
+    <ScrollFilm src="/films/orbit-risico-bear.mp4" poster="/films/orbit-risico-bear.webp" label="GEEN RISICO en MONEY BEAR, van voor naar achter en terug" copy={BEAR_COPY} height="460vh" onCta={bear ? () => openWaitlist(bear) : undefined} />
   );
 };

@@ -138,12 +138,11 @@ export const DuoCarousel = () => {
   return (
     <section className="relative overflow-hidden bg-black py-20 text-white md:py-28">
       {/* miękkie zielono-żółte światło za pierścieniem */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_45%_at_50%_55%,rgba(0,122,61,0.35),transparent_70%),radial-gradient(30%_25%_at_50%_80%,rgba(255,210,0,0.12),transparent_70%)]" />
+      <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_45%_at_50%_55%,rgba(216,166,58,0.12),transparent_70%)]" />
 
       <div className="relative mx-auto max-w-[1600px] px-4 text-center md:px-8">
-        <p className="text-[11px] font-bold uppercase tracking-[0.35em] text-haag-yellow">Duo · 070</p>
-        <h2 className="font-banner mt-3 text-[15vw] leading-[0.85] md:text-[7rem]">{u.duoTitle}</h2>
-        <p className="mx-auto mt-4 max-w-lg text-base text-white/70 md:text-lg">{u.duoText}</p>
+        <h2 className="sf-h2">{u.duoTitle}</h2>
+        <p className="mx-auto mt-5 max-w-lg text-lg text-white/65">{u.duoText}</p>
       </div>
 
       <div

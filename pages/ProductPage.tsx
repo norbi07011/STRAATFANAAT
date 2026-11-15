@@ -29,7 +29,7 @@ const COLOR_NAMES: Record<string, Record<string, string>> = {
 const Accordion = ({ title, children, defaultOpen = false }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) => {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className="border-b-2 border-black">
+    <div className="border-b border-white/15">
       <button onClick={() => setOpen((o) => !o)} aria-expanded={open} className="flex w-full items-center justify-between py-4 text-left font-bold">
         {title}
         <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.3 }}>
@@ -45,7 +45,7 @@ const Accordion = ({ title, children, defaultOpen = false }: { title: string; ch
             transition={{ duration: 0.4, ease: EXPO }}
             className="overflow-hidden"
           >
-            <div className="pb-5 text-[15px] leading-relaxed text-black/75">{children}</div>
+            <div className="pb-5 text-[15px] leading-relaxed text-white/70">{children}</div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -71,7 +71,7 @@ const GalleryImage = ({ src, alt, index, onOpen, onActive, priority }: { src: st
       id={`pdp-img-${index}`}
       onClick={() => onOpen(index)}
       data-cursor="Zoom"
-      className="relative block aspect-[4/5] w-full shrink-0 snap-center overflow-hidden bg-paper-2 md:w-full"
+      className="relative block aspect-[4/5] w-full shrink-0 snap-center overflow-hidden bg-ink-2 md:w-full"
       style={index === 0 ? { viewTransitionName: 'product-hero' } : undefined}
       onPointerMove={(e) => {
         if (e.pointerType !== 'mouse') return;
@@ -140,9 +140,9 @@ export const ProductPage = ({ productId, products }: { productId?: string; produ
 
   if (!product) {
     return (
-      <div className="flex min-h-screen flex-col items-start justify-center gap-6 bg-paper px-4 md:px-8">
+      <div className="flex min-h-screen flex-col items-start justify-center gap-6 bg-black px-4 text-white md:px-8">
         <h1 className="font-banner text-[20vw] md:text-[12rem]">{u.notFoundTitle}</h1>
-        <Btn variant="black" onClick={() => navigate('shop')}>
+        <Btn variant="yellow" onClick={() => navigate('shop')}>
           {u.backToShop}
         </Btn>
       </div>
@@ -201,21 +201,21 @@ export const ProductPage = ({ productId, products }: { productId?: string; produ
   };
 
   return (
-    <div className="bg-paper pb-28 pt-20 md:pb-24 md:pt-24">
+    <div className="bg-black pb-28 pt-20 text-white md:pb-24 md:pt-24">
       {/* okruszki + udostępnij */}
       <div className="mx-auto flex max-w-[1600px] items-center justify-between px-4 py-3 text-sm md:px-8">
-        <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-2 text-black/60">
-          <NavLink page="home" className="hover:text-black">
+        <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-2 text-white/55">
+          <NavLink page="home" className="hover:text-white">
             Home
           </NavLink>
           <span aria-hidden>/</span>
-          <NavLink page="shop" className="hover:text-black">
+          <NavLink page="shop" className="hover:text-white">
             {t.nav_shop}
           </NavLink>
           <span aria-hidden>/</span>
-          <span className="truncate font-semibold text-black">{product.name}</span>
+          <span className="truncate font-semibold text-white">{product.name}</span>
         </nav>
-        <button onClick={share} className="flex shrink-0 items-center gap-2 font-semibold hover:text-haag-green">
+        <button onClick={share} className="flex shrink-0 items-center gap-2 font-semibold hover:text-haag-yellow">
           <Share2 className="h-4 w-4" /> {u.share}
         </button>
       </div>
@@ -224,11 +224,11 @@ export const ProductPage = ({ productId, products }: { productId?: string; produ
         {/* ===== Galeria ===== */}
         <div className="min-w-0 md:col-span-7" ref={galleryRef}>
           {has3d && (
-            <div className="mb-3 inline-flex border-2 border-black" role="tablist">
+            <div className="mb-3 inline-flex border border-white/25" role="tablist">
               {(['photo', '3d'] as const).map((m) => (
                 <button key={m} role="tab" aria-selected={mode === m} onClick={() => setMode(m)} className="relative px-4 py-2 text-sm font-bold">
-                  {mode === m && <motion.span layoutId="pdp-mode" className="absolute inset-0 bg-black" transition={{ type: 'spring', stiffness: 500, damping: 40 }} />}
-                  <span className={`relative ${mode === m ? 'text-haag-yellow' : ''}`}>{m === 'photo' ? u.photos : '3D'}</span>
+                  {mode === m && <motion.span layoutId="pdp-mode" className="absolute inset-0 bg-white" transition={{ type: 'spring', stiffness: 500, damping: 40 }} />}
+                  <span className={`relative ${mode === m ? 'text-black' : ''}`}>{m === 'photo' ? u.photos : '3D'}</span>
                 </button>
               ))}
             </div>
@@ -268,7 +268,7 @@ export const ProductPage = ({ productId, products }: { productId?: string; produ
                 {/* licznik na telefonie */}
                 <div className="mt-3 flex items-center justify-center gap-1.5 md:hidden" aria-hidden>
                   {images.map((_, i) => (
-                    <span key={i} className={`h-1.5 transition-all duration-300 ${i === active ? 'w-6 bg-black' : 'w-1.5 bg-black/25'}`} />
+                    <span key={i} className={`h-1.5 transition-all duration-300 ${i === active ? 'w-6 bg-white' : 'w-1.5 bg-white/25'}`} />
                   ))}
                 </div>
               </motion.div>
@@ -276,7 +276,7 @@ export const ProductPage = ({ productId, products }: { productId?: string; produ
           </AnimatePresence>
 
           {product.promoVideo && (
-            <div className="mt-6 grid gap-4 bg-black p-4 text-white md:grid-cols-[1fr_1.2fr] md:items-center md:p-6">
+            <div className="mt-6 grid gap-4 bg-ink-2 p-4 text-white md:grid-cols-[1fr_1.2fr] md:items-center md:p-6">
               <video src={video(product.promoVideo).src} poster={video(product.promoVideo).poster} controls playsInline preload="none" className="aspect-[9/14] w-full bg-black object-cover" />
               <div>
                 <p className="font-banner text-5xl text-haag-yellow">{u.promoVideo}</p>
@@ -309,7 +309,7 @@ export const ProductPage = ({ productId, products }: { productId?: string; produ
               </h1>
               <div className="mt-3 flex items-baseline gap-3">
                 <RollingNumber value={eur(product.price, lang)} className="text-3xl font-bold" />
-                {product.originalPrice && <span className="text-xl text-black/45 line-through tabular-nums">{eur(product.originalPrice, lang)}</span>}
+                {product.originalPrice && <span className="text-xl text-white/40 line-through tabular-nums">{eur(product.originalPrice, lang)}</span>}
               </div>
             </motion.div>
 
@@ -318,7 +318,7 @@ export const ProductPage = ({ productId, products }: { productId?: string; produ
             {specs.length > 0 && (
               <ul className="flex flex-wrap gap-2">
                 {specs.map((s) => (
-                  <li key={s.key + s.EN} className="border-2 border-black px-3 py-1.5 text-sm font-semibold">
+                  <li key={s.key + s.EN} className="border border-white/25 px-3 py-1.5 text-sm font-semibold">
                     {s[lang]}
                   </li>
                 ))}
@@ -342,15 +342,15 @@ export const ProductPage = ({ productId, products }: { productId?: string; produ
                         key={s}
                         onClick={() => setSize(s)}
                         aria-pressed={size === s}
-                        className={`relative h-12 border-2 font-bold transition-colors ${product.sizes.length === 1 ? 'col-span-5' : ''} ${size === s ? 'border-black' : needSize && !size ? 'border-red-600' : 'border-black/20 hover:border-black'}`}
+                        className={`relative h-12 border-2 font-bold transition-colors ${product.sizes.length === 1 ? 'col-span-5' : ''} ${size === s ? 'border-white' : needSize && !size ? 'border-red-500' : 'border-white/20 hover:border-white'}`}
                       >
-                        {size === s && <motion.span layoutId="size-pill" className="absolute inset-0 bg-black" transition={{ type: 'spring', stiffness: 500, damping: 38 }} />}
-                        <span className={`relative ${size === s ? 'text-haag-yellow' : ''}`}>{s}</span>
+                        {size === s && <motion.span layoutId="size-pill" className="absolute inset-0 bg-white" transition={{ type: 'spring', stiffness: 500, damping: 38 }} />}
+                        <span className={`relative ${size === s ? 'text-black' : ''}`}>{s}</span>
                       </button>
                     ))}
                   </motion.div>
                 </div>
-                <Btn variant="black" className="w-full py-5 text-lg" onClick={onAdd}>
+                <Btn variant="yellow" className="w-full py-5 text-lg" onClick={onAdd}>
                   <AnimatePresence mode="wait" initial={false}>
                     {added ? (
                       <motion.span key="ok" className="flex items-center gap-2" initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -20, opacity: 0 }}>
@@ -365,7 +365,7 @@ export const ProductPage = ({ productId, products }: { productId?: string; produ
                 </Btn>
               </div>
             ) : (
-              <div ref={ctaRef} className="flex flex-col gap-3 bg-black p-5 text-white">
+              <div ref={ctaRef} className="flex flex-col gap-3 bg-ink-2 p-5 text-white">
                 {product.waitlistCount ? <p className="font-banner text-5xl text-haag-yellow">{u.waiting(product.waitlistCount)}</p> : null}
                 <p className="text-white/75">{u.waitlistText}</p>
                 <Btn variant="yellow" className="w-full py-5 text-lg" onClick={() => openWaitlist(product)}>
@@ -374,7 +374,7 @@ export const ProductPage = ({ productId, products }: { productId?: string; produ
               </div>
             )}
 
-            <div className="border-t-2 border-black">
+            <div className="border-t border-white/15">
               {rest && (
                 <Accordion title={u.details} defaultOpen>
                   <p>{rest}</p>
@@ -403,8 +403,8 @@ export const ProductPage = ({ productId, products }: { productId?: string; produ
                     </motion.p>
                   )}
                 </AnimatePresence>
-                <button onClick={fetchAdvice} disabled={loadingAdvice} className="inline-flex items-center gap-2 border-b-2 border-black pb-0.5 font-semibold hover:text-haag-green disabled:opacity-60">
-                  {loadingAdvice ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-black border-t-transparent" /> : <Sparkles className="h-4 w-4" />}
+                <button onClick={fetchAdvice} disabled={loadingAdvice} className="inline-flex items-center gap-2 border-b border-white/15 pb-0.5 font-semibold hover:text-haag-yellow disabled:opacity-60">
+                  {loadingAdvice ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" /> : <Sparkles className="h-4 w-4" />}
                   {u.stylist}
                 </button>
               </Accordion>
@@ -416,9 +416,9 @@ export const ProductPage = ({ productId, products }: { productId?: string; produ
       {/* ===== Maak de look af ===== */}
       {related.length > 0 && (
         <section className="mx-auto mt-24 max-w-[1600px] px-4 md:px-8">
-          <div className="mb-8 flex items-end justify-between gap-4 border-b-2 border-black pb-4">
+          <div className="mb-8 flex items-end justify-between gap-4 border-b border-white/15 pb-4">
             <h2 className="font-banner text-6xl md:text-8xl">{u.completeLook}</h2>
-            <NavLink page="shop" className="shrink-0 font-semibold underline decoration-2 underline-offset-4 hover:text-haag-green">
+            <NavLink page="shop" className="shrink-0 font-semibold underline decoration-2 underline-offset-4 hover:text-haag-yellow">
               {u.shopDrop}
             </NavLink>
           </div>
@@ -439,7 +439,7 @@ export const ProductPage = ({ productId, products }: { productId?: string; produ
           <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6">
             {recentProducts.map((p) => (
               <NavLink key={p.id} page="product" id={p.id} className="group block">
-                <div className="aspect-[4/5] overflow-hidden bg-paper-2">
+                <div className="aspect-[4/5] overflow-hidden bg-ink-2">
                   <img src={img(p.image)} alt={p.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
                 </div>
                 <p className="mt-2 truncate text-sm font-semibold">{p.name}</p>
@@ -457,7 +457,7 @@ export const ProductPage = ({ productId, products }: { productId?: string; produ
             animate={{ y: 0 }}
             exit={{ y: '110%' }}
             transition={{ duration: 0.4, ease: EXPO }}
-            className="fixed inset-x-0 bottom-0 z-40 flex items-center gap-3 border-t-2 border-black bg-paper/95 px-4 py-3 pb-[max(12px,env(safe-area-inset-bottom))] backdrop-blur md:hidden"
+            className="fixed inset-x-0 bottom-0 z-40 flex items-center gap-3 border-t border-white/15 bg-black/90 px-4 py-3 pb-[max(12px,env(safe-area-inset-bottom))] backdrop-blur md:hidden"
           >
             <img src={img(product.image)} alt="" className="h-12 w-10 object-cover" />
             <div className="min-w-0 flex-1">
@@ -465,11 +465,11 @@ export const ProductPage = ({ productId, products }: { productId?: string; produ
               <p className="text-sm tabular-nums">{eur(product.price, lang)}</p>
             </div>
             {available ? (
-              <button onClick={onAdd} className="bg-black px-4 py-3 text-sm font-bold text-white">
+              <button onClick={onAdd} className="bg-haag-yellow px-4 py-3 text-sm font-bold text-black">
                 {size ? u.addToCart : u.chooseSize}
               </button>
             ) : (
-              <button onClick={() => openWaitlist(product)} className="bg-haag-yellow px-4 py-3 text-sm font-bold">
+              <button onClick={() => openWaitlist(product)} className="bg-haag-yellow px-4 py-3 text-sm font-bold text-black">
                 {u.notifyMe}
               </button>
             )}

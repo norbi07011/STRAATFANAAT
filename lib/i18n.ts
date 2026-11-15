@@ -3,7 +3,7 @@ import { Language } from '../types';
 // Teksty nowego interfejsu. Starsze teksty (manifest, filary itd.) zostają w constants.tsx.
 const UI = {
   NL: {
-    tagline: 'Streetwear uit Den Haag. Met Poolse roots.',
+    tagline: 'Streetwear uit Den Haag.',
     shopDrop: 'Shop de drop',
     seeLookbook: 'Bekijk het lookbook',
     availableNow: 'Nu verkrijgbaar',
@@ -140,7 +140,7 @@ const UI = {
     sideLabel: 'Kant',
   },
   EN: {
-    tagline: 'Streetwear from The Hague. With Polish roots.',
+    tagline: 'Streetwear from The Hague.',
     shopDrop: 'Shop the drop',
     seeLookbook: 'See the lookbook',
     availableNow: 'Available now',
@@ -277,7 +277,7 @@ const UI = {
     sideLabel: 'Side',
   },
   PL: {
-    tagline: 'Streetwear z Hagi. Z polskimi korzeniami.',
+    tagline: 'Streetwear z Hagi.',
     shopDrop: 'Zobacz drop',
     seeLookbook: 'Zobacz lookbook',
     availableNow: 'Dostępne teraz',

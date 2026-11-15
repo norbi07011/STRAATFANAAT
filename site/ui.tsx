@@ -8,7 +8,7 @@ import { Magnetic } from './fx/tilt';
 type Variant = 'yellow' | 'black' | 'outline-light' | 'outline-dark';
 
 const variants: Record<Variant, { base: string; fill: string; hoverText: string }> = {
-  yellow: { base: 'bg-haag-yellow text-black', fill: 'bg-black', hoverText: 'group-hover:text-haag-yellow' },
+  yellow: { base: 'bg-haag-yellow text-black', fill: 'bg-white', hoverText: 'group-hover:text-black' },
   black: { base: 'bg-black text-white', fill: 'bg-haag-yellow', hoverText: 'group-hover:text-black' },
   'outline-light': { base: 'border-2 border-white text-white', fill: 'bg-white', hoverText: 'group-hover:text-black' },
   'outline-dark': { base: 'border-2 border-black text-black', fill: 'bg-black', hoverText: 'group-hover:text-white' },
@@ -58,14 +58,13 @@ export const Reveal = ({
   className?: string;
   y?: number;
 }) => (
-  // scroll reveal: z rozmycia i z lekkim obrotem 3D
-  <div className={`[perspective:1200px] ${className}`}>
+  // scroll reveal: spokojne wejście od dołu (bez rozmycia i obrotu, żeby nie męczyć oka i telefonu)
+  <div className={className}>
     <motion.div
-      initial={{ opacity: 0, y, rotateX: 14, filter: 'blur(14px)' }}
-      whileInView={{ opacity: 1, y: 0, rotateX: 0, filter: 'blur(0px)' }}
-      viewport={{ once: true, margin: '-8% 0px' }}
-      transition={{ duration: 1.05, ease: [0.16, 1, 0.3, 1], delay }}
-      style={{ transformOrigin: '50% 100%' }}
+      initial={{ opacity: 0, y: Math.min(y, 28) }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-6% 0px' }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay }}
     >
       {children}
     </motion.div>
