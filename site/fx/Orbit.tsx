@@ -9,6 +9,14 @@ import { useMouseParallax } from './tilt';
  * produkty bez tła krążą wokół logo SF, lewitują (bob animation),
  * scena przechyla się za kursorem, a obrót przyspiesza przy scrollu i daje się przeciągać.
  */
+/* Lewitujące wersje wycinków (animowany WebP z przezroczystością, klipy z lokalnego Wan 2.2).
+   Gdy plik jest na liście, w pierścieniu gra pętla zamiast nieruchomego zdjęcia. */
+const FLOAT = new Set(['de-keizer-front', 'savage-drop-front', 'money-bear-front', 'geen-risico-front', 'czapka-s', 'fc-den-haag-back-drop-front', 'fcdh-soul-neon-front', 'fcdh-soul-pink-front', 'fcdh-gold-1905-front']);
+const floatSrc = (cutout?: string) => {
+  const name = cutout?.split('/').pop()?.replace(/\.webp$/, '');
+  return name && FLOAT.has(name) ? `/images/float/${name}.webp` : null;
+};
+
 export const Orbit = ({ products, onHover }: { products: Product[]; onHover?: (p: Product | null) => void }) => {
   const reduce = useReducedMotion();
   const { navigate } = useNav();
@@ -108,7 +116,15 @@ export const Orbit = ({ products, onHover }: { products: Product[]; onHover?: (p
               onFocus={() => onHover?.(p)}
               aria-label={p.name}
             >
-              <img src={p.cutout} alt="" draggable={false} className="w-full drop-shadow-[0_30px_30px_rgba(0,0,0,0.6)]" />
+              {(() => {
+                const anim = reduce ? null : floatSrc(p.cutout);
+                // klip ma margines wokół koszulki, więc jest powiększony, żeby trzymał rozmiar zdjęcia
+                return anim ? (
+                  <img src={anim} alt="" draggable={false} loading="lazy" className="w-full scale-[1.22] drop-shadow-[0_30px_30px_rgba(0,0,0,0.6)]" onError={(e) => { e.currentTarget.src = p.cutout!; e.currentTarget.classList.remove('scale-[1.22]'); }} />
+                ) : (
+                  <img src={p.cutout} alt="" draggable={false} className="w-full drop-shadow-[0_30px_30px_rgba(0,0,0,0.6)]" />
+                );
+              })()}
             </button>
           ))}
         </div>

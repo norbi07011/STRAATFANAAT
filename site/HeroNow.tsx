@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion, useReducedMotion } from 'motion/react';
+import React, { useEffect, useRef } from 'react';
+import { motion, MotionValue, useReducedMotion, useScroll, useTransform } from 'motion/react';
 import { Product } from '../types';
 import { eur, ui } from '../lib/i18n';
 import { useStore } from './store';
@@ -37,6 +37,63 @@ const GlassCard = ({ product, label }: { product: Product; label: string }) => {
   );
 };
 
+/* ---------- film obrotu przewijany scrollem ----------
+   Gdy w public/het-raam/ leży obrot.mp4 (telefon: obrot-m.mp4), okładka przypina się na czas przewijania,
+   a Joey odwraca się od okna do widza (klatki K5 → K6 → K7 → K8). Bez pliku okładka jest zwykłym zdjęciem.
+   Kodowanie pod przewijanie: każda klatka kluczowa (ffmpeg -g 1), bez dźwięku. */
+
+const TURN_SRC = '/het-raam/obrot.mp4';
+const TURN_SRC_M = '/het-raam/obrot-m.mp4';
+const PORTRAIT = '(max-aspect-ratio: 4/5)';
+const FRAME = 'h-full w-full object-cover object-[62%_40%] [@media(max-aspect-ratio:4/5)]:object-[50%_38%]';
+
+const useTurnFilm = () => {
+  const [portrait, setPortrait] = React.useState(() => typeof window !== 'undefined' && window.matchMedia(PORTRAIT).matches);
+  const [found, setFound] = React.useState<string | null>(null);
+  const src = portrait ? TURN_SRC_M : TURN_SRC;
+  useEffect(() => {
+    const mq = window.matchMedia(PORTRAIT);
+    const on = () => setPortrait(mq.matches);
+    mq.addEventListener('change', on);
+    return () => mq.removeEventListener('change', on);
+  }, []);
+  useEffect(() => {
+    let alive = true;
+    fetch(src, { method: 'HEAD' })
+      .then((r) => alive && setFound(r.ok && (r.headers.get('content-type') ?? '').startsWith('video') ? src : null))
+      .catch(() => {});
+    return () => { alive = false; };
+  }, [src]);
+  return found === src ? src : null;
+};
+
+const TurnScrub = ({ src, progress }: { src: string; progress: MotionValue<number> }) => {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [ready, setReady] = React.useState(false);
+  useEffect(() => {
+    const v = ref.current;
+    if (!v) return;
+    let raf = 0;
+    let target = 0;
+    const seek = () => {
+      raf = 0;
+      if (!v.duration) return;
+      if (Math.abs(v.currentTime - target) > 1 / 60) v.currentTime = target;
+    };
+    const set = (pr: number) => {
+      // pierwsze 6% przewijania stoi na zdjęciu, film kończy się przy 92% i zostaje na ostatniej klatce
+      target = Math.min(1, Math.max(0, (pr - 0.06) / 0.86)) * (v.duration || 0);
+      if (!raf) raf = requestAnimationFrame(seek);
+    };
+    const onData = () => { set(progress.get()); setReady(true); };
+    v.addEventListener('loadeddata', onData);
+    if (v.readyState >= 2) onData();
+    const off = progress.on('change', set);
+    return () => { off(); v.removeEventListener('loadeddata', onData); if (raf) cancelAnimationFrame(raf); };
+  }, [progress, src]);
+  return <video ref={ref} key={src} src={src} muted playsInline preload="auto" aria-hidden className={`absolute inset-0 ${FRAME} transition-opacity duration-500 ${ready ? 'opacity-100' : 'opacity-0'}`} />;
+};
+
 export const HeroNow = ({ products }: { products: Product[] }) => {
   const { lang } = useStore();
   const { navigate } = useNav();
@@ -45,8 +102,19 @@ export const HeroNow = ({ products }: { products: Product[] }) => {
   const items = products.filter(isAvailable);
   const loop = reduce ? items : [...items, ...items, ...items];
 
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] });
+  const turnSrc = useTurnFilm();
+  const film = !reduce && turnSrc;
+  /* napis i karuzela ustępują, gdy Joey zaczyna się odwracać */
+  const uiOpacity = useTransform(scrollYProgress, [0.04, 0.2], [1, 0]);
+  const uiY = useTransform(scrollYProgress, [0.04, 0.2], [0, 40]);
+  const uiPe = useTransform(uiOpacity, (o) => (o > 0.5 ? 'auto' : 'none'));
+  const shade = useTransform(scrollYProgress, [0.04, 0.25], [1, 0.35]);
+
   return (
-    <section className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden bg-black text-white">
+    <section ref={sectionRef} className={`relative bg-black text-white ${film ? 'h-[300vh]' : ''}`}>
+     <div className={`flex min-h-[100svh] flex-col justify-end overflow-hidden ${film ? 'sticky top-0 h-[100svh]' : 'relative'}`}>
       {/* ten sam pokój z deszczem co w scenie niżej, a w nim Joey plecami do okna w DE KEIZER (kadry K5) */}
       <motion.div
         aria-hidden
@@ -57,11 +125,13 @@ export const HeroNow = ({ products }: { products: Product[] }) => {
       >
         <picture>
           <source media="(max-aspect-ratio: 4/5)" srcSet="/het-raam/pokoj-joey-m.webp" />
-          <img src="/het-raam/pokoj-joey-d.webp" alt="" fetchPriority="high" className="h-full w-full object-cover object-[62%_40%] [@media(max-aspect-ratio:4/5)]:object-[50%_38%]" />
+          <img src="/het-raam/pokoj-joey-d.webp" alt="" fetchPriority="high" className={FRAME} />
         </picture>
+        {film && <TurnScrub src={film} progress={scrollYProgress} />}
       </motion.div>
-      <div aria-hidden className="absolute inset-0 bg-[linear-gradient(to_top,#000_0%,rgba(0,0,0,0.6)_28%,rgba(0,0,0,0.05)_60%,rgba(0,0,0,0.45)_100%)]" />
+      <motion.div aria-hidden style={film ? { opacity: shade } : undefined} className="absolute inset-0 bg-[linear-gradient(to_top,#000_0%,rgba(0,0,0,0.6)_28%,rgba(0,0,0,0.05)_60%,rgba(0,0,0,0.45)_100%)]" />
 
+      <motion.div style={film ? { opacity: uiOpacity, y: uiY, pointerEvents: uiPe } : undefined} className="relative">
       <div className="relative mx-auto w-full max-w-[1600px] px-4 md:px-8">
         <motion.h1
           className="font-banner text-[12.4vw] leading-[0.86] md:text-[clamp(4rem,7.4vw,6rem)]"
@@ -109,6 +179,8 @@ export const HeroNow = ({ products }: { products: Product[] }) => {
           </div>
         </div>
       </motion.div>
+      </motion.div>
+     </div>
     </section>
   );
 };
