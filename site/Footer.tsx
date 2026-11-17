@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { Instagram } from 'lucide-react';
+import { Instagram, MessageCircle } from 'lucide-react';
 import { TRANSLATIONS } from '../constants';
 import { ui } from '../lib/i18n';
 import { joinNewsletter } from '../lib/signups';
+import { HAS_WHATSAPP, whatsappContactLink } from '../lib/whatsapp';
 import { useStore } from './store';
 import { NavLink } from './nav';
 import { TextFill } from './fx/scroll';
 
 // Wpisz adres profilu, a link pojawi się w stopce
-const INSTAGRAM_URL = '';
+const INSTAGRAM_URL = 'https://www.instagram.com/straatfanat/';
 
 export const Footer = () => {
   const { lang } = useStore();
@@ -77,13 +78,18 @@ export const Footer = () => {
             <span>{u.fact3}</span>
             <span>{u.fact2}</span>
           </div>
-          {INSTAGRAM_URL && (
-            <div className="flex flex-col gap-3">
-              <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 hover:text-haag-yellow">
+          <div className="flex flex-col gap-3">
+            {HAS_WHATSAPP && (
+              <a href={whatsappContactLink(lang)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:text-haag-yellow">
+                <MessageCircle className="h-5 w-5" /> WhatsApp
+              </a>
+            )}
+            {INSTAGRAM_URL && (
+              <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:text-haag-yellow">
                 <Instagram className="h-5 w-5" /> Instagram
               </a>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
 
