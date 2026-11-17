@@ -67,7 +67,7 @@ const useTurnFilm = () => {
   return found === src ? src : null;
 };
 
-const TurnScrub = ({ src, progress }: { src: string; progress: MotionValue<number> }) => {
+const TurnScrub = ({ src, progress, measure }: { src: string; progress: MotionValue<number>; measure: () => number }) => {
   const ref = useRef<HTMLVideoElement>(null);
   const [ready, setReady] = React.useState(false);
   useEffect(() => {
@@ -85,12 +85,18 @@ const TurnScrub = ({ src, progress }: { src: string; progress: MotionValue<numbe
       target = Math.min(1, Math.max(0, (pr - 0.06) / 0.86)) * (v.duration || 0);
       if (!raf) raf = requestAnimationFrame(seek);
     };
-    const onData = () => { set(progress.get()); setReady(true); };
+    const onData = () => { set(measure()); setReady(true); };
     v.addEventListener('loadeddata', onData);
     if (v.readyState >= 2) onData();
     const off = progress.on('change', set);
-    return () => { off(); v.removeEventListener('loadeddata', onData); if (raf) cancelAnimationFrame(raf); };
-  }, [progress, src]);
+    // po odświeżeniu strony przeglądarka potrafi przywrócić stare miejsce przewijania i od razu je cofnąć;
+    // film zostawał wtedy na ostatniej klatce, więc dosynchronizowujemy go jeszcze chwilę po starcie i po każdym seeku
+    // (wartość z useScroll bywa wtedy nieaktualna aż do pierwszego ruchu, dlatego mierzymy położenie sekcji sami)
+    const sync = () => set(measure());
+    const timers = [300, 1200, 3000].map((ms) => window.setTimeout(sync, ms));
+    v.addEventListener('seeked', sync);
+    return () => { off(); timers.forEach(clearTimeout); v.removeEventListener('seeked', sync); v.removeEventListener('loadeddata', onData); if (raf) cancelAnimationFrame(raf); };
+  }, [progress, src, measure]);
   return <video ref={ref} key={src} src={src} muted playsInline preload="auto" aria-hidden className={`absolute inset-0 ${FRAME} transition-opacity duration-500 ${ready ? 'opacity-100' : 'opacity-0'}`} />;
 };
 
@@ -105,6 +111,12 @@ export const HeroNow = ({ products }: { products: Product[] }) => {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] });
   const turnSrc = useTurnFilm();
+  const measure = React.useCallback(() => {
+    const el = sectionRef.current;
+    if (!el) return 0;
+    const range = el.offsetHeight - window.innerHeight;
+    return range > 0 ? Math.min(1, Math.max(0, -el.getBoundingClientRect().top / range)) : 0;
+  }, []);
   const film = !reduce && turnSrc;
   /* napis i karuzela ustępują, gdy Joey zaczyna się odwracać */
   const uiOpacity = useTransform(scrollYProgress, [0.04, 0.2], [1, 0]);
@@ -127,7 +139,7 @@ export const HeroNow = ({ products }: { products: Product[] }) => {
           <source media="(max-aspect-ratio: 4/5)" srcSet="/het-raam/pokoj-joey-m.webp" />
           <img src="/het-raam/pokoj-joey-d.webp" alt="" fetchPriority="high" className={FRAME} />
         </picture>
-        {film && <TurnScrub src={film} progress={scrollYProgress} />}
+        {film && <TurnScrub src={film} progress={scrollYProgress} measure={measure} />}
       </motion.div>
       <motion.div aria-hidden style={film ? { opacity: shade } : undefined} className="absolute inset-0 bg-[linear-gradient(to_top,#000_0%,rgba(0,0,0,0.6)_28%,rgba(0,0,0,0.05)_60%,rgba(0,0,0,0.45)_100%)]" />
 
