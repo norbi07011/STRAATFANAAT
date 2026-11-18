@@ -6,6 +6,7 @@ import { useStore } from './store';
 import { NavLink, useNav } from './nav';
 import { Btn } from './ui';
 import { isAvailable } from './ProductCard';
+import { FrameScrub, useFrameMode } from './fx/FrameScrub';
 
 /*
   Góra strony głównej: kinowy kadr z galerii (te same koszulki co w animacjach), marka i hasło,
@@ -46,6 +47,9 @@ const TURN_SRC = '/het-raam/obrot.mp4';
 const TURN_SRC_M = '/het-raam/obrot-m.mp4';
 const PORTRAIT = '(max-aspect-ratio: 4/5)';
 const FRAME = 'h-full w-full object-cover object-[62%_40%] [@media(max-aspect-ratio:4/5)]:object-[50%_38%]';
+
+// pierwsze 6% przewijania stoi na zdjęciu, film kończy się przy 92% (to samo co w TurnScrub)
+const TURN_MAP = (pr: number) => (pr - 0.06) / 0.86;
 
 const useTurnFilm = () => {
   const [portrait, setPortrait] = React.useState(() => typeof window !== 'undefined' && window.matchMedia(PORTRAIT).matches);
@@ -118,6 +122,7 @@ export const HeroNow = ({ products }: { products: Product[] }) => {
     return range > 0 ? Math.min(1, Math.max(0, -el.getBoundingClientRect().top / range)) : 0;
   }, []);
   const film = !reduce && turnSrc;
+  const frames = useFrameMode();
   /* napis i karuzela ustępują, gdy Joey zaczyna się odwracać */
   const uiOpacity = useTransform(scrollYProgress, [0.04, 0.2], [1, 0]);
   const uiY = useTransform(scrollYProgress, [0.04, 0.2], [0, 40]);
@@ -139,7 +144,9 @@ export const HeroNow = ({ products }: { products: Product[] }) => {
           <source media="(max-aspect-ratio: 4/5)" srcSet="/het-raam/pokoj-joey-m.webp" />
           <img src="/het-raam/pokoj-joey-d.webp" alt="" fetchPriority="high" className={FRAME} />
         </picture>
-        {film && <TurnScrub src={film} progress={scrollYProgress} measure={measure} />}
+        {film && (frames
+          ? <FrameScrub dir="/seq/obrot-m" count={145} width={540} height={960} progress={scrollYProgress} map={TURN_MAP} measure={measure} className={`absolute inset-0 ${FRAME}`} />
+          : <TurnScrub src={film} progress={scrollYProgress} measure={measure} />)}
       </motion.div>
       <motion.div aria-hidden style={film ? { opacity: shade } : undefined} className="absolute inset-0 bg-[linear-gradient(to_top,#000_0%,rgba(0,0,0,0.6)_28%,rgba(0,0,0,0.05)_60%,rgba(0,0,0,0.45)_100%)]" />
 

@@ -3,6 +3,7 @@ import { motion, MotionValue, useMotionTemplate, useReducedMotion, useScroll, us
 import { Product } from '../../types';
 import { useStore } from '../store';
 import { Btn } from '../ui';
+import { FrameScrub, useFrameMode } from './FrameScrub';
 
 /*
   HET RAAM v2: prawdziwa scena 3D sterowana scrollem (bez sklejki klatek).
@@ -128,6 +129,8 @@ const JOEY_POSTER = '/het-raam/joey.webp';
 const JOEY_SRC_M = '/het-raam/joey-m.mp4';
 const JOEY_POSTER_M = '/het-raam/joey-m.webp';
 const PORTRAIT = '(max-aspect-ratio: 4/5)';
+// film kończy się przy 90% sekcji (to samo co w JoeyScrub)
+const JOEY_MAP = (pr: number) => pr / 0.9;
 
 /* pionowy ekran dostaje pionowy film, jeśli plik istnieje */
 const useJoeySource = () => {
@@ -258,6 +261,7 @@ export const HetRaam = ({ products }: { products: Product[] }) => {
   const [joeyReady, setJoeyReady] = React.useState(false);
   const markReady = React.useCallback(() => setJoeyReady(true), []);
   const useJoey = joeyAvailable && !reduce;
+  const frames = useFrameMode();
   const joeyScale = useTransform(p, [0, 1], [1, 1.08]);
 
   return (
@@ -274,7 +278,9 @@ export const HetRaam = ({ products }: { products: Product[] }) => {
         {/* film ma własny ruch kamery, więc tylko delikatny najazd */}
         {useJoey && (
           <motion.div style={{ scale: joeyScale }} className="absolute inset-0 origin-[50%_40%] will-change-transform">
-            <JoeyScrub progress={p} onReady={markReady} />
+            {frames
+              ? <FrameScrub dir="/seq/joey-m" count={145} width={540} height={960} progress={p} map={JOEY_MAP} onReady={markReady} label="Joey in het HAAG Back! shirt" className="absolute inset-0 h-full w-full object-cover object-[50%_40%]" />
+              : <JoeyScrub progress={p} onReady={markReady} />}
             <Rain speed={speed} />
           </motion.div>
         )}

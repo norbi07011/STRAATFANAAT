@@ -3,6 +3,7 @@ import { motion, MotionValue, useReducedMotion, useScroll, useSpring, useTransfo
 import { useStore } from '../store';
 import { NavLink } from '../nav';
 import { Product } from '../../types';
+import { FrameScrub, useFrameMode } from './FrameScrub';
 
 /*
   Film produktowy przewijany scrollem (obrót kamery wokół koszulek).
@@ -12,7 +13,13 @@ import { Product } from '../../types';
 
 type Chapter = { range: [number, number]; kicker: string; title: string };
 type Copy = { chapters: Chapter[]; cta: string };
-export type ScrollFilmProps = { src: string; poster: string; label: string; copy: Record<string, Copy>; height?: string; onCta?: () => void };
+export type ScrollFilmProps = { src: string; poster: string; label: string; copy: Record<string, Copy>; height?: string; onCta?: () => void; seq?: { dir: string; count: number } };
+
+// film kończy się przy 88% sekcji (to samo co w Scrub)
+const FILM_MAP = (pr: number) => pr / 0.88;
+const KEIZER_SEQ = { dir: '/seq/keizer', count: 145 };
+const SOUL_SEQ = { dir: '/seq/soul', count: 145 };
+const BEAR_SEQ = { dir: '/seq/bear', count: 151 };
 
 const Scrub = ({ src, poster, progress, className, label }: { src: string; poster: string; progress: MotionValue<number>; className: string; label?: string }) => {
   const ref = useRef<HTMLVideoElement>(null);
@@ -56,10 +63,11 @@ const ChapterText = ({ ch, progress, last, children }: { ch: Chapter; progress: 
   );
 };
 
-export const ScrollFilm = ({ src, poster, label, copy, height = '300vh', onCta }: ScrollFilmProps) => {
+export const ScrollFilm = ({ src, poster, label, copy, height = '300vh', onCta, seq }: ScrollFilmProps) => {
   const { lang } = useStore();
   const c = copy[lang] ?? copy.NL;
   const reduce = useReducedMotion();
+  const frames = useFrameMode();
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] });
   const p = useSpring(scrollYProgress, { stiffness: 120, damping: 26, mass: 0.4 });
@@ -82,7 +90,9 @@ export const ScrollFilm = ({ src, poster, label, copy, height = '300vh', onCta }
       <div className="sticky top-0 flex h-[100svh] w-full items-center justify-center overflow-hidden bg-black">
         {/* rozmyte tło wypełnia pionowy ekran */}
         <img src={poster} alt="" aria-hidden className="absolute inset-0 h-full w-full scale-125 object-cover opacity-50 blur-2xl landscape:hidden" />
-        <Scrub src={src} poster={poster} progress={p} label={label} className="relative z-10 w-full portrait:max-h-[60svh] portrait:object-contain landscape:absolute landscape:inset-0 landscape:h-full landscape:object-cover" />
+        {frames && seq
+          ? <FrameScrub dir={seq.dir} count={seq.count} width={720} height={404} progress={p} map={FILM_MAP} label={label} className="relative z-10 w-full max-h-[60svh] object-contain" />
+          : <Scrub src={src} poster={poster} progress={p} label={label} className="relative z-10 w-full portrait:max-h-[60svh] portrait:object-contain landscape:absolute landscape:inset-0 landscape:h-full landscape:object-cover" />}
         <div aria-hidden className="pointer-events-none absolute inset-0 z-20 bg-[linear-gradient(to_top,rgba(0,0,0,0.85)_0%,transparent_38%)]" />
         {c.chapters.map((ch, i) => (
           <ChapterText key={i} ch={ch} progress={scrollYProgress} last={i === c.chapters.length - 1}>
@@ -131,7 +141,7 @@ const KEIZER_COPY: Record<string, Copy> = {
 };
 
 export const KeizerOrbitFilm = () => (
-  <ScrollFilm src="/films/orbit-haag-keizer.mp4" poster="/films/orbit-haag-keizer.webp" label="HAAG Back! en DE KEIZER, van voor naar achter" copy={KEIZER_COPY} />
+  <ScrollFilm src="/films/orbit-haag-keizer.mp4" poster="/films/orbit-haag-keizer.webp" label="HAAG Back! en DE KEIZER, van voor naar achter" copy={KEIZER_COPY} seq={KEIZER_SEQ} />
 );
 
 /* ---------- film 2: FCDH SOUL Pink + Neon, obrót i wejście w nadruk na plecach ---------- */
@@ -170,7 +180,7 @@ export const SoulOrbitFilm = ({ products }: { products: Product[] }) => {
   const { openWaitlist } = useStore();
   const neon = products.find((p) => p.name === 'FCDH SOUL Neon') ?? null;
   return (
-    <ScrollFilm src="/films/orbit-soul-neon.mp4" poster="/films/orbit-soul-neon.webp" label="FCDH SOUL Pink en Neon, van voor tot de rugprint" copy={SOUL_COPY} height="380vh" onCta={neon ? () => openWaitlist(neon) : undefined} />
+    <ScrollFilm src="/films/orbit-soul-neon.mp4" poster="/films/orbit-soul-neon.webp" label="FCDH SOUL Pink en Neon, van voor tot de rugprint" copy={SOUL_COPY} height="380vh" seq={SOUL_SEQ} onCta={neon ? () => openWaitlist(neon) : undefined} />
   );
 };
 
@@ -213,6 +223,6 @@ export const BearOrbitFilm = ({ products }: { products: Product[] }) => {
   const { openWaitlist } = useStore();
   const bear = products.find((p) => p.name === 'MONEY BEAR') ?? null;
   return (
-    <ScrollFilm src="/films/orbit-risico-bear.mp4" poster="/films/orbit-risico-bear.webp" label="GEEN RISICO en MONEY BEAR, van voor naar achter en terug" copy={BEAR_COPY} height="460vh" onCta={bear ? () => openWaitlist(bear) : undefined} />
+    <ScrollFilm src="/films/orbit-risico-bear.mp4" poster="/films/orbit-risico-bear.webp" label="GEEN RISICO en MONEY BEAR, van voor naar achter en terug" copy={BEAR_COPY} height="460vh" seq={BEAR_SEQ} onCta={bear ? () => openWaitlist(bear) : undefined} />
   );
 };
