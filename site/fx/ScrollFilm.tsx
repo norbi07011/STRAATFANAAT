@@ -13,12 +13,14 @@ import { FrameScrub, useFrameMode } from './FrameScrub';
 
 type Chapter = { range: [number, number]; kicker: string; title: string };
 type Copy = { chapters: Chapter[]; cta: string };
-export type ScrollFilmProps = { src: string; poster: string; label: string; copy: Record<string, Copy>; height?: string; onCta?: () => void; seq?: { dir: string; count: number } };
+// klatki dla telefonu; tall = pionowy film 9:16 (540×960) na cały ekran, bez tall poziomy pasek 720×404
+type Seq = { dir: string; count: number; tall?: boolean };
+export type ScrollFilmProps = { src: string; poster: string; label: string; copy: Record<string, Copy>; height?: string; onCta?: () => void; seq?: Seq };
 
 // film kończy się przy 88% sekcji (to samo co w Scrub)
 const FILM_MAP = (pr: number) => pr / 0.88;
-const KEIZER_SEQ = { dir: '/seq/keizer', count: 145 };
-const SOUL_SEQ = { dir: '/seq/soul', count: 145 };
+const KEIZER_SEQ = { dir: '/seq/keizer-m', count: 145, tall: true };
+const SOUL_SEQ = { dir: '/seq/soul-m', count: 141, tall: true };
 const BEAR_SEQ = { dir: '/seq/bear', count: 151 };
 
 const Scrub = ({ src, poster, progress, className, label }: { src: string; poster: string; progress: MotionValue<number>; className: string; label?: string }) => {
@@ -91,7 +93,9 @@ export const ScrollFilm = ({ src, poster, label, copy, height = '300vh', onCta, 
         {/* rozmyte tło wypełnia pionowy ekran */}
         <img src={poster} alt="" aria-hidden className="absolute inset-0 h-full w-full scale-125 object-cover opacity-50 blur-2xl landscape:hidden" />
         {frames && seq
-          ? <FrameScrub dir={seq.dir} count={seq.count} width={720} height={404} progress={p} map={FILM_MAP} label={label} className="relative z-10 w-full max-h-[60svh] object-contain" />
+          ? seq.tall
+            ? <FrameScrub dir={seq.dir} count={seq.count} width={540} height={960} progress={p} map={FILM_MAP} label={label} className="absolute inset-0 z-10 h-full w-full object-cover" />
+            : <FrameScrub dir={seq.dir} count={seq.count} width={720} height={404} progress={p} map={FILM_MAP} label={label} className="relative z-10 w-full max-h-[60svh] object-contain" />
           : <Scrub src={src} poster={poster} progress={p} label={label} className="relative z-10 w-full portrait:max-h-[60svh] portrait:object-contain landscape:absolute landscape:inset-0 landscape:h-full landscape:object-cover" />}
         <div aria-hidden className="pointer-events-none absolute inset-0 z-20 bg-[linear-gradient(to_top,rgba(0,0,0,0.85)_0%,transparent_38%)]" />
         {c.chapters.map((ch, i) => (
